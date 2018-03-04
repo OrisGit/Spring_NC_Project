@@ -31,7 +31,6 @@ public class Exporter {
         this.priceRepository = priceRepository;
     }
 
-    @Transactional
     public String export(FormatType type, boolean format) throws ExportException {
         AbstractMarshaller marshaller;
 
