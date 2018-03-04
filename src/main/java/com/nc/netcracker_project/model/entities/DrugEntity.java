@@ -86,7 +86,7 @@ public class DrugEntity implements Serializable{
         this.activeIngredient = activeIngredient;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "P_EFFECT_ID")
 
     public PharmachologicEffectEntity getPharmachologicEffect() {
@@ -97,7 +97,7 @@ public class DrugEntity implements Serializable{
         this.pharmachologicEffect = pharmachologicEffect;
     }
 
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "T_EFFECT_ID")
     public TherapeuticEffectEntity getTherapeuticEffect() {
         return therapeuticEffect;
