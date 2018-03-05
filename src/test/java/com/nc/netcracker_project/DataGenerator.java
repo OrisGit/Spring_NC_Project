@@ -1,13 +1,7 @@
 package com.nc.netcracker_project;
 
-import com.nc.netcracker_project.model.entities.*;
+import com.nc.netcracker_project.server.model.entities.*;
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.springframework.data.repository.CrudRepository;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class DataGenerator {
 
