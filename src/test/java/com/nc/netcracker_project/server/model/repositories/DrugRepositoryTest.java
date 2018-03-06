@@ -68,4 +68,15 @@ public class DrugRepositoryTest {
         assertThat(res).isEqualTo(drug);
     }
 
+    @Test
+    public void updateTest() {
+        DrugEntity drug = createDrugEntity();
+        drugRepository.save(drug);
+        DrugEntity res = drugRepository.findOne(drug.getId());
+        res.setName("Афлубин");
+        drugRepository.save(res);
+        res = drugRepository.findOne(drug.getId());
+        assertThat(res.getName()).isEqualTo("Афлубин");
+    }
+
 }
