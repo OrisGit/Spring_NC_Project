@@ -1,7 +1,7 @@
 package com.nc.netcracker_project.desktop_rmi_client.view_controllers;
 
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
-import com.nc.netcracker_project.server.controllers.RMIController;
+import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.services.import_export.ExportException;
 import com.nc.netcracker_project.server.services.import_export.FormatType;
 import javafx.fxml.FXML;
@@ -17,9 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.EventObject;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ExportWindowController implements Initializable{
@@ -85,6 +82,8 @@ public class ExportWindowController implements Initializable{
        try {
            export(controller.exportFromDB(type),path);
        } catch (ExportException e) {
+           dialogFactory.displayError(e.getMessage());
+       } catch (RemoteException e) {
            dialogFactory.displayError(e.getMessage());
        }
 

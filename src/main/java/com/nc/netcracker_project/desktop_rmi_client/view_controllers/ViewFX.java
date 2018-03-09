@@ -5,7 +5,7 @@ import com.nc.netcracker_project.desktop_rmi_client.entity.Drugstore;
 import com.nc.netcracker_project.desktop_rmi_client.entity.Price;
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
 import com.nc.netcracker_project.desktop_rmi_client.util.Mapper;
-import com.nc.netcracker_project.server.controllers.RMIController;
+import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.model.entities.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.*;
 
 import static com.nc.netcracker_project.desktop_rmi_client.util.PropertyLoader.getProperty;
@@ -49,23 +50,43 @@ public class ViewFX implements Initializable{
 
     //region Вывод всех записей в БД
     public void displayDrugs() {
-        display((List)controller.getAllDrug(),drugs,getProperty("error.client.display.drug"));
+        try {
+            display((List)controller.getAllDrug(),drugs,getProperty("error.client.display.drug"));
+        } catch (RemoteException e) {
+            dialogFactory.displayError(e.getMessage());
+        }
     }
 
     public void displayDrugstores() {
-        display((List)controller.getAllDrugstore(),drugstores,getProperty("error.client.display.drugstores"));
+        try {
+            display((List)controller.getAllDrugstore(),drugstores,getProperty("error.client.display.drugstores"));
+        } catch (RemoteException e) {
+            dialogFactory.displayError(e.getMessage());
+        }
     }
 
     public void displayPrices() {
-        display((List)controller.getAllPrice(),prices,getProperty("error.client.display.price"));
+        try {
+            display((List)controller.getAllPrice(),prices,getProperty("error.client.display.price"));
+        } catch (RemoteException e) {
+            dialogFactory.displayError(e.getMessage());
+        }
     }
 
     public void displayPharmacologicEffects() {
-        pharmachologicEffects = (List<PharmachologicEffectEntity>)controller.getAllPharmachologicEffect();
+        try {
+            pharmachologicEffects = (List<PharmachologicEffectEntity>)controller.getAllPharmachologicEffect();
+        } catch (RemoteException e) {
+            dialogFactory.displayError(e.getMessage());
+        }
     }
 
     public void displayTherapeuticEffects() {
-        therapeuticEffects = (List<TherapeuticEffectEntity>)controller.getAllTherapeuticEffect();
+        try {
+            therapeuticEffects = (List<TherapeuticEffectEntity>)controller.getAllTherapeuticEffect();
+        } catch (RemoteException e) {
+            dialogFactory.displayError(e.getMessage());
+        }
     }
 
     private void display(List request, ObservableList table, String errorMessage){
@@ -84,13 +105,25 @@ public class ViewFX implements Initializable{
     public void addPharmacologicEffect() {
         Dialog<PharmachologicEffectEntity> dialog = dialogFactory.getAddPEffectDialog();
         Optional<PharmachologicEffectEntity> result = dialog.showAndWait();
-        result.ifPresent(pharmachologicEffectEntity -> controller.addPharmachologicEffect(pharmachologicEffectEntity));
+        result.ifPresent(pharmachologicEffectEntity -> {
+            try {
+                controller.addPharmachologicEffect(pharmachologicEffectEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
+        });
     }
 
     public void addTherapeuticEffect() {
         Dialog<TherapeuticEffectEntity> dialog = dialogFactory.getAddTEffectDialog();
         Optional<TherapeuticEffectEntity> result = dialog.showAndWait();
-        result.ifPresent(therapeuticEffectEntity -> controller.addTherapeuticEffect(therapeuticEffectEntity));
+        result.ifPresent(therapeuticEffectEntity -> {
+            try {
+                controller.addTherapeuticEffect(therapeuticEffectEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
+        });
     }
 
     @FXML
@@ -100,7 +133,13 @@ public class ViewFX implements Initializable{
 
         Optional<DrugEntity> result = dialog.showAndWait();
 
-        result.ifPresent(drugEntity -> controller.addDrug(drugEntity));
+        result.ifPresent(drugEntity -> {
+            try {
+                controller.addDrug(drugEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
+        });
     }
 
     @FXML
@@ -110,7 +149,13 @@ public class ViewFX implements Initializable{
 
         Optional<DrugstoreEntity> result = dialog.showAndWait();
 
-        result.ifPresent(drugstoreEntity -> controller.addDrugstore(drugstoreEntity));
+        result.ifPresent(drugstoreEntity -> {
+            try {
+                controller.addDrugstore(drugstoreEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
+        });
     }
 
     @FXML
@@ -119,7 +164,13 @@ public class ViewFX implements Initializable{
 
         Optional<PriceEntity> result = dialog.showAndWait();
 
-        result.ifPresent(priceEntity -> controller.addPrice(priceEntity));
+        result.ifPresent(priceEntity -> {
+            try {
+                controller.addPrice(priceEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
+        });
     }
     //endregion
 
@@ -136,7 +187,11 @@ public class ViewFX implements Initializable{
             result.ifPresent(drugEntity -> {
                 DrugEntity drug = result.get();
                 drug.setId(drugs.get(indexSelectElement).getId());
-                controller.updateDrug(drug);
+                try {
+                    controller.updateDrug(drug);
+                } catch (RemoteException e) {
+                    dialogFactory.displayError(e.getMessage());
+                }
             });
         } else {
             dialogFactory.displayError(getProperty("error.client.update.notSelectIndex"));
@@ -156,7 +211,11 @@ public class ViewFX implements Initializable{
             result.ifPresent(drugstoreEntity -> {
                 DrugstoreEntity drugstore = result.get();
                 drugstore.setId(drugstores.get(indexSelectElement).getId());
-                controller.addDrugstore(drugstore);
+                try {
+                    controller.addDrugstore(drugstore);
+                } catch (RemoteException e) {
+                    dialogFactory.displayError(e.getMessage());
+                }
             });
         } else {
             dialogFactory.displayError(getProperty("error.client.update.notSelectIndex"));
@@ -175,7 +234,11 @@ public class ViewFX implements Initializable{
 
             result.ifPresent(priceEntity -> {
                 PriceEntity price = result.get();
-                controller.updatePrice(price);
+                try {
+                    controller.updatePrice(price);
+                } catch (RemoteException e) {
+                    dialogFactory.displayError(e.getMessage());
+                }
             });
         } else {
             dialogFactory.displayError(getProperty("error.client.update.notSelectIndex"));
@@ -189,7 +252,11 @@ public class ViewFX implements Initializable{
         int index = tableDrugs.getSelectionModel().getSelectedIndex();
         if (index != -1) {
             DrugEntity drugEntity = drugs.get(index).getDrugEntity();
-            controller.deleteDrug(drugEntity);
+            try {
+                controller.deleteDrug(drugEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
         }
     }
 
@@ -198,7 +265,11 @@ public class ViewFX implements Initializable{
         int index = tableDrugstores.getSelectionModel().getSelectedIndex();
         if (index != -1) {
             DrugstoreEntity drugstoreEntity = drugstores.get(index).getDrugstoreEntity();
-            controller.deleteDrugstore(drugstoreEntity);
+            try {
+                controller.deleteDrugstore(drugstoreEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
         }
     }
 
@@ -207,7 +278,11 @@ public class ViewFX implements Initializable{
         int index = tablePrices.getSelectionModel().getSelectedIndex();
         if (index != -1) {
             PriceEntity priceEntity = prices.get(index).getPriceEntity();
-            controller.deletePrice(priceEntity);
+            try {
+                controller.deletePrice(priceEntity);
+            } catch (RemoteException e) {
+                dialogFactory.displayError(e.getMessage());
+            }
         }
     }
     //endregion

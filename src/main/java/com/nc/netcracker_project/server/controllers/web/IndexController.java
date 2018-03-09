@@ -1,4 +1,4 @@
-package com.nc.netcracker_project.server.controllers;
+package com.nc.netcracker_project.server.controllers.web;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
 import com.nc.netcracker_project.server.model.entities.PharmachologicEffectEntity;

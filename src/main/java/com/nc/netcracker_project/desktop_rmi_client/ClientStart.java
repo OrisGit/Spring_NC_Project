@@ -1,7 +1,7 @@
 package com.nc.netcracker_project.desktop_rmi_client;
 
 import com.nc.netcracker_project.desktop_rmi_client.view_controllers.ViewFX;
-import com.nc.netcracker_project.server.controllers.RMIController;
+import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

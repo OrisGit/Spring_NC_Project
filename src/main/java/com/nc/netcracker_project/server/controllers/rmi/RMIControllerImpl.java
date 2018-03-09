@@ -1,4 +1,4 @@
-package com.nc.netcracker_project.server.controllers;
+package com.nc.netcracker_project.server.controllers.rmi;
 
 import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.services.data.DataControl;

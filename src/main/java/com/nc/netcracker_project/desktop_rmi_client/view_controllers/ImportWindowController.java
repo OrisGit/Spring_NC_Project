@@ -1,12 +1,11 @@
 package com.nc.netcracker_project.desktop_rmi_client.view_controllers;
 
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
-import com.nc.netcracker_project.server.controllers.RMIController;
+import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.services.import_export.FormatType;
 import com.nc.netcracker_project.server.services.import_export.ImportException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -16,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import static com.nc.netcracker_project.desktop_rmi_client.util.PropertyLoader.getProperty;
@@ -82,6 +82,8 @@ public class ImportWindowController implements Initializable {
         try {
             controller.importInDB(data,type);
         } catch (ImportException e) {
+            dialogFactory.displayError(e.getMessage());
+        } catch (RemoteException e) {
             dialogFactory.displayError(e.getMessage());
         }
 
