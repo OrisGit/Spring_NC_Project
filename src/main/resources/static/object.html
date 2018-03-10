@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Object</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script defer src="js/fontawesome-all.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<script>
+    var url = new URL(window.location.href);
+    var id = url.searchParams.get("id");
+    //etc
+</script>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Справочник</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse mt-1" id="navbarNavAltMarkup">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="drugstores.html">Аптек</a>
+            <a class="nav-item nav-link" href="drugs.html">Лекарств</a>
+            <a class="nav-item nav-link mr-4" href="prices.html">Цен</a>
+            <a class="nav-item nav-link" href="index.html">Домой</a>
+        </div>
+        <div class="dropdown mx-2">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Добавить
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Аптеку</a>
+                <a class="dropdown-item" href="#">Лекарство</a>
+                <a class="dropdown-item" href="#">Цену</a>
+            </div>
+        </div>
+        <form class="form-inline">
+            <button class="btn btn-outline-light my-2 my-lg-0" type="button">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+    </div>
+</nav>
+
+<div class="mt-3 mx-auto w-75">
+    <h3 class="ml-4">Аптека</h3>
+    <ul class="list-group list-group-flush mb-2">
+        <li class="list-group-item">Название: Вита</li>
+        <li class="list-group-item">Район: Советский</li>
+        <li class="list-group-item">Улица: Ново-Вокзальная</li>
+        <li class="list-group-item">Дом: 9</li>
+        <li class="list-group-item">Телефон: 8(800)755-00-03</li>
+        <li class="list-group-item">Часы работы: Круглосуточно</li>
+        <li class="list-group-item">Круглосуточная:
+            <span class="custom-control custom-checkbox d-inline">
+		  <input class="custom-control-input" type="checkbox" checked disabled></input>
+		  <label class="custom-control-label"></label>
+		</span>
+        </li>
+    </ul>
+    <span class="ml-4 float-left">
+		<button class="btn btn-secondary mybtn my-1 my-lg-0">
+		  <i class="fas fa-edit"></i>
+		</button>
+	    <button class="btn btn-danger mybtn my-1 my-lg-0">
+		  <i class="fas fa-trash-alt"></i>
+		</button>
+	  </span>
+</div>
+</body>
+</html>

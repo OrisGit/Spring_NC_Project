@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Drugs</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script defer src="js/fontawesome-all.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Справочник</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse mt-1" id="navbarNavAltMarkup">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="drugstores.html">Аптек</a>
+            <a class="nav-item nav-link" href="drugs.html">Лекарств</a>
+            <a class="nav-item nav-link mr-4" href="prices.html">Цен</a>
+            <a class="nav-item nav-link" href="index.html">Домой</a>
+        </div>
+        <div class="dropdown mr-2">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Добавить
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Аптеку</a>
+                <a class="dropdown-item" href="#">Лекарство</a>
+                <a class="dropdown-item" href="#">Цену</a>
+            </div>
+        </div>
+        <form class="form-inline">
+            <button class="btn btn-outline-light my-2 my-lg-0" type="button">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+    </div>
+</nav>
+
+<div class="rounded bg-light p-1 m-3">
+    <form class="form-inline m-2">
+        <input type="text" class="form-control m-1 " id="formInputDrugName" placeholder="Название" autocomplete="off">
+        <input type="text" class="form-control m-1" id="formInputReleaseForm" placeholder="Форма выпуска"
+               autocomplete="off">
+        <input type="text" class="form-control m-1" id="formInputManufacturer" placeholder="Производитель"
+               autocomplete="off">
+        <input type="text" class="form-control m-1" id="formInputActiveIngredient" placeholder="Активный ингредиент"
+               autocomplete="off">
+        <hr>
+        <select class="form-control custom-select m-1 col-md-2" id="formInputPEffect">
+            <option selected>Фармакологический эффект</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+        <select class="form-control custom-select m-1 col-md-2" id="formInputTEffect">
+            <option selected>Терапевтический эффект</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+        <button type="button" class="btn btn-primary m-1 ml-auto" id="searchBtn">
+            <i class="fas fa-search"></i> Искать
+        </button>
+    </form>
+</div>
+
+<div class="m-3">
+    <table class="table table-responsive-lg">
+        <thead class="thead-light">
+        <tr>
+            <th>Название</th>
+            <th>Форма выпуска</th>
+            <th>Производитель</th>
+            <th>Активный ингредиент</th>
+            <th>Фармакологический эффект</th>
+            <th>Терапевтический эффект</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Уголь активированный</td>
+            <td>Таблетки №10</td>
+            <td>Росфарм</td>
+            <td>Активированный уголь</td>
+            <td>Органотропные средства</td>
+            <td>A</td>
+            <td>
+                <button class="btn btn-info mybtn my-1 my-lg-0">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+                <button class="btn btn-secondary mybtn my-1 my-lg-0">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger mybtn my-1 my-lg-0">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>Цитрамон П</td>
+            <td>Таблетки №6</td>
+            <td>Фармстандарт</td>
+            <td>Ацетилсалициловая кислота + Кофеин + Парацетамол</td>
+            <td>Нейротропные средства</td>
+            <td>N</td>
+            <td>
+                <button class="btn btn-info mybtn my-1 my-lg-0">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+                <button class="btn btn-secondary mybtn my-1 my-lg-0">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger mybtn my-1 my-lg-0">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<nav>
+    <ul class="visible pagination justify-content-center">
+        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+    </ul>
+</nav>
+</body>
+</html>
