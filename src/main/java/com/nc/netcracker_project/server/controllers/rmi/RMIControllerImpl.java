@@ -24,7 +24,6 @@ public class RMIControllerImpl implements RMIController{
     private Importer importer;
     private Exporter exporter;
     private EventService eventService;
-    private Set<EventListener> listeners = new HashSet<>();
 
     @Autowired
     public RMIControllerImpl(DataControl dataControl, Importer importer, Exporter exporter, EventService eventService) {

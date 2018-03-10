@@ -5,13 +5,13 @@ package com.nc.netcracker_project.server.services.import_export;
 import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.model.repositories.*;
 import com.nc.netcracker_project.server.services.data.DataControl;
+import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.marshalling.AbstractUnmarshaller;
 import com.nc.netcracker_project.server.services.import_export.marshalling.JsonUnmarshaller;
 import com.nc.netcracker_project.server.services.import_export.marshalling.UnmarshallingException;
 import com.nc.netcracker_project.server.services.import_export.marshalling.XmlUnmarshaller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,15 +28,17 @@ public class ImporterImpl implements Importer {
     private PharmachologicEffectRepository pEffectRepository;
     private PriceRepository priceRepository;
     private DataControl dataControl;
+    private EventService eventService;
 
     @Autowired
-    public ImporterImpl(DrugRepository drugRepository, DrugStoreRepository drugStoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository, DataControl dataControl) {
+    public ImporterImpl(DrugRepository drugRepository, DrugStoreRepository drugStoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository, DataControl dataControl, EventService eventService) {
         this.drugRepository = drugRepository;
         this.drugStoreRepository = drugStoreRepository;
         this.tEffectRepository = tEffectRepository;
         this.pEffectRepository = pEffectRepository;
         this.priceRepository = priceRepository;
         this.dataControl = dataControl;
+        this.eventService = eventService;
     }
 
     @Override
@@ -63,6 +65,11 @@ public class ImporterImpl implements Importer {
             importEntities(entityWrapper.getDrugs(),(a)-> dataControl.saveDrug((DrugEntity) a));
             importEntities(entityWrapper.getPrice(),(a)-> dataControl.savePrice((PriceEntity) a));
         }
+        eventService.updateTherapheuticEffects();
+        eventService.updatePharmachologicEffects();
+        eventService.updateDrugs();
+        eventService.updateDrugstores();
+        eventService.updatePrices();
     }
 
     private <T,R extends Serializable> void importEntities(List<T> entities, Action action){
