@@ -3,10 +3,12 @@ package com.nc.netcracker_project.server.services.data;
 import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.model.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Scope("prototype")
 public class DataControlImpl implements DataControl {
 
     private DrugRepository drugRepository;

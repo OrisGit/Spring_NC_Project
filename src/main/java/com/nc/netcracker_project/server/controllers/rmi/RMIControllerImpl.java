@@ -2,6 +2,8 @@ package com.nc.netcracker_project.server.controllers.rmi;
 
 import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.services.data.DataControl;
+import com.nc.netcracker_project.server.services.event_service.EventListener;
+import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 @Component
 public class RMIControllerImpl implements RMIController{
@@ -20,13 +23,15 @@ public class RMIControllerImpl implements RMIController{
     private DataControl dataControl;
     private Importer importer;
     private Exporter exporter;
+    private EventService eventService;
     private Set<EventListener> listeners = new HashSet<>();
 
     @Autowired
-    public RMIControllerImpl(DataControl dataControl, Importer importer, Exporter exporter) {
+    public RMIControllerImpl(DataControl dataControl, Importer importer, Exporter exporter, EventService eventService) {
         this.dataControl = dataControl;
         this.importer = importer;
         this.exporter = exporter;
+        this.eventService = eventService;
     }
 
     @Override
@@ -36,17 +41,26 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public boolean addDrug(DrugEntity drug) {
-        return dataControl.saveDrug(drug);
+        boolean result = dataControl.saveDrug(drug);
+        if(result)
+            eventService.updateDrugs();
+        return result;
     }
 
     @Override
     public boolean deleteDrug(DrugEntity drug) {
-        return dataControl.deleteDrug(drug);
+        boolean result = dataControl.deleteDrug(drug);
+        if(result)
+            eventService.updateDrugs();
+        return result;
     }
 
     @Override
     public boolean updateDrug(DrugEntity drug) {
-        return dataControl.updateDrug(drug);
+        boolean result = dataControl.updateDrug(drug);
+        if(result)
+            eventService.updateDrugs();
+        return result;
     }
 
     @Override
@@ -57,24 +71,25 @@ public class RMIControllerImpl implements RMIController{
     @Override
     public boolean addDrugstore(DrugstoreEntity drugstore) {
         boolean result = dataControl.saveDrugstore(drugstore);
-        for (EventListener listener:listeners) {
-            try {
-                listener.updateDrustores();
-            } catch (RemoteException e) {
-                LOG.error("Remote update drugstore listener exception: "+e);
-            }
-        }
+        if(result)
+            eventService.updateDrugstores();
         return result;
     }
 
     @Override
     public boolean deleteDrugstore(DrugstoreEntity drugstore) {
-        return dataControl.deleteDrugstore(drugstore);
+        boolean result = dataControl.deleteDrugstore(drugstore);
+        if(result)
+            eventService.updateDrugstores();
+        return result;
     }
 
     @Override
     public boolean updateDrugstore(DrugstoreEntity drugstore) {
-        return dataControl.updateDrugstore(drugstore);
+        boolean result = dataControl.updateDrugstore(drugstore);
+        if(result)
+            eventService.updateDrugstores();
+        return result;
     }
 
     @Override
@@ -84,17 +99,26 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public boolean addPharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        return dataControl.savePharmachologicEffect(pEffect);
+        boolean result = dataControl.savePharmachologicEffect(pEffect);
+        if(result)
+            eventService.updatePharmachologicEffects();
+        return result;
     }
 
     @Override
     public boolean deletePharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        return dataControl.savePharmachologicEffect(pEffect);
+        boolean result = dataControl.deletePharmachologicEffect(pEffect);
+        if(result)
+            eventService.updatePharmachologicEffects();
+        return result;
     }
 
     @Override
     public boolean updatePharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        return dataControl.updatePharmachologicEffect(pEffect);
+        boolean result = dataControl.updatePharmachologicEffect(pEffect);
+        if(result)
+            eventService.updatePharmachologicEffects();
+        return result;
     }
 
     @Override
@@ -104,17 +128,26 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public boolean addTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        return dataControl.saveTherapeuticEffect(tEffect);
+        boolean result = dataControl.saveTherapeuticEffect(tEffect);
+        if(result)
+            eventService.updateTherapheuticEffects();
+        return result;
     }
 
     @Override
     public boolean deleteTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        return dataControl.deleteTherapeuticEffect(tEffect);
+        boolean result = dataControl.deleteTherapeuticEffect(tEffect);
+        if(result)
+            eventService.updateTherapheuticEffects();
+        return result;
     }
 
     @Override
     public boolean updateTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        return dataControl.updateTherapeuticEffect(tEffect);
+        boolean result = dataControl.updateTherapeuticEffect(tEffect);
+        if(result)
+            eventService.updateTherapheuticEffects();
+        return result;
     }
 
     @Override
@@ -124,17 +157,26 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public boolean addPrice(PriceEntity price) {
-        return dataControl.savePrice(price);
+        boolean result = dataControl.savePrice(price);
+        if(result)
+            eventService.updatePrices();
+        return result;
     }
 
     @Override
     public boolean deletePrice(PriceEntity price) {
-        return dataControl.deletePrice(price);
+        boolean result = dataControl.deletePrice(price);
+        if(result)
+            eventService.updatePrices();
+        return result;
     }
 
     @Override
     public boolean updatePrice(PriceEntity price) {
-        return dataControl.updatePrice(price);
+        boolean result = dataControl.updatePrice(price);
+        if(result)
+            eventService.updatePrices();
+        return result;
     }
 
     @Override
@@ -149,16 +191,11 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public void addEventListener(EventListener listener) {
-        try {
-            LOG.info("Added event listener with UUID: "+listener.getId().toString());
-        } catch (RemoteException e) {
-            LOG.error("Remote error: "+e);
-        }
-        listeners.add(listener);
+        eventService.addRmiListener(listener);
     }
 
     @Override
-    public void deleteEventListener(EventListener listener) {
-        throw new NotImplementedException();
+    public void removeEventListener(EventListener listener) {
+        eventService.removeRmiListener(listener);
     }
 }

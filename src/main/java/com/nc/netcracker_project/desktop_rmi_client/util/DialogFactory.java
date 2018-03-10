@@ -13,6 +13,9 @@ import javafx.util.Callback;
 
 import java.util.List;
 
+import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer.initializeDrugTable;
+import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer.initializeDrugstoreTable;
+
 public class DialogFactory {
 
     private Dialog<TherapeuticEffectEntity> tEffectDialog;
@@ -29,20 +32,15 @@ public class DialogFactory {
     private ObservableList<Price> prices;
     private Action addPharmacologicEffect;
     private Action addTherapeuticEffect;
-    private TableView drugsTable;
-    private TableView drugstoresTable;
 
     public DialogFactory(ObservableList<TherapeuticEffectEntity> tEffects, ObservableList<PharmachologicEffectEntity> pEffects, ObservableList<Drug> drugs, ObservableList<Drugstore> drugstores,
-                         ObservableList<Price> prices, Action addTherapeuticEffect, Action addPharmacologicEffect,
-                         TableView drugsTable, TableView drugstoresTable){
+                         ObservableList<Price> prices, Action addTherapeuticEffect, Action addPharmacologicEffect){
         this.addPharmacologicEffect = addPharmacologicEffect;
         this.addTherapeuticEffect = addTherapeuticEffect;
         this.pharmachologicEffects = pEffects;
         this.therapeuticEffects = tEffects;
         this.drugs = drugs;
         this.drugstores = drugstores;
-        this.drugsTable = drugsTable;
-        this.drugstoresTable = drugstoresTable;
         this.prices = prices;
         createAlertDialog();
         createDrugDialog();
@@ -308,14 +306,14 @@ public class DialogFactory {
         TableView drugsTable = new TableView();
         TableView drugstoresTable = new TableView();
 
-        double drugsTableWidth = drugsTable.getPrefHeight();
-        double drugsTableHeight = drugsTable.getPrefWidth();
-
-        double drugstoresTableWidth = drugstoresTable.getPrefHeight();
-        double drugstoresTableHeight = drugstoresTable.getPrefWidth();
-
         drugsTable.setPrefSize(350, 200);
         drugstoresTable.setPrefSize(350, 200);
+
+        initializeDrugstoreTable(drugstoresTable);
+        initializeDrugTable(drugsTable);
+
+        drugsTable.setItems(drugs);
+        drugstoresTable.setItems(drugstores);
 
         cost.setId("cost");
         drugsTable.setId("drug");
@@ -329,8 +327,6 @@ public class DialogFactory {
         priceDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         priceDialog.setResultConverter(dialogButton -> {
-            drugsTable.setPrefSize(drugsTableWidth,drugsTableHeight);
-            drugstoresTable.setPrefSize(drugstoresTableWidth,drugstoresTableHeight);
             if (dialogButton == ButtonType.OK) {
                 if (!cost.getText().isEmpty() && !drugsTable.getSelectionModel().isEmpty()
                         && !drugstoresTable.getSelectionModel().isEmpty()) {
@@ -424,8 +420,8 @@ public class DialogFactory {
             PriceEntity price = prices.get(index).getPriceEntity();
 
             setTextInTextControl(content, "#cost", String.valueOf(price.getCost()));
-            setSelectInTable(content, "#drug", price.getDrug(), drugs);
-            setSelectInTable(content, "#drugstore", price.getDrugstore(), drugstores);
+            selectDrugInTable(content, "#drug", price.getDrug(), drugs);
+            selectDrugstoreInTable(content, "#drugstore", price.getDrugstore(), drugstores);
             disableTable(content, "#drugstore");
             disableTable(content, "#drug");
             return priceDialog;
@@ -459,14 +455,22 @@ public class DialogFactory {
         }
     }
 
-    private void setSelectInTable(Node node, String id, Object entity, List listEntity) {
+    private void selectDrugInTable(Node node, String id, DrugEntity entity, ObservableList<Drug> listEntity) {
         Node element = node.getScene().lookup(id);
         if (element instanceof TableView) {
-            //TODO: подумать над этим
-            for (int i = 0; i < listEntity.size(); i++) {
-                if (listEntity.get(i).equals(entity)) {
+            for(int i=0; i<listEntity.size();i++){
+                if(listEntity.get(i).getId().equals(entity.getId()))
                     ((TableView) element).getSelectionModel().select(i);
-                }
+            }
+        }
+    }
+
+    private void selectDrugstoreInTable(Node node, String id, DrugstoreEntity entity, ObservableList<Drugstore> listEntity) {
+        Node element = node.getScene().lookup(id);
+        if (element instanceof TableView) {
+            for(int i=0; i<listEntity.size();i++){
+                if(listEntity.get(i).getId().equals(entity.getId()))
+                    ((TableView) element).getSelectionModel().select(i);
             }
         }
     }
@@ -478,35 +482,4 @@ public class DialogFactory {
         }
     }
 
-    public void clearDrugstoreDialog(){
-        Node content = drugstoreDialog.getDialogPane().getContent();
-        setTextInTextControl(content, "#name", "");
-        setTextInTextControl(content, "#district", "");
-        setTextInTextControl(content, "#street", "");
-        setTextInTextControl(content, "#building", "");
-        setTextInTextControl(content, "#phone", "");
-        setTextInTextControl(content, "#hours", "");
-        setBooleanInCheckbox(content, "#isRoundTheClock", false);
-    }
-
-    public void clearDrugDialog(){
-        Node content = drugDialog.getDialogPane().getContent();
-        setTextInTextControl(content, "#name", "");
-        setTextInTextControl(content, "#releaseForm", "");
-        setTextInTextControl(content, "#manufacturer", "");
-        setTextInTextControl(content, "#activeIngredient", "");
-        setTextInTextControl(content, "#description", "");
-        ((ListView)content.getScene().lookup("#pEffectSelector")).getSelectionModel().clearSelection();
-        ((ListView)content.getScene().lookup("#tEffectSelector")).getSelectionModel().clearSelection();
-    }
-
-    public void clearPriceDialog(){
-        Node content = priceDialog.getDialogPane().getContent();
-
-        setTextInTextControl(content, "#cost", "");
-        ((TableView)content.getScene().lookup("#drug")).getSelectionModel().clearSelection();
-        ((TableView)content.getScene().lookup("#drug")).setDisable(false);
-        ((TableView)content.getScene().lookup("#drugstore")).getSelectionModel().clearSelection();
-        ((TableView)content.getScene().lookup("#drugstore")).setDisable(false);
-    }
 }

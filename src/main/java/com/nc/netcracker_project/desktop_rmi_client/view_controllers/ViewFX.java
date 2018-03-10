@@ -6,7 +6,8 @@ import com.nc.netcracker_project.desktop_rmi_client.entity.Price;
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
 import com.nc.netcracker_project.desktop_rmi_client.util.EventListenerImpl;
 import com.nc.netcracker_project.desktop_rmi_client.util.Mapper;
-import com.nc.netcracker_project.server.controllers.rmi.EventListener;
+import com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer;
+import com.nc.netcracker_project.server.services.event_service.EventListener;
 import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.model.entities.*;
 import javafx.collections.FXCollections;
@@ -29,6 +30,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import static com.nc.netcracker_project.desktop_rmi_client.util.PropertyLoader.getProperty;
+import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer.initializeDrugTable;
+import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer.initializeDrugstoreTable;
+import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer.initializePriceTable;
 
 public class ViewFX implements Initializable{
 
@@ -129,7 +133,9 @@ public class ViewFX implements Initializable{
         Optional<PharmachologicEffectEntity> result = dialog.showAndWait();
         result.ifPresent(pharmachologicEffectEntity -> {
             try {
-                controller.addPharmachologicEffect(pharmachologicEffectEntity);
+                if(!controller.addPharmachologicEffect(pharmachologicEffectEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы фамакогологических эффектов");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -141,7 +147,9 @@ public class ViewFX implements Initializable{
         Optional<TherapeuticEffectEntity> result = dialog.showAndWait();
         result.ifPresent(therapeuticEffectEntity -> {
             try {
-                controller.addTherapeuticEffect(therapeuticEffectEntity);
+                if(!controller.addTherapeuticEffect(therapeuticEffectEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы терапевтических эффектов");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -157,7 +165,9 @@ public class ViewFX implements Initializable{
 
         result.ifPresent(drugEntity -> {
             try {
-                controller.addDrug(drugEntity);
+                if(!controller.addDrug(drugEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы лекарств");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -173,7 +183,9 @@ public class ViewFX implements Initializable{
 
         result.ifPresent(drugstoreEntity -> {
             try {
-                controller.addDrugstore(drugstoreEntity);
+                if(!controller.addDrugstore(drugstoreEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы аптек");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -188,7 +200,9 @@ public class ViewFX implements Initializable{
 
         result.ifPresent(priceEntity -> {
             try {
-                controller.addPrice(priceEntity);
+                if(!controller.addPrice(priceEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы цен");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -210,7 +224,9 @@ public class ViewFX implements Initializable{
                 DrugEntity drug = result.get();
                 drug.setId(drugs.get(indexSelectElement).getId());
                 try {
-                    controller.updateDrug(drug);
+                    if(!controller.updateDrug(drug)){
+                        dialogFactory.displayError("Произошла ошибка при обновлении таблицы лекарств");
+                    }
                 } catch (RemoteException e) {
                     dialogFactory.displayError(e.getMessage());
                 }
@@ -234,7 +250,9 @@ public class ViewFX implements Initializable{
                 DrugstoreEntity drugstore = result.get();
                 drugstore.setId(drugstores.get(indexSelectElement).getId());
                 try {
-                    controller.addDrugstore(drugstore);
+                    if(!controller.addDrugstore(drugstore)){
+                        dialogFactory.displayError("Произошла ошибка при обновлении таблицы аптек");
+                    }
                 } catch (RemoteException e) {
                     dialogFactory.displayError(e.getMessage());
                 }
@@ -257,7 +275,9 @@ public class ViewFX implements Initializable{
             result.ifPresent(priceEntity -> {
                 PriceEntity price = result.get();
                 try {
-                    controller.updatePrice(price);
+                    if(!controller.updatePrice(price)){
+                        dialogFactory.displayError("Произошла ошибка при обновлении таблицы цен");
+                    }
                 } catch (RemoteException e) {
                     dialogFactory.displayError(e.getMessage());
                 }
@@ -275,7 +295,9 @@ public class ViewFX implements Initializable{
         if (index != -1) {
             DrugEntity drugEntity = drugs.get(index).getDrugEntity();
             try {
-                controller.deleteDrug(drugEntity);
+                if(!controller.deleteDrug(drugEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы лекарств");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -288,7 +310,9 @@ public class ViewFX implements Initializable{
         if (index != -1) {
             DrugstoreEntity drugstoreEntity = drugstores.get(index).getDrugstoreEntity();
             try {
-                controller.deleteDrugstore(drugstoreEntity);
+                if(!controller.deleteDrugstore(drugstoreEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы аптек");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -301,7 +325,9 @@ public class ViewFX implements Initializable{
         if (index != -1) {
             PriceEntity priceEntity = prices.get(index).getPriceEntity();
             try {
-                controller.deletePrice(priceEntity);
+                if(!controller.deletePrice(priceEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы цен");
+                }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
             }
@@ -313,7 +339,7 @@ public class ViewFX implements Initializable{
     @FXML
     public void showExportWindow() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("desktop_view/export_window.fxml"));
+        loader.setLocation(getClass().getResource("/desktop_view/export_window.fxml"));
         Parent root;
         try {
             root = loader.load();
@@ -334,7 +360,7 @@ public class ViewFX implements Initializable{
     @FXML
     public void showImportWindow() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("desktop_view/import_window.fxml"));
+        loader.setLocation(getClass().getResource("/desktop_view/import_window.fxml"));
         Parent root;
         try {
             root = loader.load();
@@ -361,6 +387,17 @@ public class ViewFX implements Initializable{
 
     public void setController(RMIController controller) {
         this.controller = controller;
+    }
+
+    public void disableListener() {
+        try {
+            controller.removeEventListener(eventListener);
+        } catch (RemoteException e) {
+            LOG.error(e);
+        }
+    }
+
+    public void enableListener(){
         try {
             controller.addEventListener((EventListener)UnicastRemoteObject.exportObject(eventListener, 0));
         } catch (RemoteException e) {
@@ -383,101 +420,7 @@ public class ViewFX implements Initializable{
         eventListener = new EventListenerImpl( this::displayDrugs,this::displayDrugstores,
                 this::displayPrices, this::displayTherapeuticEffects,this::displayPharmacologicEffects);
         dialogFactory = new DialogFactory(therapeuticEffects,pharmachologicEffects,drugs,drugstores,prices,
-                this::addTherapeuticEffect,this::addPharmacologicEffect,tableDrugs,tableDrugstores);
+                this::addTherapeuticEffect,this::addPharmacologicEffect);
     }
-
-
-
-    //region Инициализация таблиц
-    private void initializeDrugTable(TableView tableDrugs) {
-        tableDrugs.getColumns().clear();
-        TableColumn<Drug, String> nameCol = new TableColumn<>("Название");
-        nameCol.setCellValueFactory(
-                cellData -> cellData.getValue().nameProperty());
-
-        TableColumn<Drug, String> formCol = new TableColumn<>("Форма выпуска");
-        formCol.setCellValueFactory(
-                cellData -> cellData.getValue().releaseFormProperty());
-
-        TableColumn<Drug, String> manufacturerCol = new TableColumn<>("Производитель");
-        manufacturerCol.setCellValueFactory(
-                cellData -> cellData.getValue().manufacturerProperty());
-
-        TableColumn<Drug, String> ingredientCol = new TableColumn<>("Активный ингредиент");
-        ingredientCol.setCellValueFactory(
-                cellData -> cellData.getValue().activeIngredientProperty());
-
-        TableColumn<Drug, String> pEffectCol = new TableColumn<>("Фармакологический эффект");
-        pEffectCol.setCellValueFactory(
-                cellData -> cellData.getValue().pharmacologicalEffectProperty());
-
-        TableColumn<Drug, String> tEffectCol = new TableColumn<>("Терапевтический эффект");
-        tEffectCol.setCellValueFactory(
-                cellData -> cellData.getValue().therapeuticEffectProperty());
-
-        TableColumn<Drug, String> descCol = new TableColumn<>("Описание");
-        descCol.setCellValueFactory(
-                cellData -> cellData.getValue().descriptionProperty());
-
-        tableDrugs.getColumns().addAll(nameCol, formCol, manufacturerCol, ingredientCol, pEffectCol, tEffectCol, descCol);
-
-    }
-
-    private void initializeDrugstoreTable(TableView tableDrugstores) {
-        tableDrugstores.getColumns().clear();
-
-        TableColumn<Drugstore, String> nameCol = new TableColumn<>("Название");
-        nameCol.setCellValueFactory(
-                cellData -> cellData.getValue().nameProperty());
-
-        TableColumn<Drugstore, String> districtCol = new TableColumn<>("Район");
-        districtCol.setCellValueFactory(
-                cellData -> cellData.getValue().districtProperty());
-
-        TableColumn<Drugstore, String> addressCol = new TableColumn<>("Адрес");
-        addressCol.setCellValueFactory(
-                cellData -> cellData.getValue().addressProperty());
-
-        TableColumn<Drugstore, String> phoneCol = new TableColumn<>("Телефон");
-        phoneCol.setCellValueFactory(
-                cellData -> cellData.getValue().phoneProperty());
-
-        TableColumn<Drugstore, String> hoursCol = new TableColumn<>("Часы работы");
-        hoursCol.setCellValueFactory(
-                cellData -> cellData.getValue().workingHoursProperty());
-
-        TableColumn<Drugstore, Boolean> boolCol = new TableColumn<>("Круглосуточная");
-        boolCol.setCellValueFactory(
-                cellData -> cellData.getValue().isRoundTheClockProperty());
-        boolCol.setCellFactory(
-                column -> {
-                    CheckBoxTableCell<Drugstore, Boolean> c = new CheckBoxTableCell<>();
-                    c.setDisable(true);
-                    return c;
-                });
-
-        tableDrugstores.getColumns().addAll(nameCol, districtCol, addressCol, phoneCol, hoursCol, boolCol);
-    }
-
-    private void initializePriceTable(TableView tablePrices) {
-        tablePrices.getColumns().clear();
-
-        TableColumn<Price, String> drugCol = new TableColumn<>("Препарат");
-        drugCol.setCellValueFactory(
-                cellData -> cellData.getValue().drugProperty());
-
-        TableColumn<Price, String> drugstoreCol = new TableColumn<>("Аптека");
-        drugstoreCol.setCellValueFactory(
-                cellData -> cellData.getValue().drugstoreProperty());
-
-        TableColumn<Price, String> costCol = new TableColumn<>("Цена");
-        costCol.setCellValueFactory(
-                cellData -> cellData.getValue().costProperty().asString());
-
-        tablePrices.getColumns().addAll(drugCol, drugstoreCol, costCol);
-    }
-
-    //endregion
-
     //endregion
 }

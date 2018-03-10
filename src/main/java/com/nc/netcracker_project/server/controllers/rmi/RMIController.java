@@ -1,6 +1,7 @@
 package com.nc.netcracker_project.server.controllers.rmi;
 
 import com.nc.netcracker_project.server.model.entities.*;
+import com.nc.netcracker_project.server.services.event_service.EventListener;
 import com.nc.netcracker_project.server.services.import_export.ExportException;
 import com.nc.netcracker_project.server.services.import_export.FormatType;
 import com.nc.netcracker_project.server.services.import_export.ImportException;
@@ -38,5 +39,5 @@ public interface RMIController extends Remote{
     void importInDB(String data, FormatType format) throws ImportException, RemoteException;
 
     void addEventListener(EventListener listener) throws RemoteException;
-    void deleteEventListener(EventListener listener) throws RemoteException;
+    void removeEventListener(EventListener listener) throws RemoteException;
 }

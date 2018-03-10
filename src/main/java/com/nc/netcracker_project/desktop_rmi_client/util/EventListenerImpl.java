@@ -1,6 +1,6 @@
 package com.nc.netcracker_project.desktop_rmi_client.util;
 
-import com.nc.netcracker_project.server.controllers.rmi.AbstractEventListener;
+import com.nc.netcracker_project.server.services.event_service.AbstractEventListener;
 
 public class EventListenerImpl extends AbstractEventListener {
 
@@ -26,7 +26,7 @@ public class EventListenerImpl extends AbstractEventListener {
     }
 
     @Override
-    public void updateDrustores() {
+    public void updateDrugstores() {
         updateDrugstoresAction.action();
     }
 

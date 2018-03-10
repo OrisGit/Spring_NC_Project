@@ -1,4 +1,4 @@
-package com.nc.netcracker_project.server.controllers.rmi;
+package com.nc.netcracker_project.server.services.event_service;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -9,7 +9,7 @@ public interface EventListener extends Remote {
 
     void updateDrugs() throws RemoteException;
 
-    void updateDrustores() throws RemoteException;
+    void updateDrugstores() throws RemoteException;
 
     void updatePrices() throws RemoteException;
 

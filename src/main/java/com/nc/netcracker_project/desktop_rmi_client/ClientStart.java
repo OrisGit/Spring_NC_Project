@@ -38,10 +38,14 @@ public class ClientStart extends Application {
             ViewFX controller = loader.getController();
             primaryStage.setScene(new Scene(root));
             controller.setStage(primaryStage);
-            primaryStage.setOnCloseRequest(event -> closeApplication());
+            primaryStage.setOnCloseRequest(event ->{
+                controller.disableListener();
+                closeApplication();
+            });
             primaryStage.show();
             controller.setController(getRMIController());
             controller.updateAll();
+            controller.enableListener();
         } catch (NotBoundException e){
             LOG.error("Сервер не вернул запрашиваемый объект.");
             showAllert("Сервер не вернул запрашиваемый объект. Приложение будет закрыто...");
@@ -66,6 +70,7 @@ public class ClientStart extends Application {
     }
 
     private void closeApplication(){
+
         Platform.exit();
         System.exit(0);
     }
