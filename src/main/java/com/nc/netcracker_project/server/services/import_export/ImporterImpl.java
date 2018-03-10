@@ -2,11 +2,14 @@ package com.nc.netcracker_project.server.services.import_export;
 
 
 
+import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.model.repositories.*;
+import com.nc.netcracker_project.server.services.data.DataControl;
 import com.nc.netcracker_project.server.services.import_export.marshalling.AbstractUnmarshaller;
 import com.nc.netcracker_project.server.services.import_export.marshalling.JsonUnmarshaller;
 import com.nc.netcracker_project.server.services.import_export.marshalling.UnmarshallingException;
 import com.nc.netcracker_project.server.services.import_export.marshalling.XmlUnmarshaller;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
@@ -18,19 +21,22 @@ import java.util.List;
 @Service
 public class ImporterImpl implements Importer {
 
+    private static final Logger LOG = Logger.getLogger(ImporterImpl.class);
     private DrugRepository drugRepository;
     private DrugStoreRepository drugStoreRepository;
     private TherapeuticEffectRepository tEffectRepository;
     private PharmachologicEffectRepository pEffectRepository;
     private PriceRepository priceRepository;
+    private DataControl dataControl;
 
     @Autowired
-    public ImporterImpl(DrugRepository drugRepository, DrugStoreRepository drugStoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository) {
+    public ImporterImpl(DrugRepository drugRepository, DrugStoreRepository drugStoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository, DataControl dataControl) {
         this.drugRepository = drugRepository;
         this.drugStoreRepository = drugStoreRepository;
         this.tEffectRepository = tEffectRepository;
         this.pEffectRepository = pEffectRepository;
         this.priceRepository = priceRepository;
+        this.dataControl = dataControl;
     }
 
     @Override
@@ -51,21 +57,26 @@ public class ImporterImpl implements Importer {
         }
 
         if(entityWrapper!=null){
-            importEntities(entityWrapper.getPharmachologicEffects(), pEffectRepository);
-            importEntities(entityWrapper.getTherapeuticEffects(), tEffectRepository);
-            importEntities(entityWrapper.getDrugstores(),drugStoreRepository);
-            importEntities(entityWrapper.getDrugs(),drugRepository);
-            importEntities(entityWrapper.getPrice(),priceRepository);
+            importEntities(entityWrapper.getPharmachologicEffects(), (a)-> dataControl.savePharmachologicEffect((PharmachologicEffectEntity)a));
+            importEntities(entityWrapper.getTherapeuticEffects(), (a)-> dataControl.saveTherapeuticEffect((TherapeuticEffectEntity) a));
+            importEntities(entityWrapper.getDrugstores(),(a)-> dataControl.saveDrugstore((DrugstoreEntity) a));
+            importEntities(entityWrapper.getDrugs(),(a)-> dataControl.saveDrug((DrugEntity) a));
+            importEntities(entityWrapper.getPrice(),(a)-> dataControl.savePrice((PriceEntity) a));
         }
     }
 
-    private <T,R extends Serializable> void importEntities(List<T> entities, CrudRepository<T,R> repository){
+    private <T,R extends Serializable> void importEntities(List<T> entities, Action action){
         for(T entity : entities){
             try {
-                repository.save(entity);
+                action.save(entity);
             } catch (Exception e) {
+                LOG.error(e);
             }
         }
+    }
+
+    private interface Action{
+        void save(Object o);
     }
 
 }
