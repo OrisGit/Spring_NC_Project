@@ -35,11 +35,13 @@ public class ClientStart extends Application {
         loader.setLocation(getClass().getResource("/desktop_view/main_window.fxml"));
         try {
             root = loader.load();
+            ViewFX controller = loader.getController();
             primaryStage.setScene(new Scene(root));
-            ViewFX.setStage(primaryStage);
+            controller.setStage(primaryStage);
             primaryStage.setOnCloseRequest(event -> closeApplication());
             primaryStage.show();
-            ViewFX.setController(getRMIController());
+            controller.setController(getRMIController());
+            controller.updateAll();
         } catch (NotBoundException e){
             LOG.error("Сервер не вернул запрашиваемый объект.");
             showAllert("Сервер не вернул запрашиваемый объект. Приложение будет закрыто...");

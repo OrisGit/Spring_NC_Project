@@ -4,9 +4,12 @@ import com.nc.netcracker_project.desktop_rmi_client.entity.Drug;
 import com.nc.netcracker_project.desktop_rmi_client.entity.Drugstore;
 import com.nc.netcracker_project.desktop_rmi_client.entity.Price;
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
+import com.nc.netcracker_project.desktop_rmi_client.util.EventListenerImpl;
 import com.nc.netcracker_project.desktop_rmi_client.util.Mapper;
+import com.nc.netcracker_project.server.controllers.rmi.EventListener;
 import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.model.entities.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +20,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import static com.nc.netcracker_project.desktop_rmi_client.util.PropertyLoader.getProperty;
@@ -28,8 +33,11 @@ import static com.nc.netcracker_project.desktop_rmi_client.util.PropertyLoader.g
 public class ViewFX implements Initializable{
 
     //region Поля
-    private static Stage STAGE;
-    private static RMIController controller;
+    private static final Logger LOG = Logger.getLogger(ViewFX.class);
+
+    private Stage stage;
+    private RMIController controller;
+    private EventListener eventListener;
 
     @FXML
     private TableView tableDrugs;
@@ -44,12 +52,13 @@ public class ViewFX implements Initializable{
     private ObservableList<Drug> drugs;
     private ObservableList<Drugstore> drugstores;
     private ObservableList<Price> prices;
-    private List<PharmachologicEffectEntity> pharmachologicEffects;
-    private List<TherapeuticEffectEntity> therapeuticEffects;
+    private ObservableList<PharmachologicEffectEntity> pharmachologicEffects;
+    private ObservableList<TherapeuticEffectEntity> therapeuticEffects;
     //endregion
 
     //region Вывод всех записей в БД
-    public void displayDrugs() {
+    private void displayDrugs() {
+        LOG.info("Display drugs");
         try {
             display((List)controller.getAllDrug(),drugs,getProperty("error.client.display.drug"));
         } catch (RemoteException e) {
@@ -57,7 +66,7 @@ public class ViewFX implements Initializable{
         }
     }
 
-    public void displayDrugstores() {
+    private void displayDrugstores() {
         try {
             display((List)controller.getAllDrugstore(),drugstores,getProperty("error.client.display.drugstores"));
         } catch (RemoteException e) {
@@ -65,7 +74,7 @@ public class ViewFX implements Initializable{
         }
     }
 
-    public void displayPrices() {
+    private void displayPrices() {
         try {
             display((List)controller.getAllPrice(),prices,getProperty("error.client.display.price"));
         } catch (RemoteException e) {
@@ -73,17 +82,22 @@ public class ViewFX implements Initializable{
         }
     }
 
-    public void displayPharmacologicEffects() {
+    private void displayPharmacologicEffects() {
         try {
-            pharmachologicEffects = (List<PharmachologicEffectEntity>)controller.getAllPharmachologicEffect();
+            pharmachologicEffects.clear();
+            List<PharmachologicEffectEntity> list = (List<PharmachologicEffectEntity>)controller.getAllPharmachologicEffect();
+            pharmachologicEffects.addAll(list);
         } catch (RemoteException e) {
             dialogFactory.displayError(e.getMessage());
         }
     }
 
-    public void displayTherapeuticEffects() {
+    private void displayTherapeuticEffects() {
+        LOG.info("displayTherapeuticEffects");
         try {
-            therapeuticEffects = (List<TherapeuticEffectEntity>)controller.getAllTherapeuticEffect();
+            therapeuticEffects.clear();
+            List<TherapeuticEffectEntity> list = (List<TherapeuticEffectEntity>)controller.getAllTherapeuticEffect();
+            therapeuticEffects.addAll(list);
         } catch (RemoteException e) {
             dialogFactory.displayError(e.getMessage());
         }
@@ -99,10 +113,18 @@ public class ViewFX implements Initializable{
         }
     }
 
+    public void updateAll(){
+        displayTherapeuticEffects();
+        displayPharmacologicEffects();
+        displayDrugs();
+        displayDrugstores();
+        displayPrices();
+    }
+
     //endregion
 
     //region Добавление записи
-    public void addPharmacologicEffect() {
+    private void addPharmacologicEffect() {
         Dialog<PharmachologicEffectEntity> dialog = dialogFactory.getAddPEffectDialog();
         Optional<PharmachologicEffectEntity> result = dialog.showAndWait();
         result.ifPresent(pharmachologicEffectEntity -> {
@@ -114,7 +136,7 @@ public class ViewFX implements Initializable{
         });
     }
 
-    public void addTherapeuticEffect() {
+    private void addTherapeuticEffect() {
         Dialog<TherapeuticEffectEntity> dialog = dialogFactory.getAddTEffectDialog();
         Optional<TherapeuticEffectEntity> result = dialog.showAndWait();
         result.ifPresent(therapeuticEffectEntity -> {
@@ -301,7 +323,7 @@ public class ViewFX implements Initializable{
             ExportWindowController.setStage(exportWindow);
             exportWindow.setScene(new Scene(root));
             exportWindow.initModality(Modality.WINDOW_MODAL);
-            exportWindow.initOwner(STAGE);
+            exportWindow.initOwner(stage);
             exportWindow.setTitle("Экспорт");
             exportWindow.show();
         } catch (IOException e) {
@@ -322,7 +344,7 @@ public class ViewFX implements Initializable{
             ImportWindowController.setController(controller);
             importWindow.setScene(new Scene(root));
             importWindow.initModality(Modality.WINDOW_MODAL);
-            importWindow.initOwner(STAGE);
+            importWindow.initOwner(stage);
             importWindow.setTitle("Импорт");
             importWindow.showAndWait();
         } catch (IOException e) {
@@ -333,12 +355,17 @@ public class ViewFX implements Initializable{
     //endregion
 
     //region Setters
-    public static void setStage(Stage stage) {
-        ViewFX.STAGE = stage;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
-    public static void setController(RMIController controller) {
-        ViewFX.controller = controller;
+    public void setController(RMIController controller) {
+        this.controller = controller;
+        try {
+            controller.addEventListener((EventListener)UnicastRemoteObject.exportObject(eventListener, 0));
+        } catch (RemoteException e) {
+            LOG.info(e);
+        }
     }
     //endregion
 
@@ -351,11 +378,15 @@ public class ViewFX implements Initializable{
         drugs = tableDrugs.getItems();
         drugstores = tableDrugstores.getItems();
         prices = tablePrices.getItems();
-        pharmachologicEffects = new ArrayList<>();
-        therapeuticEffects = new ArrayList<>();
+        pharmachologicEffects = FXCollections.observableList(new LinkedList<>());
+        therapeuticEffects = FXCollections.observableList(new LinkedList<>());
+        eventListener = new EventListenerImpl( this::displayDrugs,this::displayDrugstores,
+                this::displayPrices, this::displayTherapeuticEffects,this::displayPharmacologicEffects);
         dialogFactory = new DialogFactory(therapeuticEffects,pharmachologicEffects,drugs,drugstores,prices,
                 this::addTherapeuticEffect,this::addPharmacologicEffect,tableDrugs,tableDrugstores);
     }
+
+
 
     //region Инициализация таблиц
     private void initializeDrugTable(TableView tableDrugs) {

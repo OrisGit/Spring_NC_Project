@@ -36,4 +36,7 @@ public interface RMIController extends Remote{
 
     String exportFromDB(FormatType format) throws ExportException, RemoteException;
     void importInDB(String data, FormatType format) throws ImportException, RemoteException;
+
+    void addEventListener(EventListener listener) throws RemoteException;
+    void deleteEventListener(EventListener listener) throws RemoteException;
 }

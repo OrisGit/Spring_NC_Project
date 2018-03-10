@@ -22,8 +22,8 @@ public class DialogFactory {
     private Dialog<PriceEntity> priceDialog;
     private Alert alertDialog;
 
-    private List<TherapeuticEffectEntity> therapeuticEffects;
-    private List<PharmachologicEffectEntity> pharmachologicEffects;
+    private ObservableList<TherapeuticEffectEntity> therapeuticEffects;
+    private ObservableList<PharmachologicEffectEntity> pharmachologicEffects;
     private ObservableList<Drug> drugs;
     private ObservableList<Drugstore> drugstores;
     private ObservableList<Price> prices;
@@ -32,7 +32,7 @@ public class DialogFactory {
     private TableView drugsTable;
     private TableView drugstoresTable;
 
-    public DialogFactory(List tEffects, List pEffects, ObservableList<Drug> drugs, ObservableList<Drugstore> drugstores,
+    public DialogFactory(ObservableList<TherapeuticEffectEntity> tEffects, ObservableList<PharmachologicEffectEntity> pEffects, ObservableList<Drug> drugs, ObservableList<Drugstore> drugstores,
                          ObservableList<Price> prices, Action addTherapeuticEffect, Action addPharmacologicEffect,
                          TableView drugsTable, TableView drugstoresTable){
         this.addPharmacologicEffect = addPharmacologicEffect;
@@ -162,13 +162,11 @@ public class DialogFactory {
                     }
                 });
 
-        pEffectSelector.getItems().addAll(pharmachologicEffects);
+        pEffectSelector.setItems(pharmachologicEffects);
 
         Button addPEffectBtn = new Button("Добавить...");
         addPEffectBtn.setOnAction(event -> {
             addPharmacologicEffect.action();
-            pEffectSelector.getItems().clear();
-            pEffectSelector.getItems().addAll(pharmachologicEffects);
         });
 
         ListView<TherapeuticEffectEntity> tEffectSelector = new ListView<>();
@@ -194,13 +192,11 @@ public class DialogFactory {
                     }
                 });
 
-        tEffectSelector.getItems().addAll(therapeuticEffects);
+        tEffectSelector.setItems(therapeuticEffects);
 
         Button addTEffectBtn = new Button("Добавить...");
         addTEffectBtn.setOnAction(event -> {
             addTherapeuticEffect.action();
-            tEffectSelector.getItems().clear();
-            tEffectSelector.getItems().addAll(therapeuticEffects);
         });
 
         name.setId("name");
@@ -349,22 +345,27 @@ public class DialogFactory {
     }
 
     public Dialog<TherapeuticEffectEntity> getAddTEffectDialog() {
+        createTherapeuticEffectDialog();
         return tEffectDialog;
     }
 
     public Dialog<PharmachologicEffectEntity> getAddPEffectDialog() {
+        createPharmacologicEffectDialog();
         return pEffectDialog;
     }
 
     public Dialog<DrugEntity> getAddDrugDialog() {
+        createDrugDialog();
         return drugDialog;
     }
 
     public Dialog<DrugstoreEntity> getAddDrugstoreDialog() {
+        createDrugstoreDialog();
         return drugstoreDialog;
     }
 
     public Dialog<PriceEntity> getAddPriceDialog() {
+        createPriceDialog();
         return priceDialog;
     }
 
@@ -378,6 +379,7 @@ public class DialogFactory {
     }
 
     public Dialog<DrugEntity> getUpdDrugDialog(int index) {
+        createDrugDialog();
         if (index != -1) {
             Node content = drugDialog.getDialogPane().getContent();
             DrugEntity drugEntity = drugs.get(index).getDrugEntity();
@@ -397,6 +399,7 @@ public class DialogFactory {
     }
 
     public Dialog<DrugstoreEntity> getUpdDrugstoreDialog(int index) {
+        createDrugstoreDialog();
         if (index != -1) {
             Node content = drugstoreDialog.getDialogPane().getContent();
             DrugstoreEntity drugstore = drugstores.get(index).getDrugstoreEntity();
@@ -414,6 +417,7 @@ public class DialogFactory {
     }
 
     public Dialog<PriceEntity> getUpdPriceDialog(int index) {
+        createPriceDialog();
         if (index != -1) {
             Node content = priceDialog.getDialogPane().getContent();
 
@@ -472,5 +476,37 @@ public class DialogFactory {
         if (element instanceof TableView) {
             ((TableView) element).setDisable(true);
         }
+    }
+
+    public void clearDrugstoreDialog(){
+        Node content = drugstoreDialog.getDialogPane().getContent();
+        setTextInTextControl(content, "#name", "");
+        setTextInTextControl(content, "#district", "");
+        setTextInTextControl(content, "#street", "");
+        setTextInTextControl(content, "#building", "");
+        setTextInTextControl(content, "#phone", "");
+        setTextInTextControl(content, "#hours", "");
+        setBooleanInCheckbox(content, "#isRoundTheClock", false);
+    }
+
+    public void clearDrugDialog(){
+        Node content = drugDialog.getDialogPane().getContent();
+        setTextInTextControl(content, "#name", "");
+        setTextInTextControl(content, "#releaseForm", "");
+        setTextInTextControl(content, "#manufacturer", "");
+        setTextInTextControl(content, "#activeIngredient", "");
+        setTextInTextControl(content, "#description", "");
+        ((ListView)content.getScene().lookup("#pEffectSelector")).getSelectionModel().clearSelection();
+        ((ListView)content.getScene().lookup("#tEffectSelector")).getSelectionModel().clearSelection();
+    }
+
+    public void clearPriceDialog(){
+        Node content = priceDialog.getDialogPane().getContent();
+
+        setTextInTextControl(content, "#cost", "");
+        ((TableView)content.getScene().lookup("#drug")).getSelectionModel().clearSelection();
+        ((TableView)content.getScene().lookup("#drug")).setDisable(false);
+        ((TableView)content.getScene().lookup("#drugstore")).getSelectionModel().clearSelection();
+        ((TableView)content.getScene().lookup("#drugstore")).setDisable(false);
     }
 }

@@ -3,15 +3,24 @@ package com.nc.netcracker_project.server.controllers.rmi;
 import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.services.data.DataControl;
 import com.nc.netcracker_project.server.services.import_export.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class RMIControllerImpl implements RMIController{
 
+    private static final Logger LOG = Logger.getLogger(RMIControllerImpl.class);
+
     private DataControl dataControl;
     private Importer importer;
     private Exporter exporter;
+    private Set<EventListener> listeners = new HashSet<>();
 
     @Autowired
     public RMIControllerImpl(DataControl dataControl, Importer importer, Exporter exporter) {
@@ -47,7 +56,15 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public boolean addDrugstore(DrugstoreEntity drugstore) {
-        return dataControl.saveDrugstore(drugstore);
+        boolean result = dataControl.saveDrugstore(drugstore);
+        for (EventListener listener:listeners) {
+            try {
+                listener.updateDrustores();
+            } catch (RemoteException e) {
+                LOG.error("Remote update drugstore listener exception: "+e);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -128,5 +145,20 @@ public class RMIControllerImpl implements RMIController{
     @Override
     public void importInDB(String data, FormatType format) throws ImportException {
         importer._import(data,format);
+    }
+
+    @Override
+    public void addEventListener(EventListener listener) {
+        try {
+            LOG.info("Added event listener with UUID: "+listener.getId().toString());
+        } catch (RemoteException e) {
+            LOG.error("Remote error: "+e);
+        }
+        listeners.add(listener);
+    }
+
+    @Override
+    public void deleteEventListener(EventListener listener) {
+        throw new NotImplementedException();
     }
 }

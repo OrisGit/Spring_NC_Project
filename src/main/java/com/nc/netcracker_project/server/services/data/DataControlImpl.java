@@ -32,9 +32,12 @@ public class DataControlImpl implements DataControl {
     }
 
     @Override
-    @Transactional
     public boolean saveDrug(DrugEntity drug){
         try {
+            if(!pEffectRepository.exists(drug.getPharmachologicEffect().getId()))
+                pEffectRepository.save(drug.getPharmachologicEffect());
+            if(!tEffectRepository.exists(drug.getTherapeuticEffect().getId()))
+                tEffectRepository.save(drug.getTherapeuticEffect());
             drugRepository.save(drug);
         }catch (Exception e){
             return false;
