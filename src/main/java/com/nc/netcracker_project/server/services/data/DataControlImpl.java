@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Scope("prototype")
+@Scope
 public class DataControlImpl implements DataControl {
 
     private DrugRepository drugRepository;
@@ -34,6 +34,7 @@ public class DataControlImpl implements DataControl {
     }
 
     @Override
+    @Transactional
     public boolean saveDrug(DrugEntity drug){
         try {
             if(!pEffectRepository.exists(drug.getPharmachologicEffect().getId()))
