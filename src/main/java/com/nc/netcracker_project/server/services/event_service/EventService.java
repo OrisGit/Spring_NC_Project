@@ -7,6 +7,10 @@ public interface EventService {
 
     void removeRmiListener(EventListener listener);
 
+    void addWebListener(EventListener listener);
+
+    void removeWebListener(EventListener listener);
+
     void updateDrugs();
 
     void updateDrugstores();

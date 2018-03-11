@@ -3,9 +3,13 @@ package com.nc.netcracker_project.server.services.data;
 import com.nc.netcracker_project.server.model.entities.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 public interface DataControl {
     //region Drug
     Iterable<DrugEntity> getAllDrug();
+
+    DrugEntity getDrug(UUID id);
 
     @Transactional
     boolean saveDrug(DrugEntity drug);
@@ -19,6 +23,8 @@ public interface DataControl {
     //region Drugstore
     Iterable<DrugstoreEntity> getAllDrugstore();
 
+    DrugstoreEntity getDrugstore(UUID id);
+
     @Transactional
     boolean saveDrugstore(DrugstoreEntity drugstore);
 
@@ -30,6 +36,8 @@ public interface DataControl {
 
     //region TherapeuticEffect
     Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect();
+
+    TherapeuticEffectEntity getTherapeuticEffect(UUID id);
 
     @Transactional
     boolean saveTherapeuticEffect(TherapeuticEffectEntity teffect);
@@ -43,6 +51,8 @@ public interface DataControl {
     //region PharmachologicEffect
     Iterable<PharmachologicEffectEntity> getAllPharmachologicEffect();
 
+    PharmachologicEffectEntity getPharmachologicEffect(UUID id);
+
     @Transactional
     boolean savePharmachologicEffect(PharmachologicEffectEntity peffect);
 
@@ -54,6 +64,8 @@ public interface DataControl {
 
     //region Price
     Iterable<PriceEntity> getAllPrice();
+
+    PriceEntity getPrice(PriceEntityPK pk);
 
     @Transactional
     boolean savePrice(PriceEntity price);

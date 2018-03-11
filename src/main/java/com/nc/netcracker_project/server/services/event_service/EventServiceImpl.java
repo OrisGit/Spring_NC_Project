@@ -15,7 +15,7 @@ public class EventServiceImpl implements EventService {
     private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
 
     private Set<EventListener> rmiListeners = new HashSet<>();
-    private Set<EventListener> webListener = new HashSet<>();
+    private Set<EventListener> webListeners = new HashSet<>();
 
     @Override
     public void addRmiListener(EventListener listener){
@@ -25,6 +25,16 @@ public class EventServiceImpl implements EventService {
     @Override
     public void removeRmiListener(EventListener listener){
         rmiListeners.remove(listener);
+    }
+
+    @Override
+    public void addWebListener(EventListener listener){
+        webListeners.add(listener);
+    }
+
+    @Override
+    public void removeWebListener(EventListener listener){
+        webListeners.remove(listener);
     }
 
     @Override

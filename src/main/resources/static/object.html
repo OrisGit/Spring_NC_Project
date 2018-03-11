@@ -13,11 +13,6 @@
     <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-<script>
-    var url = new URL(window.location.href);
-    var id = url.searchParams.get("id");
-    //etc
-</script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Справочник</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -62,9 +57,9 @@
         <li class="list-group-item">Часы работы: Круглосуточно</li>
         <li class="list-group-item">Круглосуточная:
             <span class="custom-control custom-checkbox d-inline">
-		  <input class="custom-control-input" type="checkbox" checked disabled></input>
-		  <label class="custom-control-label"></label>
-		</span>
+              <input class="custom-control-input" type="checkbox" checked disabled/>
+              <label class="custom-control-label"></label>
+		    </span>
         </li>
     </ul>
     <span class="ml-4 float-left">

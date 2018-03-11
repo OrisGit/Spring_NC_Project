@@ -33,9 +33,9 @@
                 Добавить
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Аптеку</a>
-                <a class="dropdown-item" href="#">Лекарство</a>
-                <a class="dropdown-item" href="#">Цену</a>
+                <a class="dropdown-item" href="object_edit.html">Аптеку</a>
+                <a class="dropdown-item" href="object_edit.html">Лекарство</a>
+                <a class="dropdown-item" href="object_edit.html">Цену</a>
             </div>
         </div>
         <form class="form-inline">
@@ -48,26 +48,26 @@
 
 <div class="rounded bg-light p-1 m-3">
     <form class="form-inline m-2">
-        <select class="form-control custom-select m-1 col-lg-2" id="formInputPEffect">
+        <select class="form-control custom-select m-1 col-3" id="formInputPEffect">
             <option selected>Аптека</option>
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
         </select>
-        <select class="form-control custom-select m-1 col-lg-2" id="formInputTEffect">
+        <select class="form-control custom-select m-1 col-3" id="formInputTEffect">
             <option selected>Лекарство</option>
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
         </select>
-        <button type="button" class="btn btn-primary m-1 ml-auto" id="searchBtn">
+        <button type="button" class="btn btn-primary m-1 ml-auto" id="searchPriceBtn">
             <i class="fas fa-search"></i> Искать
         </button>
     </form>
 </div>
 
 <div class="m-3">
-    <table class="table table-responsive-lg">
+    <table class="table table-responsive-md" id="priceTable" data-type="price">
         <thead class="thead-light">
         <tr>
             <th>Аптека</th>
@@ -77,38 +77,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Алия</td>
-            <td>Цитрамон П</td>
-            <td>100</td>
-            <td>
-                <button class="btn btn-info mybtn my-1 my-lg-0">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-                <button class="btn btn-secondary mybtn my-1 my-lg-0">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger mybtn my-1 my-lg-0">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>Вита</td>
-            <td>Цитрамон П</td>
-            <td>120</td>
-            <td>
-                <button class="btn btn-info mybtn my-1 my-lg-0">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-                <button class="btn btn-secondary mybtn my-1 my-lg-0">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger mybtn my-1 my-lg-0">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </td>
-        </tr>
+
         </tbody>
     </table>
 </div>

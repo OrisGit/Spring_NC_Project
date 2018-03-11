@@ -33,9 +33,9 @@
                 Добавить
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Аптеку</a>
-                <a class="dropdown-item" href="#">Лекарство</a>
-                <a class="dropdown-item" href="#">Цену</a>
+                <a class="dropdown-item" href="object_edit.html">Аптеку</a>
+                <a class="dropdown-item" href="object_edit.html">Лекарство</a>
+                <a class="dropdown-item" href="object_edit.html">Цену</a>
             </div>
         </div>
         <form class="form-inline">
@@ -57,14 +57,14 @@
             <input class="custom-control-input" type="checkbox" id="roundTheClock">
             <label class="custom-control-label" for="roundTheClock">Круглосуточная</label>
         </div>
-        <button type="button" class="btn btn-primary m-1 ml-auto" id="searchBtn">
+        <button type="button" class="btn btn-primary m-1 ml-auto" id="searchDrugstoreBtn">
             <i class="fas fa-search"></i> Искать
         </button>
     </form>
 </div>
 
 <div class="m-3">
-    <table class="table table-responsive-lg" id="drugstoreTable">
+    <table class="table table-responsive-md" id="drugstoreTable" data-type="drugstore">
         <thead class="thead-light">
         <tr>
             <th>Название</th>

@@ -49,13 +49,13 @@
 <div class="mt-3 mx-auto w-75">
     <h3 class="ml-1">Аптека</h3>
     <form id="editForm">
-        <input type="text" class="form-control m-1" id="drugstoreName" placeholder="Название" autocomplete="off">
+        <input type="text" class="form-control m-1" id="name" placeholder="Название" autocomplete="off">
         <input type="text" class="form-control m-1" id="district" placeholder="Район" autocomplete="off">
         <input type="text" class="form-control m-1" id="street" placeholder="Улица" autocomplete="off">
         <input type="text" class="form-control m-1" id="building" placeholder="Дом" autocomplete="off">
         <input type="text" class="form-control m-1" id="phone" placeholder="Телефон" autocomplete="off">
-        <input type="text" class="form-control m-1" id="hours" placeholder="Часы работы" autocomplete="off">
-		<div class="form-row w-100 m-1">
+        <input type="text" class="form-control m-1" id="workingHours" placeholder="Часы работы" autocomplete="off">
+		<!--<div class="form-row w-100 m-1">
 			<select class="form-control custom-select col-md mb-1 mr-md-1" id="pEffect">
 				<option selected>Фармакологический эффект</option>
 				<option value="1">One</option>
@@ -68,10 +68,10 @@
 				<option value="2">Two</option>
 				<option value="3">Three</option>
 			</select>
-		</div>
+		</div>-->
         <div class="custom-control custom-checkbox m-1">
-            <input class="custom-control-input" type="checkbox" id="roundTheClock">
-            <label class="custom-control-label" for="roundTheClock">Круглосуточная</label>
+            <input class="custom-control-input" type="checkbox" id="isRoundTheClock">
+            <label class="custom-control-label" for="isRoundTheClock">Круглосуточная</label>
         </div>
         <button type="button" class="btn btn-success m-1 ml-1" id="submitBtn">
             <i class="fas fa-edit"></i> Сохранить изменения
