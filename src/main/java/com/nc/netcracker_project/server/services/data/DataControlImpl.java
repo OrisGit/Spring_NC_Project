@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @Scope
 public class DataControlImpl implements DataControl {
@@ -31,6 +33,11 @@ public class DataControlImpl implements DataControl {
     @Override
     public Iterable<DrugEntity> getAllDrug(){
         return drugRepository.findAll();
+    }
+
+    @Override
+    public DrugEntity getDrug(UUID id) {
+        return drugRepository.findOne(id);
     }
 
     @Override
@@ -83,6 +90,11 @@ public class DataControlImpl implements DataControl {
     }
 
     @Override
+    public DrugstoreEntity getDrugstore(UUID id) {
+        return drugStoreRepository.findOne(id);
+    }
+
+    @Override
     @Transactional
     public boolean saveDrugstore(DrugstoreEntity drugstore){
         try {
@@ -124,6 +136,11 @@ public class DataControlImpl implements DataControl {
     @Override
     public Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect(){
         return tEffectRepository.findAll();
+    }
+
+    @Override
+    public TherapeuticEffectEntity getTherapeuticEffect(UUID id) {
+        return tEffectRepository.findOne(id);
     }
 
     @Override
@@ -171,6 +188,11 @@ public class DataControlImpl implements DataControl {
     }
 
     @Override
+    public PharmachologicEffectEntity getPharmachologicEffect(UUID id) {
+        return pEffectRepository.findOne(id);
+    }
+
+    @Override
     @Transactional
     public boolean savePharmachologicEffect(PharmachologicEffectEntity peffect){
         try {
@@ -212,6 +234,11 @@ public class DataControlImpl implements DataControl {
     @Override
     public Iterable<PriceEntity> getAllPrice(){
         return priceRepository.findAll();
+    }
+
+    @Override
+    public PriceEntity getPrice(PriceEntityPK pk) {
+        return priceRepository.findOne(pk);
     }
 
     @Override

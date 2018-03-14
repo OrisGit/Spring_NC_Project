@@ -35,6 +35,7 @@ public class PriceEntity implements Serializable{
 
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("drugID")
+    @JoinColumn(name = "DRUG_ID")
     public DrugEntity getDrug() {
         return drug;
     }
@@ -45,6 +46,7 @@ public class PriceEntity implements Serializable{
 
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("drugstoreID")
+    @JoinColumn(name = "DRUGSTORE_ID")
     public DrugstoreEntity getDrugstore() {
         return drugstore;
     }

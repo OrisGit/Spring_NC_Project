@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+.mybtn {
+	width: 2.5em;
+}
+.table tbody>tr>td {
+    vertical-align: middle;
+	
+}
+.table tbody>tr>td:last-child {
+    width: 10em;
+}
+.selected {
+    background-color: yellow;
+}
+.show {
+  display: block !important;
+}
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.loader {
+  animation: spin 2s ease infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(720deg); }
+}
