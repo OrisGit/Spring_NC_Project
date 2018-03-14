@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.nc.netcracker_project.desktop_rmi_client.view_controllers.ExportWindowController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="TOP_CENTER" prefWidth="200.0">
+               <children>
+                  <RadioButton fx:id="rbtn_json" mnemonicParsing="false" selected="true" text="JSON">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="export" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" text="XML" toggleGroup="$export">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefWidth="320.0">
+               <children>
+                  <TextField fx:id="text_path" editable="false" prefHeight="25.0" prefWidth="220.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#clickPathSelectBtn" prefHeight="25.0" prefWidth="90.0" text="Выбрать путь" />
+               </children>
+            </HBox>
+            <Button alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clickExportBtn" prefHeight="27.0" prefWidth="144.0" text="Экспортировать">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

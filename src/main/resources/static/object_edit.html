@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Edit</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script defer src="js/fontawesome-all.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Справочник</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse mt-1" id="navbarNavAltMarkup">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="drugstores.html">Аптек</a>
+            <a class="nav-item nav-link" href="drugs.html">Лекарств</a>
+            <a class="nav-item nav-link mr-4" href="prices.html">Цен</a>
+            <a class="nav-item nav-link" href="index.html">Домой</a>
+        </div>
+        <div class="dropdown mx-2">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Добавить
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Аптеку</a>
+                <a class="dropdown-item" href="#">Лекарство</a>
+                <a class="dropdown-item" href="#">Цену</a>
+            </div>
+        </div>
+        <form class="form-inline">
+            <button class="btn btn-outline-light my-2 my-lg-0" type="button">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+    </div>
+</nav>
+
+<div class="mt-3 mx-auto w-75">
+    <h3 class="ml-1">Аптека</h3>
+    <form id="editForm">
+        <input type="text" class="form-control m-1" id="name" placeholder="Название" autocomplete="off">
+        <input type="text" class="form-control m-1" id="district" placeholder="Район" autocomplete="off">
+        <input type="text" class="form-control m-1" id="street" placeholder="Улица" autocomplete="off">
+        <input type="text" class="form-control m-1" id="building" placeholder="Дом" autocomplete="off">
+        <input type="text" class="form-control m-1" id="phone" placeholder="Телефон" autocomplete="off">
+        <input type="text" class="form-control m-1" id="workingHours" placeholder="Часы работы" autocomplete="off">
+		<!--<div class="form-row w-100 m-1">
+			<select class="form-control custom-select col-md mb-1 mr-md-1" id="pEffect">
+				<option selected>Фармакологический эффект</option>
+				<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>
+			</select>
+			<select class="form-control custom-select col-md mb-1" id="tEffect">
+				<option selected>Терапевтический эффект</option>
+				<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>
+			</select>
+		</div>-->
+        <div class="custom-control custom-checkbox m-1">
+            <input class="custom-control-input" type="checkbox" id="isRoundTheClock">
+            <label class="custom-control-label" for="isRoundTheClock">Круглосуточная</label>
+        </div>
+        <button type="button" class="btn btn-success m-1 ml-1" id="submitBtn">
+            <i class="fas fa-edit"></i> Сохранить изменения
+        </button>
+    </form>
+</div>
+</body>
+</html>
