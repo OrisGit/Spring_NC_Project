@@ -1,8 +1,9 @@
 function findLocation() {
-    let start = window.location.href.lastIndexOf('/') + 1;
-    let end = window.location.href.lastIndexOf('?');
-    let currentPage;
-    currentPage = ~end ? window.location.href.slice(start, end) : window.location.href.slice(start);
+    let url = window.location.href;
+    let start = url.lastIndexOf('/');
+    let end = url.lastIndexOf('?');
+    let currentPage = ~end ? url.slice(start, end) : url.slice(start);
+
     $('.navbar-nav > a[href="' + currentPage + '"]').addClass('active');
 }
 
@@ -53,9 +54,7 @@ function formatPhone(phone) {
 function params(btn) {
     let type = btn.parents('table').data().type;
     let id = btn.parents('tr').data().id;
-    if (type === 'price') {
-        id = id.drug_id + '&' + id.drugstore_id;
-    }
+
     return type + '/' + id;
 }
 
@@ -71,6 +70,17 @@ function del() {
     if (confirm('Вы уверены?')) {
         sendXHR('/api/' + params($(this)), 'DELETE', null, console.log);
     }
+}
+
+function importIn() {
+	let format = $('input[name="format"]:checked').val();
+	let file = $('#importFile')[0].files[0];
+    sendXHR('/api/import?format=' + format, 'POST', file, console.log);
+}
+
+function exportFrom() {
+	let format = $('input[name="format"]:checked').val();
+    sendXHR('/api/export?format=' + format, 'GET', null, console.log);
 }
 
 function formObject() {
@@ -101,7 +111,7 @@ function searchDrug() {
                 .append($('<td>').text(drug.manufacturer))
                 .append($('<td>').text(drug.activeIngredient))
                 .append($('<td>').text(drug.pharmachologicEffect.name))
-                .append($('<td>').text(drug.therapeuticEffect.name  ))
+                .append($('<td>').text(drug.therapeuticEffect.name))
                 .append($('<td>').append(createButton('info'), createButton('edit'), createButton('delete')));
         });
     });
@@ -134,11 +144,7 @@ function searchPrice() {
     $.getJSON('/api/price', function (json) {
         table.find('> tbody').empty();
         $(json).each(function (i, price) {
-            let pk = {
-                drugstore_id: price.drugstore.id,
-                drug_id: price.drug.id
-            };
-            $('<tr>').data('id', pk).appendTo(table)
+            $('<tr>').data('id', price.drug.id + '&' + price.drugstore.id).appendTo(table)
                 .append($('<td>').text(price.drugstore.name))
                 .append($('<td>').text(price.drug.name))
                 .append($('<td>').text(price.cost))
@@ -149,12 +155,10 @@ function searchPrice() {
 
 function sendXHR(url, method, payload, callback) {
     let xhr = new XMLHttpRequest();
-    let json = JSON.stringify(payload);
 
     xhr.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                alert('done');
                 callback('Server response: ' + xhr.response);
             } else {
                 alert(xhr.status + ': ' + xhr.statusText);
@@ -168,19 +172,19 @@ function sendXHR(url, method, payload, callback) {
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.responseType = 'json';
 
-    xhr.send(json);
-
-    alert('loading...');
+    xhr.send(payload);
 }
 
 $(document).ready(function () {
+
     findLocation();
 
     $('#searchDrugstoreBtn').click(searchDrugstore);
     $('#searchDrugBtn').click(searchDrug);
     $('#searchPriceBtn').click(searchPrice);
 
-    //todo добавление лекарств и цен, редактирование объектов, навигация
+    $('#importBtn').click(importIn);
+    $('#exportBtn').click(exportFrom);
 
     $('#submitBtn').click(function () {
         //let id = new URL(window.location.href).searchParams.get('id');
@@ -188,5 +192,10 @@ $(document).ready(function () {
         let payload = formObject();
 
         sendXHR('/api/drugstore/new', 'POST', payload, console.log);
+    });
+
+    $('#importFile').change(function() {
+        let file = $(this)[0].files[0].name;
+        $(this).next('label').text(file);
     });
 });

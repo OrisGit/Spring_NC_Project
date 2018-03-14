@@ -42,7 +42,6 @@ public class ImporterImpl implements Importer {
     }
 
     @Override
-    @Transactional
     public void _import(String str, FormatType type) throws ImportException {
         AbstractUnmarshaller unmarshaller;
         if(type.equals(FormatType.XML)){
