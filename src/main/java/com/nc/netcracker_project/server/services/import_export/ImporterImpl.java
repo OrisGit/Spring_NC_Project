@@ -3,8 +3,7 @@ package com.nc.netcracker_project.server.services.import_export;
 
 
 import com.nc.netcracker_project.server.model.entities.*;
-import com.nc.netcracker_project.server.model.repositories.*;
-import com.nc.netcracker_project.server.services.data.DataControl;
+import com.nc.netcracker_project.server.services.data.*;
 import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.marshalling.AbstractUnmarshaller;
 import com.nc.netcracker_project.server.services.import_export.marshalling.JsonUnmarshaller;
@@ -22,22 +21,23 @@ import java.util.List;
 public class ImporterImpl implements Importer {
 
     private static final Logger LOG = Logger.getLogger(ImporterImpl.class);
-    private DrugRepository drugRepository;
-    private DrugStoreRepository drugStoreRepository;
-    private TherapeuticEffectRepository tEffectRepository;
-    private PharmachologicEffectRepository pEffectRepository;
-    private PriceRepository priceRepository;
-    private DataControl dataControl;
+    private DrugDataControl drugDataControl;
+    private DrugstoreDataControl drugstoreDataControl;
+    private TherapeuticEffectDataControl therapeuticEffectDataControl;
+    private PharmachologicEffectDataControl pharmachologicEffectDataControl;
+    private PriceDataControl priceDataControl;
     private EventService eventService;
 
     @Autowired
-    public ImporterImpl(DrugRepository drugRepository, DrugStoreRepository drugStoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository, DataControl dataControl, EventService eventService) {
-        this.drugRepository = drugRepository;
-        this.drugStoreRepository = drugStoreRepository;
-        this.tEffectRepository = tEffectRepository;
-        this.pEffectRepository = pEffectRepository;
-        this.priceRepository = priceRepository;
-        this.dataControl = dataControl;
+    public ImporterImpl(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
+                        TherapeuticEffectDataControl therapeuticEffectDataControl,
+                        PharmachologicEffectDataControl pharmachologicEffectDataControl, PriceDataControl priceDataControl,
+                        EventService eventService) {
+        this.drugDataControl = drugDataControl;
+        this.drugstoreDataControl = drugstoreDataControl;
+        this.therapeuticEffectDataControl = therapeuticEffectDataControl;
+        this.pharmachologicEffectDataControl = pharmachologicEffectDataControl;
+        this.priceDataControl = priceDataControl;
         this.eventService = eventService;
     }
 
@@ -59,11 +59,41 @@ public class ImporterImpl implements Importer {
         }
 
         if(entityWrapper!=null){
-            importEntities(entityWrapper.getPharmachologicEffects(), (a)-> dataControl.savePharmachologicEffect((PharmachologicEffectEntity)a));
-            importEntities(entityWrapper.getTherapeuticEffects(), (a)-> dataControl.saveTherapeuticEffect((TherapeuticEffectEntity) a));
-            importEntities(entityWrapper.getDrugstores(),(a)-> dataControl.saveDrugstore((DrugstoreEntity) a));
-            importEntities(entityWrapper.getDrugs(),(a)-> dataControl.saveDrug((DrugEntity) a));
-            importEntities(entityWrapper.getPrice(),(a)-> dataControl.savePrice((PriceEntity) a));
+            importEntities(entityWrapper.getPharmachologicEffects(), (a) -> {
+                try {
+                    pharmachologicEffectDataControl.saveOrUpdate((PharmachologicEffectEntity) a);
+                } catch (Exception e) {
+                    throw new ImportException(e);
+                }
+            });
+            importEntities(entityWrapper.getTherapeuticEffects(), (a) -> {
+                try {
+                    therapeuticEffectDataControl.saveOrUpdate((TherapeuticEffectEntity) a);
+                } catch (Exception e) {
+                    throw new ImportException(e);
+                }
+            });
+            importEntities(entityWrapper.getDrugstores(), (a) -> {
+                try {
+                    drugstoreDataControl.saveOrUpdate((DrugstoreEntity) a);
+                } catch (Exception e) {
+                    throw new ImportException(e);
+                }
+            });
+            importEntities(entityWrapper.getDrugs(), (a) -> {
+                try {
+                    drugDataControl.saveOrUpdate((DrugEntity) a);
+                } catch (Exception e) {
+                    throw new ImportException(e);
+                }
+            });
+            importEntities(entityWrapper.getPrice(), (a) -> {
+                try {
+                    priceDataControl.saveOrUpdate((PriceEntity) a);
+                } catch (Exception e) {
+                    throw new ImportException(e);
+                }
+            });
         }
         eventService.updateTherapheuticEffects();
         eventService.updatePharmachologicEffects();
@@ -83,7 +113,7 @@ public class ImporterImpl implements Importer {
     }
 
     private interface Action{
-        void save(Object o);
+        void save(Object o) throws ImportException;
     }
 
 }
