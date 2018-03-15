@@ -7,11 +7,14 @@ import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @RestController
@@ -359,15 +362,24 @@ public class WebController {
     //endregion
 
     @GetMapping("/export")
-    public @ResponseBody ResponseEntity<String> exportFromDB(@RequestParam FormatType format) {
+    public ResponseEntity<byte[]> exportFromDB(@RequestParam FormatType format) {
         try {
-            return ResponseEntity.ok(exporter.export(format, true));//todo
+            String file = exporter.export(format, true);
+            String filename = "export_data." + format.toString().toLowerCase();
+            byte[] content = file.getBytes(StandardCharsets.UTF_8);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/" + format));
+            headers.setContentDispositionFormData("attachment", filename);
+            headers.setCacheControl("must-revalidate");
+
+            return new ResponseEntity<>(content, headers, HttpStatus.OK);
         } catch (ExportException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @RequestMapping("/import")
+    @PostMapping("/import")
     public ResponseEntity importInDB(@RequestBody String data, @RequestParam FormatType format) {
         try {
             importer._import(data, format);

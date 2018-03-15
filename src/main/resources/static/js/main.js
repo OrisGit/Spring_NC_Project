@@ -80,7 +80,7 @@ function importIn() {
 
 function exportFrom() {
 	let format = $('input[name="format"]:checked').val();
-    sendXHR('/api/export?format=' + format, 'GET', null, console.log);
+    window.open('/api/export?format=' + format, '_self');
 }
 
 function formObject() {
@@ -159,7 +159,8 @@ function sendXHR(url, method, payload, callback) {
     xhr.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                callback('Server response: ' + xhr.response);
+                console.log('Server response: ' + xhr.response);
+                callback(xhr.response);
             } else {
                 alert(xhr.status + ': ' + xhr.statusText);
             }
