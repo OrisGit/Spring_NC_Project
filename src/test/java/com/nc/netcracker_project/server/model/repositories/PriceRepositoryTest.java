@@ -23,12 +23,12 @@ public class PriceRepositoryTest {
     @Autowired
     private DrugRepository drugRepository;
     @Autowired
-    private DrugStoreRepository drugStoreRepository;
+    private DrugstoreRepository drugstoreRepository;
 
 
     private PriceEntity save(PriceEntity price){
         drugRepository.save(price.getDrug());
-        drugStoreRepository.save(price.getDrugstore());
+        drugstoreRepository.save(price.getDrugstore());
         return priceRepository.save(price);
     }
 
