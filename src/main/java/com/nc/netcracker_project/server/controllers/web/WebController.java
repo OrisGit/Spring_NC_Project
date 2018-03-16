@@ -8,7 +8,9 @@ import com.nc.netcracker_project.server.services.import_export.Exporter;
 import com.nc.netcracker_project.server.services.import_export.Importer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +63,7 @@ public class WebController {
         return ResponseEntity.ok(drug);
     }
 
-    @PostMapping("/drug/new")//todo ModelAndView
+    @PostMapping("/drug/new")
     public ResponseEntity<DrugEntity> createDrug(@Valid @RequestBody DrugEntity drugEntity) {
         try {
             drugDataControl.saveOrUpdate(drugEntity);
@@ -72,7 +74,7 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/drug/{id}")//todo ModelAndView
+    @PutMapping("/drug/{id}")
     public ResponseEntity<DrugEntity> updateDrug(@PathVariable String id,
                                                  @Valid @RequestBody DrugEntity drugEntity) {
         UUID uuid = UUID.fromString(id);
@@ -301,8 +303,9 @@ public class WebController {
 
     @GetMapping("/price/{id}")
     public ResponseEntity<PriceEntity> getPrice(@PathVariable String id) {
-        UUID drugId = UUID.fromString(id.split("[&]")[0]);
-        UUID drugstoreId = UUID.fromString(id.split("[&]")[1]);
+		String[] uuids = id.split("[&]");
+        UUID drugId = UUID.fromString(uuids[0]);
+        UUID drugstoreId = UUID.fromString(uuids[1]);
 
         PriceEntityPK pk = new PriceEntityPK(drugId, drugstoreId);
 
@@ -327,8 +330,9 @@ public class WebController {
     @PutMapping("/price/{id}")
     public ResponseEntity<PriceEntity> updatePrice(@PathVariable String id,
                                                    @Valid @RequestBody PriceEntity priceEntity) {
-        UUID drugId = UUID.fromString(id.split("[&]")[0]);
-        UUID drugstoreId = UUID.fromString(id.split("[&]")[1]);
+        String[] uuids = id.split("[&]");
+        UUID drugId = UUID.fromString(uuids[0]);
+        UUID drugstoreId = UUID.fromString(uuids[1]);
 
         PriceEntityPK pk = new PriceEntityPK(drugId, drugstoreId);
 
@@ -348,8 +352,9 @@ public class WebController {
 
     @DeleteMapping("/price/{id}")
     public ResponseEntity<PriceEntity> deletePrice(@PathVariable String id) {
-        UUID drugId = UUID.fromString(id.split("[&]")[0]);
-        UUID drugstoreId = UUID.fromString(id.split("[&]")[1]);
+        String[] uuids = id.split("[&]");
+        UUID drugId = UUID.fromString(uuids[0]);
+        UUID drugstoreId = UUID.fromString(uuids[1]);
 
         PriceEntityPK pk = new PriceEntityPK(drugId, drugstoreId);
 
@@ -366,6 +371,34 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
     //endregion
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportFromDB(@RequestParam FormatType format) {
+        try {
+            String file = exporter.export(format, true);
+            String filename = "export_data." + format.toString().toLowerCase();
+            byte[] content = file.getBytes(StandardCharsets.UTF_8);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/" + format));
+            headers.setContentDispositionFormData("attachment", filename);
+            headers.setCacheControl("must-revalidate");
+
+            return new ResponseEntity<>(content, headers, HttpStatus.OK);
+        } catch (ExportException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity importInDB(@RequestBody String data, @RequestParam FormatType format) {
+        try {
+            importer._import(data, format);
+            return ResponseEntity.ok().build();
+        } catch (ImportException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     public void addEventListener(EventListener listener) {
         eventService.addWebListener(listener);
