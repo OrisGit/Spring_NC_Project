@@ -16,16 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-public class DrugStoreRepositoryTest {
+public class DrugstoreRepositoryTest {
 
     @Autowired
-    private DrugStoreRepository drugStoreRepository;
+    private DrugstoreRepository drugstoreRepository;
 
     @Test
     public void saveTest(){
         DrugstoreEntity drugstore = createDrugstoreEntity();
 
-        DrugstoreEntity res = drugStoreRepository.save(drugstore);
+        DrugstoreEntity res = drugstoreRepository.save(drugstore);
 
         assertThat(res).isEqualTo(drugstore);
     }
@@ -34,9 +34,9 @@ public class DrugStoreRepositoryTest {
     public void findAllTest(){
         DrugstoreEntity drugstoreEntity = createDrugstoreEntity();
 
-        DrugstoreEntity res = drugStoreRepository.save(drugstoreEntity);
+        DrugstoreEntity res = drugstoreRepository.save(drugstoreEntity);
 
-        int found = ((List<DrugstoreEntity>)drugStoreRepository.findAll()).size();
+        int found = ((List<DrugstoreEntity>) drugstoreRepository.findAll()).size();
         assertThat(found).isEqualTo(1);
     }
 
@@ -44,26 +44,26 @@ public class DrugStoreRepositoryTest {
     public void deleteByObjectTest(){
         DrugstoreEntity drugstore = createDrugstoreEntity();
 
-        DrugstoreEntity res = drugStoreRepository.save(drugstore);
+        DrugstoreEntity res = drugstoreRepository.save(drugstore);
 
-        drugStoreRepository.delete(drugstore);
+        drugstoreRepository.delete(drugstore);
     }
 
     @Test
     public void deleteByUUIDTest(){
         DrugstoreEntity drugstore = createDrugstoreEntity();
 
-        DrugstoreEntity res = drugStoreRepository.save(drugstore);
+        DrugstoreEntity res = drugstoreRepository.save(drugstore);
 
-        drugStoreRepository.delete(drugstore.getId());
+        drugstoreRepository.delete(drugstore.getId());
     }
 
     @Test
     public void findOneTest(){
         DrugstoreEntity drugstore = createDrugstoreEntity();
-        drugStoreRepository.save(drugstore);
+        drugstoreRepository.save(drugstore);
 
-        DrugstoreEntity res = drugStoreRepository.findOne(drugstore.getId());
+        DrugstoreEntity res = drugstoreRepository.findOne(drugstore.getId());
 
         assertThat(res).isEqualTo(drugstore);
     }

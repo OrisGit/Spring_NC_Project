@@ -1,33 +1,38 @@
 package com.nc.netcracker_project.server.controllers.rmi;
 
 import com.nc.netcracker_project.server.model.entities.*;
-import com.nc.netcracker_project.server.services.data.DataControl;
+import com.nc.netcracker_project.server.services.data.*;
 import com.nc.netcracker_project.server.services.event_service.EventListener;
 import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.rmi.RemoteException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Predicate;
 
 @Component
 public class RMIControllerImpl implements RMIController{
 
     private static final Logger LOG = Logger.getLogger(RMIControllerImpl.class);
 
-    private DataControl dataControl;
+    private DrugDataControl drugDataControl;
+    private DrugstoreDataControl drugstoreDataControl;
+    private PriceDataControl priceDataControl;
+    private PharmachologicEffectDataControl pEffectDataControl;
+    private TherapeuticEffectDataControl tEffectDataControl;
     private Importer importer;
     private Exporter exporter;
     private EventService eventService;
 
     @Autowired
-    public RMIControllerImpl(DataControl dataControl, Importer importer, Exporter exporter, EventService eventService) {
-        this.dataControl = dataControl;
+    public RMIControllerImpl(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
+                             PriceDataControl priceDataControl, PharmachologicEffectDataControl pEffectDataControl,
+                             TherapeuticEffectDataControl tEffectDataControl, Importer importer, Exporter exporter,
+                             EventService eventService) {
+        this.drugDataControl = drugDataControl;
+        this.drugstoreDataControl = drugstoreDataControl;
+        this.priceDataControl = priceDataControl;
+        this.pEffectDataControl = pEffectDataControl;
+        this.tEffectDataControl = tEffectDataControl;
         this.importer = importer;
         this.exporter = exporter;
         this.eventService = eventService;
@@ -35,147 +40,192 @@ public class RMIControllerImpl implements RMIController{
 
     @Override
     public Iterable<DrugEntity> getAllDrug() {
-        return dataControl.getAllDrug();
+        return drugDataControl.getAll();
     }
 
     @Override
     public boolean addDrug(DrugEntity drug) {
-        boolean result = dataControl.saveDrug(drug);
-        if(result)
+        try {
+            drugDataControl.saveOrUpdate(drug);
             eventService.updateDrugs();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deleteDrug(DrugEntity drug) {
-        boolean result = dataControl.deleteDrug(drug);
-        if(result)
+        try {
+            drugDataControl.delete(drug);
             eventService.updateDrugs();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updateDrug(DrugEntity drug) {
-        boolean result = dataControl.updateDrug(drug);
-        if(result)
+        try {
+            drugDataControl.saveOrUpdate(drug);
             eventService.updateDrugs();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public Iterable<DrugstoreEntity> getAllDrugstore() {
-        return dataControl.getAllDrugstore();
+        return drugstoreDataControl.getAll();
     }
 
     @Override
     public boolean addDrugstore(DrugstoreEntity drugstore) {
-        boolean result = dataControl.saveDrugstore(drugstore);
-        if(result)
+        try {
+            drugstoreDataControl.saveOrUpdate(drugstore);
             eventService.updateDrugstores();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deleteDrugstore(DrugstoreEntity drugstore) {
-        boolean result = dataControl.deleteDrugstore(drugstore);
-        if(result)
+        try {
+            drugstoreDataControl.delete(drugstore);
             eventService.updateDrugstores();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updateDrugstore(DrugstoreEntity drugstore) {
-        boolean result = dataControl.updateDrugstore(drugstore);
-        if(result)
+        try {
+            drugstoreDataControl.saveOrUpdate(drugstore);
             eventService.updateDrugstores();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public Iterable<PharmachologicEffectEntity> getAllPharmachologicEffect() {
-        return dataControl.getAllPharmachologicEffect();
+        return pEffectDataControl.getAll();
     }
 
     @Override
     public boolean addPharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        boolean result = dataControl.savePharmachologicEffect(pEffect);
-        if(result)
+        try {
+            pEffectDataControl.saveOrUpdate(pEffect);
             eventService.updatePharmachologicEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deletePharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        boolean result = dataControl.deletePharmachologicEffect(pEffect);
-        if(result)
+        try {
+            pEffectDataControl.delete(pEffect);
             eventService.updatePharmachologicEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updatePharmachologicEffect(PharmachologicEffectEntity pEffect) {
-        boolean result = dataControl.updatePharmachologicEffect(pEffect);
-        if(result)
+        try {
+            pEffectDataControl.saveOrUpdate(pEffect);
             eventService.updatePharmachologicEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect() {
-        return dataControl.getAllTherapeuticEffect();
+        return tEffectDataControl.getAll();
     }
 
     @Override
     public boolean addTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        boolean result = dataControl.saveTherapeuticEffect(tEffect);
-        if(result)
+        try {
+            tEffectDataControl.saveOrUpdate(tEffect);
             eventService.updateTherapheuticEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deleteTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        boolean result = dataControl.deleteTherapeuticEffect(tEffect);
-        if(result)
+        try {
+            tEffectDataControl.delete(tEffect);
             eventService.updateTherapheuticEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updateTherapeuticEffect(TherapeuticEffectEntity tEffect) {
-        boolean result = dataControl.updateTherapeuticEffect(tEffect);
-        if(result)
+        try {
+            tEffectDataControl.saveOrUpdate(tEffect);
             eventService.updateTherapheuticEffects();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public Iterable<PriceEntity> getAllPrice() {
-        return dataControl.getAllPrice();
+        return priceDataControl.getAll();
     }
 
     @Override
     public boolean addPrice(PriceEntity price) {
-        boolean result = dataControl.savePrice(price);
-        if(result)
+        try {
+            priceDataControl.saveOrUpdate(price);
             eventService.updatePrices();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deletePrice(PriceEntity price) {
-        boolean result = dataControl.deletePrice(price);
-        if(result)
+        try {
+            priceDataControl.delete(price);
             eventService.updatePrices();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updatePrice(PriceEntity price) {
-        boolean result = dataControl.updatePrice(price);
-        if(result)
+        try {
+            priceDataControl.saveOrUpdate(price);
             eventService.updatePrices();
-        return result;
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
