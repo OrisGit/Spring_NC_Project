@@ -46,7 +46,7 @@ public class DrugstoreEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "SNAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     public String getName() {
         return name;
     }

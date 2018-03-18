@@ -3,8 +3,11 @@ package com.nc.netcracker_project.server.services.data;
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
 import com.nc.netcracker_project.server.model.repositories.DrugRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service

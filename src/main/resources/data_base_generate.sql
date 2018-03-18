@@ -30,18 +30,20 @@ create table DRUGSTORES
 )
 /
 
-create table DRUGS_STORES
+create table DRUGSTORES
 (
-  COST NUMBER(19),
-  DRUG_ID RAW(255) not null
-    constraint FKR8AGNR5M478J2J396YQW534AT
-    references DRUGS,
   DRUGSTORE_ID RAW(255) not null
-    constraint FK6B7MU9UXF9HNH6O6CL7W3ASX
-    references DRUGSTORES,
-  primary key (DRUG_ID, DRUGSTORE_ID)
+    primary key,
+  ADDRESS_BUILDING VARCHAR2(255 char),
+  ADDRESS_DISTRICT VARCHAR2(255 char),
+  IS_ROUND_THE_CLOCK NUMBER(5),
+  NAME VARCHAR2(255 char) not null,
+  PHONE VARCHAR2(255 char) default NULL  not null,
+  ADDRESS_STREET VARCHAR2(255 char),
+  WORKING_HOURS VARCHAR2(255 char)
 )
 /
+
 
 create table DRUGS
 (

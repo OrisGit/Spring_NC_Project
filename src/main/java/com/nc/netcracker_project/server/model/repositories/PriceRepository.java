@@ -2,7 +2,8 @@ package com.nc.netcracker_project.server.model.repositories;
 
 import com.nc.netcracker_project.server.model.entities.PriceEntity;
 import com.nc.netcracker_project.server.model.entities.PriceEntityPK;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PriceRepository extends CrudRepository<PriceEntity,PriceEntityPK> {
+public interface PriceRepository extends JpaRepository<PriceEntity,PriceEntityPK> {
 }
