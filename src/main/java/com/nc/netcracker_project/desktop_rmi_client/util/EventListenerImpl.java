@@ -7,17 +7,17 @@ public class EventListenerImpl extends AbstractEventListener {
     private Action updateDrugsAction;
     private Action updateDrugstoresAction;
     private Action updatePricesAction;
-    private Action updateTherapheuticEffectsAction;
-    private Action updatePharmachologicEffectsAction;
+    private Action updatePharmTerGroupsAction;
+    private Action updateProducersAction;
 
     public EventListenerImpl(Action updateDrugsAction, Action updateDrugstoresAction, Action updatePricesAction,
-                             Action updateTherapheuticEffectsAction, Action updatePharmachologicEffectsAction) {
+                             Action updatePharmTerGroupsAction, Action updateProducersAction) {
         super();
         this.updateDrugsAction = updateDrugsAction;
         this.updateDrugstoresAction = updateDrugstoresAction;
         this.updatePricesAction = updatePricesAction;
-        this.updateTherapheuticEffectsAction = updateTherapheuticEffectsAction;
-        this.updatePharmachologicEffectsAction = updatePharmachologicEffectsAction;
+        this.updatePharmTerGroupsAction = updatePharmTerGroupsAction;
+        this.updateProducersAction = updateProducersAction;
     }
 
     @Override
@@ -36,12 +36,12 @@ public class EventListenerImpl extends AbstractEventListener {
     }
 
     @Override
-    public void updateTherapheuticEffects() {
-        updateTherapheuticEffectsAction.action();
+    public void updatePharmTerGroups() {
+        updatePharmTerGroupsAction.action();
     }
 
     @Override
-    public void updatePharmachologicEffects() {
-        updatePharmachologicEffectsAction.action();
+    public void updateProducers() {
+        updateProducersAction.action();
     }
 }

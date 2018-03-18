@@ -2,8 +2,8 @@ package com.nc.netcracker_project.server.services.data;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
 import com.nc.netcracker_project.server.model.repositories.DrugRepository;
-import com.nc.netcracker_project.server.model.repositories.PharmachologicEffectRepository;
-import com.nc.netcracker_project.server.model.repositories.TherapeuticEffectRepository;
+import com.nc.netcracker_project.server.model.repositories.ProducerRepository;
+import com.nc.netcracker_project.server.model.repositories.PharmTerGroupRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ public class DrugDataControlImplTest {
     @Autowired
     private DrugRepository repository;
     @Autowired
-    private TherapeuticEffectRepository trepo;
+    private PharmTerGroupRepository trepo;
     @Autowired
-    private PharmachologicEffectRepository prepo;
+    private ProducerRepository prepo;
 
-    private TherapeuticEffectDataControl tEffectDataControl = new TherapeuticEffectDataControlImpl(trepo);
-    private PharmachologicEffectDataControl pEffectDataControl = new PharmachologicEffectDataControlImpl(prepo);
+    private PharmTerGroupDataControl tEffectDataControl = new PharmTerGroupDataControlImpl(trepo);
+    private ProducerDataControl pEffectDataControl = new ProducerDataControlImpl(prepo);
     private DrugDataControl drugDataControl = new DrugDataControlImpl(repository, tEffectDataControl, pEffectDataControl);
 
     @Test

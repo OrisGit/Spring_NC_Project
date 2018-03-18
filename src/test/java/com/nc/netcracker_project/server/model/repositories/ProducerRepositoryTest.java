@@ -1,6 +1,6 @@
 package com.nc.netcracker_project.server.model.repositories;
 
-import com.nc.netcracker_project.server.model.entities.PharmachologicEffectEntity;
+import com.nc.netcracker_project.server.model.entities.ProducerEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,54 +16,54 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PharmachologicEffectRepositoryTest {
+public class ProducerRepositoryTest {
 
     @Autowired
-    private PharmachologicEffectRepository pEffectRepository;
+    private ProducerRepository pEffectRepository;
     
     @Test
     public void saveTest(){
-        PharmachologicEffectEntity pEffect = createPharmachologicEffectEntity();
+        ProducerEntity pEffect = createPharmachologicEffectEntity();
 
-        PharmachologicEffectEntity res = pEffectRepository.save(pEffect);
+        ProducerEntity res = pEffectRepository.save(pEffect);
 
         assertThat(res).isEqualTo(pEffect);
     }
 
     @Test
     public void findAllTest(){
-        PharmachologicEffectEntity PharmachologicEffectEntity = createPharmachologicEffectEntity();
+        ProducerEntity ProducerEntity = createPharmachologicEffectEntity();
 
-        PharmachologicEffectEntity res = pEffectRepository.save(PharmachologicEffectEntity);
+        ProducerEntity res = pEffectRepository.save(ProducerEntity);
 
-        int found = ((List<PharmachologicEffectEntity>) pEffectRepository.findAll()).size();
+        int found = ((List<ProducerEntity>) pEffectRepository.findAll()).size();
         assertThat(found).isEqualTo(1);
     }
 
     @Test
     public void deleteByObjectTest(){
-        PharmachologicEffectEntity pEffect = createPharmachologicEffectEntity();
+        ProducerEntity pEffect = createPharmachologicEffectEntity();
 
-        PharmachologicEffectEntity res = pEffectRepository.save(pEffect);
+        ProducerEntity res = pEffectRepository.save(pEffect);
 
         pEffectRepository.delete(pEffect);
     }
 
     @Test
     public void deleteByUUIDTest(){
-        PharmachologicEffectEntity pEffect = createPharmachologicEffectEntity();
+        ProducerEntity pEffect = createPharmachologicEffectEntity();
 
-        PharmachologicEffectEntity res = pEffectRepository.save(pEffect);
+        ProducerEntity res = pEffectRepository.save(pEffect);
 
         pEffectRepository.delete(pEffect.getId());
     }
 
     @Test
     public void findOneTest(){
-        PharmachologicEffectEntity pEffect = createPharmachologicEffectEntity();
+        ProducerEntity pEffect = createPharmachologicEffectEntity();
         pEffectRepository.save(pEffect);
 
-        PharmachologicEffectEntity res = pEffectRepository.findOne(pEffect.getId());
+        ProducerEntity res = pEffectRepository.findOne(pEffect.getId());
 
         assertThat(res).isEqualTo(pEffect);
     }

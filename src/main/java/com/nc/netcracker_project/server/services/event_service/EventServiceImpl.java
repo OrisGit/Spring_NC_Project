@@ -53,13 +53,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateTherapheuticEffects(){
-        update(EventListener::updateTherapheuticEffects);
+    public void updatePharmTerGroups(){
+        update(EventListener::updatePharmTerGroups);
     }
 
     @Override
-    public void updatePharmachologicEffects(){
-        update(EventListener::updatePharmachologicEffects);
+    public void updateProducers(){
+        update(EventListener::updateProducers);
     }
 
     private void update(Consumer consumer){

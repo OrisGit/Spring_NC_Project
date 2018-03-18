@@ -8,24 +8,24 @@ public class DataGenerator {
     private static final DataFactory df = new DataFactory();
 
     public static DrugEntity createDrugEntity(){
-        TherapeuticEffectEntity therapeuticEffectEntity = createTherapeuticEffectEntity();
-        PharmachologicEffectEntity pharmachologicEffectEntity = createPharmachologicEffectEntity();
+        PharmTerGroupEntity pharmTerGroupEntity = createTherapeuticEffectEntity();
+        ProducerEntity producerEntity = createPharmachologicEffectEntity();
         return new DrugEntity(df.getRandomText(1,255),df.getRandomText(1,255),df.getRandomText(1,255),
-                df.getRandomText(1,255),pharmachologicEffectEntity,therapeuticEffectEntity,df.getRandomText(1,255));
+                df.getRandomText(1,255), producerEntity, pharmTerGroupEntity,df.getRandomText(1,255));
     }
 
     public static DrugstoreEntity createDrugstoreEntity(){
         return new DrugstoreEntity(df.getRandomText(1,255),df.getRandomText(1,255),df.getRandomText(1,255),df.getRandomText(1,255),
-                (long)df.getNumberBetween(100000,10000000),df.getRandomText(1,255),(short)1);
+                df.getRandomText(1,255),df.getRandomText(1,255),(short)1);
     }
 
-    public static PharmachologicEffectEntity createPharmachologicEffectEntity(){
-        return new PharmachologicEffectEntity(df.getRandomText(1,255),df.getRandomText(1,255));
+    public static ProducerEntity createPharmachologicEffectEntity(){
+        return new ProducerEntity(df.getRandomText(1,255),df.getRandomText(1,255));
 
     }
 
-    public static TherapeuticEffectEntity createTherapeuticEffectEntity(){
-        return new TherapeuticEffectEntity(df.getRandomText(1,255),df.getRandomText(1,255));
+    public static PharmTerGroupEntity createTherapeuticEffectEntity(){
+        return new PharmTerGroupEntity(df.getRandomText(1,255),df.getRandomText(1,255));
 
     }
 

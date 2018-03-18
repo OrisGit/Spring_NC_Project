@@ -26,22 +26,22 @@ public class WebController {
     private DrugDataControl drugDataControl;
     private DrugstoreDataControl drugstoreDataControl;
     private PriceDataControl priceDataControl;
-    private PharmachologicEffectDataControl pEffectDataControl;
-    private TherapeuticEffectDataControl tEffectDataControl;
+    private ProducerDataControl producerDataControl;
+    private PharmTerGroupDataControl pharmTerGroupDataControl;
     private Importer importer;
     private Exporter exporter;
     private EventService eventService;
 
     @Autowired
     public WebController(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
-                         PriceDataControl priceDataControl, PharmachologicEffectDataControl pEffectDataControl,
-                         TherapeuticEffectDataControl tEffectDataControl, Importer importer, Exporter exporter,
+                         PriceDataControl priceDataControl, ProducerDataControl producerDataControl,
+                         PharmTerGroupDataControl pharmTerGroupDataControl, Importer importer, Exporter exporter,
                          EventService eventService) {
         this.drugDataControl = drugDataControl;
         this.drugstoreDataControl = drugstoreDataControl;
         this.priceDataControl = priceDataControl;
-        this.pEffectDataControl = pEffectDataControl;
-        this.tEffectDataControl = tEffectDataControl;
+        this.producerDataControl = producerDataControl;
+        this.pharmTerGroupDataControl = pharmTerGroupDataControl;
         this.importer = importer;
         this.exporter = exporter;
         this.eventService = eventService;
@@ -172,60 +172,60 @@ public class WebController {
     //endregion
 
     //region TherapeuticEffect
-    @GetMapping("/tEffect")
-    public Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect() {
-        return tEffectDataControl.getAll();
+    @GetMapping("/pharmTerGroup")
+    public Iterable<PharmTerGroupEntity> getAllPharmTerGroup() {
+        return pharmTerGroupDataControl.getAll();
     }
 
-    @GetMapping("/tEffect/{id}")
-    public ResponseEntity<TherapeuticEffectEntity> getTherapeuticEffect(@PathVariable String id) {
+    @GetMapping("/pharmTerGroup/{id}")
+    public ResponseEntity<PharmTerGroupEntity> getpharmTerGroup(@PathVariable String id) {
         UUID uuid = UUID.fromString(id);
-        TherapeuticEffectEntity therapeuticEffect = tEffectDataControl.get(uuid);
-        if (therapeuticEffect == null) {
+        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
+        if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(therapeuticEffect);
+        return ResponseEntity.ok(pharmTerGroup);
     }
 
-    @PostMapping("/tEffect/new")
-    public ResponseEntity<TherapeuticEffectEntity> createTherapeuticEffect(@Valid @RequestBody TherapeuticEffectEntity therapeuticEffectEntity) {
+    @PostMapping("/pharmTerGroup/new")
+    public ResponseEntity<PharmTerGroupEntity> createPharmTerGroup(@Valid @RequestBody PharmTerGroupEntity pharmTerGroup) {
         try {
-            tEffectDataControl.saveOrUpdate(therapeuticEffectEntity);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
+            eventService.updatePharmTerGroups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/tEffect/{id}")
-    public ResponseEntity<TherapeuticEffectEntity> updateTherapeuticEffect(@PathVariable String id,
-                                                                           @Valid @RequestBody TherapeuticEffectEntity therapeuticEffectEntity) {
+    @PutMapping("/pharmTerGroup/{id}")
+    public ResponseEntity<PharmTerGroupEntity> updatepharmTerGroup(@PathVariable String id,
+                                                                   @Valid @RequestBody PharmTerGroupEntity pharmTerGroupEntity) {
         UUID uuid = UUID.fromString(id);
-        TherapeuticEffectEntity therapeuticEffect = tEffectDataControl.get(uuid);
-        if (therapeuticEffect == null) {
+        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
+        if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
-        therapeuticEffectEntity.setId(therapeuticEffect.getId());
+        pharmTerGroupEntity.setId(pharmTerGroup.getId());
         try {
-            tEffectDataControl.saveOrUpdate(therapeuticEffectEntity);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroupEntity);
+            eventService.updatePharmTerGroups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(therapeuticEffectEntity);
+        return ResponseEntity.ok(pharmTerGroupEntity);
     }
 
-    @DeleteMapping("/tEffect/{id}")
-    public ResponseEntity<TherapeuticEffectEntity> deleteTherapeuticEffect(@PathVariable String id) {
+    @DeleteMapping("/pharmTerGroup/{id}")
+    public ResponseEntity<PharmTerGroupEntity> deleteTherapeuticEffect(@PathVariable String id) {
         UUID uuid = UUID.fromString(id);
-        TherapeuticEffectEntity therapeuticEffect = tEffectDataControl.get(uuid);
-        if (therapeuticEffect == null) {
+        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
+        if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
         try {
-            tEffectDataControl.delete(therapeuticEffect);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.delete(pharmTerGroup);
+            eventService.updatePharmTerGroups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -234,60 +234,60 @@ public class WebController {
     //endregion
 
     //region PharmacologicEffect
-    @GetMapping("/pEffect")
-    public Iterable<PharmachologicEffectEntity> getAllPharmachologicEffect() {
-        return pEffectDataControl.getAll();
+    @GetMapping("/producer")
+    public Iterable<ProducerEntity> getAllProducers() {
+        return producerDataControl.getAll();
     }
 
-    @GetMapping("/pEffect/{id}")
-    public ResponseEntity<PharmachologicEffectEntity> getPharmachologicEffect(@PathVariable String id) {
+    @GetMapping("/producer/{id}")
+    public ResponseEntity<ProducerEntity> getProducer(@PathVariable String id) {
         UUID uuid = UUID.fromString(id);
-        PharmachologicEffectEntity pharmachologicEffect = pEffectDataControl.get(uuid);
-        if (pharmachologicEffect == null) {
+        ProducerEntity producer = producerDataControl.get(uuid);
+        if (producer == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(pharmachologicEffect);
+        return ResponseEntity.ok(producer);
     }
 
-    @PostMapping("/pEffect/new")
-    public ResponseEntity<PharmachologicEffectEntity> createPharmachologicEffect(@Valid @RequestBody PharmachologicEffectEntity pharmachologicEffectEntity) {
+    @PostMapping("/producer/new")
+    public ResponseEntity<ProducerEntity> createProducer(@Valid @RequestBody ProducerEntity producerEntity) {
         try {
-            pEffectDataControl.saveOrUpdate(pharmachologicEffectEntity);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.saveOrUpdate(producerEntity);
+            eventService.updateProducers();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/pEffect/{id}")
-    public ResponseEntity<PharmachologicEffectEntity> updatePharmachologicEffect(@PathVariable String id,
-                                                                                 @Valid @RequestBody PharmachologicEffectEntity pharmachologicEffectEntity) {
+    @PutMapping("/producer/{id}")
+    public ResponseEntity<ProducerEntity> updateProducer(@PathVariable String id,
+                                                                     @Valid @RequestBody ProducerEntity producerEntity) {
         UUID uuid = UUID.fromString(id);
-        PharmachologicEffectEntity pharmachologicEffect = pEffectDataControl.get(uuid);
-        if (pharmachologicEffect == null) {
+        ProducerEntity producer = producerDataControl.get(uuid);
+        if (producer == null) {
             return ResponseEntity.notFound().build();
         }
-        pharmachologicEffectEntity.setId(pharmachologicEffect.getId());
+        producerEntity.setId(producer.getId());
         try {
-            pEffectDataControl.saveOrUpdate(pharmachologicEffectEntity);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.saveOrUpdate(producerEntity);
+            eventService.updateProducers();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(pharmachologicEffectEntity);
+        return ResponseEntity.ok(producerEntity);
     }
 
-    @DeleteMapping("/pEffect/{id}")
-    public ResponseEntity<PharmachologicEffectEntity> deletePharmachologicEffect(@PathVariable String id) {
+    @DeleteMapping("/producer/{id}")
+    public ResponseEntity<ProducerEntity> deleteProducer(@PathVariable String id) {
         UUID uuid = UUID.fromString(id);
-        PharmachologicEffectEntity pharmachologicEffect = pEffectDataControl.get(uuid);
-        if (pharmachologicEffect == null) {
+        ProducerEntity producer = producerDataControl.get(uuid);
+        if (producer == null) {
             return ResponseEntity.notFound().build();
         }
         try {
-            pEffectDataControl.delete(pharmachologicEffect);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.delete(producer);
+            eventService.updateProducers();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

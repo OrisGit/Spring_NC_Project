@@ -6,7 +6,6 @@ import com.nc.netcracker_project.desktop_rmi_client.entity.Price;
 import com.nc.netcracker_project.desktop_rmi_client.util.DialogFactory;
 import com.nc.netcracker_project.desktop_rmi_client.util.EventListenerImpl;
 import com.nc.netcracker_project.desktop_rmi_client.util.Mapper;
-import com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer;
 import com.nc.netcracker_project.server.services.event_service.EventListener;
 import com.nc.netcracker_project.server.controllers.rmi.RMIController;
 import com.nc.netcracker_project.server.model.entities.*;
@@ -18,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
@@ -56,8 +54,8 @@ public class ViewFX implements Initializable{
     private ObservableList<Drug> drugs;
     private ObservableList<Drugstore> drugstores;
     private ObservableList<Price> prices;
-    private ObservableList<PharmachologicEffectEntity> pharmachologicEffects;
-    private ObservableList<TherapeuticEffectEntity> therapeuticEffects;
+    private ObservableList<ProducerEntity> producers;
+    private ObservableList<PharmTerGroupEntity> pharmTerGroups;
     //endregion
 
     //region Вывод всех записей в БД
@@ -86,22 +84,21 @@ public class ViewFX implements Initializable{
         }
     }
 
-    private void displayPharmacologicEffects() {
+    private void displayProducers() {
         try {
-            pharmachologicEffects.clear();
-            List<PharmachologicEffectEntity> list = (List<PharmachologicEffectEntity>)controller.getAllPharmachologicEffect();
-            pharmachologicEffects.addAll(list);
+            producers.clear();
+            List<ProducerEntity> list = (List<ProducerEntity>)controller.getAllProducers();
+            producers.addAll(list);
         } catch (RemoteException e) {
             dialogFactory.displayError(e.getMessage());
         }
     }
 
-    private void displayTherapeuticEffects() {
-        LOG.info("displayTherapeuticEffects");
+    private void displayPharmTerGroups() {
         try {
-            therapeuticEffects.clear();
-            List<TherapeuticEffectEntity> list = (List<TherapeuticEffectEntity>)controller.getAllTherapeuticEffect();
-            therapeuticEffects.addAll(list);
+            pharmTerGroups.clear();
+            List<PharmTerGroupEntity> list = (List<PharmTerGroupEntity>)controller.getAllPharmTerGroups();
+            pharmTerGroups.addAll(list);
         } catch (RemoteException e) {
             dialogFactory.displayError(e.getMessage());
         }
@@ -118,8 +115,8 @@ public class ViewFX implements Initializable{
     }
 
     public void updateAll(){
-        displayTherapeuticEffects();
-        displayPharmacologicEffects();
+        displayPharmTerGroups();
+        displayProducers();
         displayDrugs();
         displayDrugstores();
         displayPrices();
@@ -128,13 +125,13 @@ public class ViewFX implements Initializable{
     //endregion
 
     //region Добавление записи
-    private void addPharmacologicEffect() {
-        Dialog<PharmachologicEffectEntity> dialog = dialogFactory.getAddPEffectDialog();
-        Optional<PharmachologicEffectEntity> result = dialog.showAndWait();
-        result.ifPresent(pharmachologicEffectEntity -> {
+    private void addProducer() {
+        Dialog<ProducerEntity> dialog = dialogFactory.getAddProducerDialog();
+        Optional<ProducerEntity> result = dialog.showAndWait();
+        result.ifPresent(producerEntity -> {
             try {
-                if(!controller.addPharmachologicEffect(pharmachologicEffectEntity)){
-                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы фамакогологических эффектов");
+                if(!controller.addProducer(producerEntity)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы производителей");
                 }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
@@ -142,13 +139,13 @@ public class ViewFX implements Initializable{
         });
     }
 
-    private void addTherapeuticEffect() {
-        Dialog<TherapeuticEffectEntity> dialog = dialogFactory.getAddTEffectDialog();
-        Optional<TherapeuticEffectEntity> result = dialog.showAndWait();
-        result.ifPresent(therapeuticEffectEntity -> {
+    private void addPharmTerGroup() {
+        Dialog<PharmTerGroupEntity> dialog = dialogFactory.getAddPharmTerGroupDialog();
+        Optional<PharmTerGroupEntity> result = dialog.showAndWait();
+        result.ifPresent(pharmTerGroup -> {
             try {
-                if(!controller.addTherapeuticEffect(therapeuticEffectEntity)){
-                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы терапевтических эффектов");
+                if(!controller.addPharmTerGroup(pharmTerGroup)){
+                    dialogFactory.displayError("Произошла ошибка при обновлении таблицы фармакотерапевтичесих групп");
                 }
             } catch (RemoteException e) {
                 dialogFactory.displayError(e.getMessage());
@@ -250,7 +247,7 @@ public class ViewFX implements Initializable{
                 DrugstoreEntity drugstore = result.get();
                 drugstore.setId(drugstores.get(indexSelectElement).getId());
                 try {
-                    if(!controller.addDrugstore(drugstore)){
+                    if(!controller.updateDrugstore(drugstore)){
                         dialogFactory.displayError("Произошла ошибка при обновлении таблицы аптек");
                     }
                 } catch (RemoteException e) {
@@ -415,12 +412,12 @@ public class ViewFX implements Initializable{
         drugs = tableDrugs.getItems();
         drugstores = tableDrugstores.getItems();
         prices = tablePrices.getItems();
-        pharmachologicEffects = FXCollections.observableList(new LinkedList<>());
-        therapeuticEffects = FXCollections.observableList(new LinkedList<>());
+        producers = FXCollections.observableList(new LinkedList<>());
+        pharmTerGroups = FXCollections.observableList(new LinkedList<>());
         eventListener = new EventListenerImpl( this::displayDrugs,this::displayDrugstores,
-                this::displayPrices, this::displayTherapeuticEffects,this::displayPharmacologicEffects);
-        dialogFactory = new DialogFactory(therapeuticEffects,pharmachologicEffects,drugs,drugstores,prices,
-                this::addTherapeuticEffect,this::addPharmacologicEffect);
+                this::displayPrices, this::displayPharmTerGroups,this::displayProducers);
+        dialogFactory = new DialogFactory(pharmTerGroups, producers,drugs,drugstores,prices,
+                this::addPharmTerGroup,this::addProducer);
     }
     //endregion
 }

@@ -18,27 +18,27 @@ public class TableInitializer {
         formCol.setCellValueFactory(
                 cellData -> cellData.getValue().releaseFormProperty());
 
-        TableColumn<Drug, String> manufacturerCol = new TableColumn<>("Производитель");
-        manufacturerCol.setCellValueFactory(
-                cellData -> cellData.getValue().manufacturerProperty());
+        TableColumn<Drug, String> indicationsForUseCol = new TableColumn<>("Показания к применению");
+        indicationsForUseCol.setCellValueFactory(
+                cellData -> cellData.getValue().activeIngredientProperty());
 
-        TableColumn<Drug, String> ingredientCol = new TableColumn<>("Активный ингредиент");
+        TableColumn<Drug, String> ingredientCol = new TableColumn<>("Действующее вещество");
         ingredientCol.setCellValueFactory(
                 cellData -> cellData.getValue().activeIngredientProperty());
 
-        TableColumn<Drug, String> pEffectCol = new TableColumn<>("Фармакологический эффект");
-        pEffectCol.setCellValueFactory(
-                cellData -> cellData.getValue().pharmacologicalEffectProperty());
+        TableColumn<Drug, String> producerCol = new TableColumn<>("Производитель");
+        producerCol.setCellValueFactory(
+                cellData -> cellData.getValue().producerProperty());
 
-        TableColumn<Drug, String> tEffectCol = new TableColumn<>("Терапевтический эффект");
-        tEffectCol.setCellValueFactory(
-                cellData -> cellData.getValue().therapeuticEffectProperty());
+        TableColumn<Drug, String> pharmTerGroupCol = new TableColumn<>("Фармакотерапевтическая группа");
+        pharmTerGroupCol.setCellValueFactory(
+                cellData -> cellData.getValue().pharmTerGroupProperty());
 
         TableColumn<Drug, String> descCol = new TableColumn<>("Описание");
         descCol.setCellValueFactory(
                 cellData -> cellData.getValue().descriptionProperty());
 
-        tableDrugs.getColumns().addAll(nameCol, formCol, manufacturerCol, ingredientCol, pEffectCol, tEffectCol, descCol);
+        tableDrugs.getColumns().addAll(nameCol, formCol, indicationsForUseCol, ingredientCol, producerCol, pharmTerGroupCol, descCol);
 
     }
 

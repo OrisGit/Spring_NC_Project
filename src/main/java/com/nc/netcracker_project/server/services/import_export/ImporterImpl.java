@@ -12,7 +12,6 @@ import com.nc.netcracker_project.server.services.import_export.marshalling.XmlUn
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,20 +22,20 @@ public class ImporterImpl implements Importer {
     private static final Logger LOG = Logger.getLogger(ImporterImpl.class);
     private DrugDataControl drugDataControl;
     private DrugstoreDataControl drugstoreDataControl;
-    private TherapeuticEffectDataControl therapeuticEffectDataControl;
-    private PharmachologicEffectDataControl pharmachologicEffectDataControl;
+    private PharmTerGroupDataControl pharmTerGroupDataControl;
+    private ProducerDataControl producerDataControl;
     private PriceDataControl priceDataControl;
     private EventService eventService;
 
     @Autowired
     public ImporterImpl(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
-                        TherapeuticEffectDataControl therapeuticEffectDataControl,
-                        PharmachologicEffectDataControl pharmachologicEffectDataControl, PriceDataControl priceDataControl,
+                        PharmTerGroupDataControl pharmTerGroupDataControl,
+                        ProducerDataControl producerDataControl, PriceDataControl priceDataControl,
                         EventService eventService) {
         this.drugDataControl = drugDataControl;
         this.drugstoreDataControl = drugstoreDataControl;
-        this.therapeuticEffectDataControl = therapeuticEffectDataControl;
-        this.pharmachologicEffectDataControl = pharmachologicEffectDataControl;
+        this.pharmTerGroupDataControl = pharmTerGroupDataControl;
+        this.producerDataControl = producerDataControl;
         this.priceDataControl = priceDataControl;
         this.eventService = eventService;
     }
@@ -58,16 +57,16 @@ public class ImporterImpl implements Importer {
         }
 
         if(entityWrapper!=null){
-            importEntities(entityWrapper.getPharmachologicEffects(), (a) -> {
+            importEntities(entityWrapper.getProducers(), (a) -> {
                 try {
-                    pharmachologicEffectDataControl.saveOrUpdate((PharmachologicEffectEntity) a);
+                    producerDataControl.saveOrUpdate((ProducerEntity) a);
                 } catch (Exception e) {
                     throw new ImportException(e);
                 }
             });
-            importEntities(entityWrapper.getTherapeuticEffects(), (a) -> {
+            importEntities(entityWrapper.getPharmTerGroups(), (a) -> {
                 try {
-                    therapeuticEffectDataControl.saveOrUpdate((TherapeuticEffectEntity) a);
+                    pharmTerGroupDataControl.saveOrUpdate((PharmTerGroupEntity) a);
                 } catch (Exception e) {
                     throw new ImportException(e);
                 }
@@ -94,8 +93,8 @@ public class ImporterImpl implements Importer {
                 }
             });
         }
-        eventService.updateTherapheuticEffects();
-        eventService.updatePharmachologicEffects();
+        eventService.updatePharmTerGroups();
+        eventService.updateProducers();
         eventService.updateDrugs();
         eventService.updateDrugstores();
         eventService.updatePrices();

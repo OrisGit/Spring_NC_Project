@@ -1,8 +1,8 @@
 package com.nc.netcracker_project.server.model.repositories;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
-import com.nc.netcracker_project.server.model.entities.PharmachologicEffectEntity;
-import com.nc.netcracker_project.server.model.entities.TherapeuticEffectEntity;
+import com.nc.netcracker_project.server.model.entities.PharmTerGroupEntity;
+import com.nc.netcracker_project.server.model.entities.ProducerEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class DrugRepositoryTest {
     @Autowired
     private DrugRepository drugRepository;
     @Autowired
-    private TherapeuticEffectRepository tr;
+    private PharmTerGroupRepository tr;
     @Autowired
-    private PharmachologicEffectRepository pr;
+    private ProducerRepository pr;
 
     @Test
     public void saveTest(){
@@ -89,15 +89,15 @@ public class DrugRepositoryTest {
 
     @Test
     public void saveTest2(){
-        PharmachologicEffectEntity p = createPharmachologicEffectEntity();
-        TherapeuticEffectEntity t = createTherapeuticEffectEntity();
+        ProducerEntity p = createPharmachologicEffectEntity();
+        PharmTerGroupEntity t = createTherapeuticEffectEntity();
 
         pr.save(p);
         tr.save(t);
 
         DrugEntity drug = createDrugEntity();
-        drug.setTherapeuticEffect(t);
-        drug.setPharmachologicEffect(p);
+        drug.setPharmTerGroup(t);
+        drug.setProducer(p);
         DrugEntity res = drugRepository.save(drug);
 
         assertThat(res).isEqualTo(drug);

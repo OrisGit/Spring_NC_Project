@@ -10,21 +10,21 @@ public class Drug {
     private final DrugEntity drugEntity;
     private final StringProperty name;
     private final StringProperty releaseForm;
-    private final StringProperty manufacturer;
+    private final StringProperty pharmTerGroup;
+    private final StringProperty indicationsForUse;
+    private final StringProperty producer;
     private final StringProperty activeIngredient;
-    private final StringProperty pharmacologicalEffect;
-    private final StringProperty therapeuticEffect;
     private final StringProperty description;
 
     public Drug(DrugEntity drugEntity) {
         this.drugEntity = drugEntity;
         this.name = new SimpleStringProperty(drugEntity.getName());
         this.releaseForm = new SimpleStringProperty(drugEntity.getReleaseForm());
-        this.manufacturer = new SimpleStringProperty(drugEntity.getManufacturer());
         this.activeIngredient = new SimpleStringProperty(drugEntity.getActiveIngredient());
-        this.pharmacologicalEffect = new SimpleStringProperty(drugEntity.getPharmachologicEffect().getName());
-        this.therapeuticEffect = new SimpleStringProperty(drugEntity.getTherapeuticEffect().getName());
+        this.producer = new SimpleStringProperty(drugEntity.getProducer().getName());
+        this.pharmTerGroup = new SimpleStringProperty(drugEntity.getPharmTerGroup().getName());
         this.description = new SimpleStringProperty(drugEntity.getDescription());
+        this.indicationsForUse = new SimpleStringProperty(drugEntity.getIndicationsForUse());
     }
 
     public String getName() {
@@ -43,14 +43,6 @@ public class Drug {
         return releaseForm;
     }
 
-    public String getManufacturer() {
-        return manufacturer.get();
-    }
-
-    public StringProperty manufacturerProperty() {
-        return manufacturer;
-    }
-
     public String getActiveIngredient() {
         return activeIngredient.get();
     }
@@ -59,20 +51,20 @@ public class Drug {
         return activeIngredient;
     }
 
-    public String getPharmacologicalEffect() {
-        return pharmacologicalEffect.get();
+    public String getProducer() {
+        return producer.get();
     }
 
-    public StringProperty pharmacologicalEffectProperty() {
-        return pharmacologicalEffect;
+    public StringProperty producerProperty() {
+        return producer;
     }
 
-    public String getTherapeuticEffect() {
-        return therapeuticEffect.get();
+    public String getPharmTerGroup() {
+        return pharmTerGroup.get();
     }
 
-    public StringProperty therapeuticEffectProperty() {
-        return therapeuticEffect;
+    public StringProperty pharmTerGroupProperty() {
+        return pharmTerGroup;
     }
 
     public String getDescription() {
@@ -85,6 +77,14 @@ public class Drug {
 
     public DrugEntity getDrugEntity() {
         return drugEntity;
+    }
+
+    public String getIndicationsForUse() {
+        return indicationsForUse.get();
+    }
+
+    public StringProperty indicationsForUseProperty() {
+        return indicationsForUse;
     }
 
     public UUID getId(){return drugEntity.getId();}

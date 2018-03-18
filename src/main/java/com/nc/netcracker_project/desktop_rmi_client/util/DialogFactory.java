@@ -18,36 +18,36 @@ import static com.nc.netcracker_project.desktop_rmi_client.util.TableInitializer
 
 public class DialogFactory {
 
-    private Dialog<TherapeuticEffectEntity> tEffectDialog;
-    private Dialog<PharmachologicEffectEntity> pEffectDialog;
+    private Dialog<PharmTerGroupEntity> pharmTerGroupDialog;
+    private Dialog<ProducerEntity> producerDialog;
     private Dialog<DrugEntity> drugDialog;
     private Dialog<DrugstoreEntity> drugstoreDialog;
     private Dialog<PriceEntity> priceDialog;
     private Alert alertDialog;
 
-    private ObservableList<TherapeuticEffectEntity> therapeuticEffects;
-    private ObservableList<PharmachologicEffectEntity> pharmachologicEffects;
+    private ObservableList<PharmTerGroupEntity> pharmTerGroups;
+    private ObservableList<ProducerEntity> producers;
     private ObservableList<Drug> drugs;
     private ObservableList<Drugstore> drugstores;
     private ObservableList<Price> prices;
-    private Action addPharmacologicEffect;
-    private Action addTherapeuticEffect;
+    private Action addProducer;
+    private Action addPharmTerGroup;
 
-    public DialogFactory(ObservableList<TherapeuticEffectEntity> tEffects, ObservableList<PharmachologicEffectEntity> pEffects, ObservableList<Drug> drugs, ObservableList<Drugstore> drugstores,
-                         ObservableList<Price> prices, Action addTherapeuticEffect, Action addPharmacologicEffect){
-        this.addPharmacologicEffect = addPharmacologicEffect;
-        this.addTherapeuticEffect = addTherapeuticEffect;
-        this.pharmachologicEffects = pEffects;
-        this.therapeuticEffects = tEffects;
+    public DialogFactory(ObservableList<PharmTerGroupEntity> pharmTerGroups, ObservableList<ProducerEntity> producers, ObservableList<Drug> drugs, ObservableList<Drugstore> drugstores,
+                         ObservableList<Price> prices, Action addPharmTerGroup, Action addProducer){
+        this.addProducer = addProducer;
+        this.addPharmTerGroup = addPharmTerGroup;
+        this.producers = producers;
+        this.pharmTerGroups = pharmTerGroups;
         this.drugs = drugs;
         this.drugstores = drugstores;
         this.prices = prices;
         createAlertDialog();
         createDrugDialog();
         createDrugstoreDialog();
-        createPharmacologicEffectDialog();
+        createProducerDialog();
         createPriceDialog();
-        createTherapeuticEffectDialog();
+        createPharmTerGroupDialog();
     }
 
     public void displayError(String message) {
@@ -61,10 +61,10 @@ public class DialogFactory {
         alertDialog.setHeaderText(null);
     }
 
-    private void createTherapeuticEffectDialog(){
-        tEffectDialog = new Dialog<>();
-        tEffectDialog.setTitle("Новый терапевтический эффект");
-        tEffectDialog.setHeaderText(null);
+    private void createPharmTerGroupDialog(){
+        pharmTerGroupDialog = new Dialog<>();
+        pharmTerGroupDialog.setTitle("Новая фармакотерапевтическая группа");
+        pharmTerGroupDialog.setHeaderText(null);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -78,23 +78,23 @@ public class DialogFactory {
         grid.add(new Label("Описание:"), 0, 1);
         grid.add(description, 1, 1);
 
-        tEffectDialog.getDialogPane().setContent(grid);
-        tEffectDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        pharmTerGroupDialog.getDialogPane().setContent(grid);
+        pharmTerGroupDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        tEffectDialog.setResultConverter(buttonType -> {
+        pharmTerGroupDialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
                 if (!name.getText().isEmpty()) {
-                    return new TherapeuticEffectEntity(name.getText(), description.getText());
+                    return new PharmTerGroupEntity(name.getText(), description.getText());
                 }
             }
             return null;
         });
     }
 
-    private void createPharmacologicEffectDialog(){
-        pEffectDialog = new Dialog<>();
-        pEffectDialog.setTitle("Новый фармакологический эффект");
-        pEffectDialog.setHeaderText(null);
+    private void createProducerDialog(){
+        producerDialog = new Dialog<>();
+        producerDialog.setTitle("Новый производитель");
+        producerDialog.setHeaderText(null);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -108,13 +108,13 @@ public class DialogFactory {
         grid.add(new Label("Описание:"), 0, 1);
         grid.add(description, 1, 1);
 
-        pEffectDialog.getDialogPane().setContent(grid);
-        pEffectDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        producerDialog.getDialogPane().setContent(grid);
+        producerDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        pEffectDialog.setResultConverter(buttonType -> {
+        producerDialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
                 if (!name.getText().isEmpty()) {
-                    return new PharmachologicEffectEntity(name.getText(), description.getText());
+                    return new ProducerEntity(name.getText(), description.getText());
                 }
             }
             return null;
@@ -132,22 +132,22 @@ public class DialogFactory {
 
         TextField name = new TextField();
         TextField releaseForm = new TextField();
-        TextField manufacturer = new TextField();
+        TextField indicationsForUse = new TextField();
         TextField activeIngredient = new TextField();
         TextArea description = new TextArea();
         description.setPrefWidth(350);
 
-        ListView<PharmachologicEffectEntity> pEffectSelector = new ListView<>();
-        pEffectSelector.setPrefSize(300, 100);
+        ListView<ProducerEntity> producerSelector = new ListView<>();
+        producerSelector.setPrefSize(300, 100);
 
-        pEffectSelector.setCellFactory(
-                new Callback<ListView<PharmachologicEffectEntity>, ListCell<PharmachologicEffectEntity>>() {
+        producerSelector.setCellFactory(
+                new Callback<ListView<ProducerEntity>, ListCell<ProducerEntity>>() {
                     @Override
-                    public ListCell<PharmachologicEffectEntity> call(ListView<PharmachologicEffectEntity> param) {
+                    public ListCell<ProducerEntity> call(ListView<ProducerEntity> param) {
 
-                        return new ListCell<PharmachologicEffectEntity>() {
+                        return new ListCell<ProducerEntity>() {
                             @Override
-                            public void updateItem(PharmachologicEffectEntity item, boolean empty) {
+                            public void updateItem(ProducerEntity item, boolean empty) {
                                 super.updateItem(item, empty);
                                 if (item != null) {
                                     setText(item.getName());
@@ -160,24 +160,24 @@ public class DialogFactory {
                     }
                 });
 
-        pEffectSelector.setItems(pharmachologicEffects);
+        producerSelector.setItems(producers);
 
         Button addPEffectBtn = new Button("Добавить...");
         addPEffectBtn.setOnAction(event -> {
-            addPharmacologicEffect.action();
+            addProducer.action();
         });
 
-        ListView<TherapeuticEffectEntity> tEffectSelector = new ListView<>();
-        tEffectSelector.setPrefSize(300, 100);
+        ListView<PharmTerGroupEntity> pharmTerGroupSelector = new ListView<>();
+        pharmTerGroupSelector.setPrefSize(300, 100);
 
-        tEffectSelector.setCellFactory(
-                new Callback<ListView<TherapeuticEffectEntity>, ListCell<TherapeuticEffectEntity>>() {
+        pharmTerGroupSelector.setCellFactory(
+                new Callback<ListView<PharmTerGroupEntity>, ListCell<PharmTerGroupEntity>>() {
                     @Override
-                    public ListCell<TherapeuticEffectEntity> call(ListView<TherapeuticEffectEntity> param) {
+                    public ListCell<PharmTerGroupEntity> call(ListView<PharmTerGroupEntity> param) {
 
-                        return new ListCell<TherapeuticEffectEntity>() {
+                        return new ListCell<PharmTerGroupEntity>() {
                             @Override
-                            public void updateItem(TherapeuticEffectEntity item, boolean empty) {
+                            public void updateItem(PharmTerGroupEntity item, boolean empty) {
                                 super.updateItem(item, empty);
                                 if (item != null) {
                                     setText(String.format("%s: %s", item.getName(), item.getDescription()));
@@ -190,33 +190,33 @@ public class DialogFactory {
                     }
                 });
 
-        tEffectSelector.setItems(therapeuticEffects);
+        pharmTerGroupSelector.setItems(pharmTerGroups);
 
         Button addTEffectBtn = new Button("Добавить...");
         addTEffectBtn.setOnAction(event -> {
-            addTherapeuticEffect.action();
+            addPharmTerGroup.action();
         });
 
         name.setId("name");
         releaseForm.setId("releaseForm");
-        manufacturer.setId("manufacturer");
+        indicationsForUse.setId("indicationsForUse");
         activeIngredient.setId("activeIngredient");
         description.setId("description");
-        pEffectSelector.setId("pEffectSelector");
-        tEffectSelector.setId("tEffectSelector");
+        producerSelector.setId("producerSelector");
+        pharmTerGroupSelector.setId("pharmTerGroupSelector");
 
         grid.add(new Label("Название:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Форма выпуска:"), 0, 1);
         grid.add(releaseForm, 1, 1);
-        grid.add(new Label("Производитель:"), 0, 2);
-        grid.add(manufacturer, 1, 2);
-        grid.add(new Label("Активный ингредиент:"), 0, 3);
+        grid.add(new Label("Показания к применению:"), 0, 2);
+        grid.add(indicationsForUse, 1, 2);
+        grid.add(new Label("Действующее вещество:"), 0, 3);
         grid.add(activeIngredient, 1, 3);
-        grid.add(new Label("Фармакологический эффект:"), 0, 4);
-        grid.add(new HBox(5, pEffectSelector, addPEffectBtn), 1, 4);
-        grid.add(new Label("Терапевтический эффект:"), 0, 5);
-        grid.add(new HBox(5, tEffectSelector, addTEffectBtn), 1, 5);
+        grid.add(new Label("Производитель:"), 0, 4);
+        grid.add(new HBox(5, producerSelector, addPEffectBtn), 1, 4);
+        grid.add(new Label("фармакотерапевтическая группа:"), 0, 5);
+        grid.add(new HBox(5, pharmTerGroupSelector, addTEffectBtn), 1, 5);
         grid.add(new Label("Описание:"), 0, 6);
         grid.add(description, 1, 6);
 
@@ -225,12 +225,12 @@ public class DialogFactory {
 
         drugDialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
-                if (!name.getText().isEmpty() && !releaseForm.getText().isEmpty() && !manufacturer.getText().isEmpty()
-                        && !activeIngredient.getText().isEmpty() && !pEffectSelector.getSelectionModel().isEmpty()
-                        && !tEffectSelector.getSelectionModel().isEmpty()) {
-                    return new DrugEntity(name.getText(), releaseForm.getText(), manufacturer.getText(),
-                            activeIngredient.getText(), pEffectSelector.getSelectionModel().getSelectedItem(),
-                            tEffectSelector.getSelectionModel().getSelectedItem(), description.getText());
+                if (!name.getText().isEmpty() && !releaseForm.getText().isEmpty() && !indicationsForUse.getText().isEmpty()
+                        && !activeIngredient.getText().isEmpty() && !producerSelector.getSelectionModel().isEmpty()
+                        && !pharmTerGroupSelector.getSelectionModel().isEmpty()) {
+                    return new DrugEntity(name.getText(), releaseForm.getText(), indicationsForUse.getText(),
+                            activeIngredient.getText(), producerSelector.getSelectionModel().getSelectedItem(),
+                            pharmTerGroupSelector.getSelectionModel().getSelectedItem(), description.getText());
                 }
             }
             return null;
@@ -285,8 +285,7 @@ public class DialogFactory {
                 if (!name.getText().isEmpty() && !district.getText().isEmpty() && !street.getText().isEmpty()
                         && !building.getText().isEmpty() && !phone.getText().isEmpty() && !hours.getText().isEmpty()) {
                     return new DrugstoreEntity(name.getText(), district.getText(), street.getText(), building.getText(),
-                            Long.valueOf(phone.getText()), hours.getText(),
-                            (short) (isRoundTheClock.isSelected() ? 1 : 0));
+                            phone.getText(), hours.getText(),(short) (isRoundTheClock.isSelected() ? 1 : 0));
                 }
             }
             return null;
@@ -340,14 +339,14 @@ public class DialogFactory {
         });
     }
 
-    public Dialog<TherapeuticEffectEntity> getAddTEffectDialog() {
-        createTherapeuticEffectDialog();
-        return tEffectDialog;
+    public Dialog<PharmTerGroupEntity> getAddPharmTerGroupDialog() {
+        createPharmTerGroupDialog();
+        return pharmTerGroupDialog;
     }
 
-    public Dialog<PharmachologicEffectEntity> getAddPEffectDialog() {
-        createPharmacologicEffectDialog();
-        return pEffectDialog;
+    public Dialog<ProducerEntity> getAddProducerDialog() {
+        createProducerDialog();
+        return producerDialog;
     }
 
     public Dialog<DrugEntity> getAddDrugDialog() {
@@ -366,12 +365,12 @@ public class DialogFactory {
     }
 
 
-    public Dialog<TherapeuticEffectEntity> getUpdTEffectDialog(int index) {
-        return tEffectDialog;
+    public Dialog<PharmTerGroupEntity> getUpdPharmTerGroupDialog(int index) {
+        return pharmTerGroupDialog;
     }
 
-    public Dialog<PharmachologicEffectEntity> getUpdPEffectDialog() {
-        return pEffectDialog;
+    public Dialog<ProducerEntity> getUpdProducerDialog() {
+        return producerDialog;
     }
 
     public Dialog<DrugEntity> getUpdDrugDialog(int index) {
@@ -382,13 +381,13 @@ public class DialogFactory {
 
             setTextInTextControl(content, "#name", drugEntity.getName());
             setTextInTextControl(content, "#releaseForm", drugEntity.getReleaseForm());
-            setTextInTextControl(content, "#manufacturer", drugEntity.getManufacturer());
+            setTextInTextControl(content, "#indicationsForUse", drugEntity.getIndicationsForUse());
             setTextInTextControl(content, "#activeIngredient", drugEntity.getActiveIngredient());
             setTextInTextControl(content, "#description", drugEntity.getDescription());
-            setSelectInSelectorControl(content, "#pEffectSelector",
-                    drugEntity.getPharmachologicEffect(), pharmachologicEffects);
-            setSelectInSelectorControl(content, "#tEffectSelector",
-                    drugEntity.getTherapeuticEffect(), therapeuticEffects);
+            setSelectInSelectorControl(content, "#producerSelector",
+                    drugEntity.getProducer(), producers);
+            setSelectInSelectorControl(content, "#pharmTerGroupSelector",
+                    drugEntity.getPharmTerGroup(), pharmTerGroups);
             return drugDialog;
         }
         return null;
@@ -404,7 +403,7 @@ public class DialogFactory {
             setTextInTextControl(content, "#district", drugstore.getDistrict());
             setTextInTextControl(content, "#street", drugstore.getStreet());
             setTextInTextControl(content, "#building", drugstore.getBuilding());
-            setTextInTextControl(content, "#phone", String.valueOf(drugstore.getPhone()));
+            setTextInTextControl(content, "#phone", drugstore.getPhone());
             setTextInTextControl(content, "#hours", drugstore.getWorkingHours());
             setBooleanInCheckbox(content, "#isRoundTheClock", drugstore.getIsRoundTheClock() != 0);
             return drugstoreDialog;

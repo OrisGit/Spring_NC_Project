@@ -8,17 +8,17 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "PHARMACHOLOGIC_EFFECT")
+@Table(name = "PHARM_TER_GROUPS")
 @XmlRootElement
-public class PharmachologicEffectEntity implements Serializable{
+public class PharmTerGroupEntity implements Serializable{
     private UUID id;
     private String name;
     private String description;
 
-    public PharmachologicEffectEntity() {
+    public PharmTerGroupEntity() {
     }
 
-    public PharmachologicEffectEntity(String name, String description) {
+    public PharmTerGroupEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -26,7 +26,7 @@ public class PharmachologicEffectEntity implements Serializable{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "P_EFFECT_ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false, unique = true)
     public UUID getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class PharmachologicEffectEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "PNAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     public String getName() {
         return name;
     }
@@ -46,7 +46,7 @@ public class PharmachologicEffectEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "PDESCRIPTION")
+    @Column(name = "DESCRIPTION")
     public String getDescription() {
         return description;
     }
@@ -60,7 +60,7 @@ public class PharmachologicEffectEntity implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PharmachologicEffectEntity that = (PharmachologicEffectEntity) o;
+        PharmTerGroupEntity that = (PharmTerGroupEntity) o;
 
         if (!id.equals(that.id)) return false;
         if (!name.equals(that.name)) return false;
@@ -77,8 +77,8 @@ public class PharmachologicEffectEntity implements Serializable{
 
     @Override
     public String toString() {
-        return "PharmachologicEffectEntity{" +
-                "id=" + id.toString() +
+        return "PharmTerGroupEntity{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

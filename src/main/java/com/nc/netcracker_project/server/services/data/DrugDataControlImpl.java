@@ -10,23 +10,23 @@ import java.util.UUID;
 @Service
 public class DrugDataControlImpl extends AbstractDataControl<DrugEntity, UUID> implements DrugDataControl {
 
-    private TherapeuticEffectDataControl tEffectDataControl;
-    private PharmachologicEffectDataControl pEffectDataControl;
+    private PharmTerGroupDataControl pharmTerGroupDataControl;
+    private ProducerDataControl producerDataControl;
 
     @Autowired
-    public DrugDataControlImpl(DrugRepository repository, TherapeuticEffectDataControl tEffectDataControl,
-                               PharmachologicEffectDataControl pEffectDataControl) {
+    public DrugDataControlImpl(DrugRepository repository, PharmTerGroupDataControl pharmTerGroupDataControl,
+                               ProducerDataControl producerDataControl) {
         super(repository);
-        this.pEffectDataControl = pEffectDataControl;
-        this.tEffectDataControl = tEffectDataControl;
+        this.producerDataControl = producerDataControl;
+        this.pharmTerGroupDataControl = pharmTerGroupDataControl;
     }
 
     @Override
     public DrugEntity saveOrUpdate(DrugEntity entity) throws Exception {
-        if(!tEffectDataControl.exists(entity.getTherapeuticEffect().getId()))
-            tEffectDataControl.saveOrUpdate(entity.getTherapeuticEffect());
-        if(!pEffectDataControl.exists(entity.getPharmachologicEffect().getId()))
-            pEffectDataControl.saveOrUpdate(entity.getPharmachologicEffect());
+        if(!pharmTerGroupDataControl.exists(entity.getPharmTerGroup().getId()))
+            pharmTerGroupDataControl.saveOrUpdate(entity.getPharmTerGroup());
+        if(!producerDataControl.exists(entity.getProducer().getId()))
+            producerDataControl.saveOrUpdate(entity.getProducer());
         return super.saveOrUpdate(entity);
     }
 }

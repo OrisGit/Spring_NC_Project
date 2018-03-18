@@ -13,7 +13,7 @@ public interface EventListener extends Remote {
 
     void updatePrices() throws RemoteException;
 
-    void updateTherapheuticEffects() throws RemoteException;
+    void updatePharmTerGroups() throws RemoteException;
 
-    void updatePharmachologicEffects() throws RemoteException;
+    void updateProducers() throws RemoteException;
 }

@@ -12,17 +12,17 @@ import java.util.List;
 @XmlRootElement(name = "Entities")
 public class EntityWrapper{
 
-    private List<PharmachologicEffectEntity> pharmachologicEffects;
-    private List<TherapeuticEffectEntity> therapeuticEffects;
+    private List<ProducerEntity> producers;
+    private List<PharmTerGroupEntity> pharmTerGroups;
     private List<DrugstoreEntity> drugstores;
     private List<DrugEntity> drugs;
     private List<PriceEntity> price;
 
-    public EntityWrapper(List<PharmachologicEffectEntity> pharmachologicEffects,
-                         List<TherapeuticEffectEntity> therapeuticEffects, List<DrugstoreEntity> drugstores,
+    public EntityWrapper(List<ProducerEntity> producers,
+                         List<PharmTerGroupEntity> pharmTerGroups, List<DrugstoreEntity> drugstores,
                          List<DrugEntity> drugs, List<PriceEntity> price) {
-        this.pharmachologicEffects = pharmachologicEffects;
-        this.therapeuticEffects = therapeuticEffects;
+        this.producers = producers;
+        this.pharmTerGroups = pharmTerGroups;
         this.drugstores = drugstores;
         this.drugs = drugs;
         this.price = price;
@@ -31,21 +31,21 @@ public class EntityWrapper{
     public EntityWrapper() {
         drugs = new ArrayList<>();
         drugstores = new ArrayList<>();
-        pharmachologicEffects = new ArrayList<>();
-        therapeuticEffects = new ArrayList<>();
+        producers = new ArrayList<>();
+        pharmTerGroups = new ArrayList<>();
         price = new ArrayList<>();
     }
 
-    @XmlElementWrapper(name = "PharmachologicEffects")
-    @XmlElement(name = "PharmachologicEffect", type = PharmachologicEffectEntity.class)
-    public List<PharmachologicEffectEntity> getPharmachologicEffects() {
-        return pharmachologicEffects;
+    @XmlElementWrapper(name = "Producers")
+    @XmlElement(name = "Producer", type = ProducerEntity.class)
+    public List<ProducerEntity> getProducers() {
+        return producers;
     }
 
-    @XmlElementWrapper(name = "TherapeuticEffects")
-    @XmlElement(name = "TherapeuticEffect", type = TherapeuticEffectEntity.class)
-    public List<TherapeuticEffectEntity> getTherapeuticEffects() {
-        return therapeuticEffects;
+    @XmlElementWrapper(name = "PharmTerGroups")
+    @XmlElement(name = "PharmTerGroup", type = PharmTerGroupEntity.class)
+    public List<PharmTerGroupEntity> getPharmTerGroups() {
+        return pharmTerGroups;
     }
 
     @XmlElementWrapper(name = "Drugstores")

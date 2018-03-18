@@ -17,22 +17,22 @@ public class RMIControllerImpl implements RMIController{
     private DrugDataControl drugDataControl;
     private DrugstoreDataControl drugstoreDataControl;
     private PriceDataControl priceDataControl;
-    private PharmachologicEffectDataControl pEffectDataControl;
-    private TherapeuticEffectDataControl tEffectDataControl;
+    private ProducerDataControl producerDataControl;
+    private PharmTerGroupDataControl pharmTerGroupDataControl;
     private Importer importer;
     private Exporter exporter;
     private EventService eventService;
 
     @Autowired
     public RMIControllerImpl(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
-                             PriceDataControl priceDataControl, PharmachologicEffectDataControl pEffectDataControl,
-                             TherapeuticEffectDataControl tEffectDataControl, Importer importer, Exporter exporter,
+                             PriceDataControl priceDataControl, ProducerDataControl producerDataControl,
+                             PharmTerGroupDataControl pharmTerGroupDataControl, Importer importer, Exporter exporter,
                              EventService eventService) {
         this.drugDataControl = drugDataControl;
         this.drugstoreDataControl = drugstoreDataControl;
         this.priceDataControl = priceDataControl;
-        this.pEffectDataControl = pEffectDataControl;
-        this.tEffectDataControl = tEffectDataControl;
+        this.producerDataControl = producerDataControl;
+        this.pharmTerGroupDataControl = pharmTerGroupDataControl;
         this.importer = importer;
         this.exporter = exporter;
         this.eventService = eventService;
@@ -115,15 +115,15 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public Iterable<PharmachologicEffectEntity> getAllPharmachologicEffect() {
-        return pEffectDataControl.getAll();
+    public Iterable<ProducerEntity> getAllProducers() {
+        return producerDataControl.getAll();
     }
 
     @Override
-    public boolean addPharmachologicEffect(PharmachologicEffectEntity pEffect) {
+    public boolean addProducer(ProducerEntity producer) {
         try {
-            pEffectDataControl.saveOrUpdate(pEffect);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.saveOrUpdate(producer);
+            eventService.updateProducers();
         }catch (Exception e){
             return false;
         }
@@ -131,10 +131,10 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public boolean deletePharmachologicEffect(PharmachologicEffectEntity pEffect) {
+    public boolean deleteProducer(ProducerEntity producer) {
         try {
-            pEffectDataControl.delete(pEffect);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.delete(producer);
+            eventService.updateProducers();
         }catch (Exception e){
             return false;
         }
@@ -142,10 +142,10 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public boolean updatePharmachologicEffect(PharmachologicEffectEntity pEffect) {
+    public boolean updateProducer(ProducerEntity producer) {
         try {
-            pEffectDataControl.saveOrUpdate(pEffect);
-            eventService.updatePharmachologicEffects();
+            producerDataControl.saveOrUpdate(producer);
+            eventService.updateProducers();
         }catch (Exception e){
             return false;
         }
@@ -153,15 +153,15 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect() {
-        return tEffectDataControl.getAll();
+    public Iterable<PharmTerGroupEntity> getAllPharmTerGroups() {
+        return pharmTerGroupDataControl.getAll();
     }
 
     @Override
-    public boolean addTherapeuticEffect(TherapeuticEffectEntity tEffect) {
+    public boolean addPharmTerGroup(PharmTerGroupEntity pharmTerGroup) {
         try {
-            tEffectDataControl.saveOrUpdate(tEffect);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
+            eventService.updatePharmTerGroups();
         }catch (Exception e){
             return false;
         }
@@ -169,10 +169,10 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public boolean deleteTherapeuticEffect(TherapeuticEffectEntity tEffect) {
+    public boolean deletePharmTerGroup(PharmTerGroupEntity pharmTerGroup) {
         try {
-            tEffectDataControl.delete(tEffect);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.delete(pharmTerGroup);
+            eventService.updatePharmTerGroups();
         }catch (Exception e){
             return false;
         }
@@ -180,10 +180,10 @@ public class RMIControllerImpl implements RMIController{
     }
 
     @Override
-    public boolean updateTherapeuticEffect(TherapeuticEffectEntity tEffect) {
+    public boolean updatePharmTerGroup(PharmTerGroupEntity pharmTerGroup) {
         try {
-            tEffectDataControl.saveOrUpdate(tEffect);
-            eventService.updateTherapheuticEffects();
+            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
+            eventService.updatePharmTerGroups();
         }catch (Exception e){
             return false;
         }

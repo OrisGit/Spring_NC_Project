@@ -22,7 +22,7 @@ public class Drugstore {
         this.name = new SimpleStringProperty(drugstoreEntity.getName());
         this.district = new SimpleStringProperty(drugstoreEntity.getDistrict());
         this.address = new SimpleStringProperty(drugstoreEntity.getStreet() + ", " + drugstoreEntity.getBuilding());
-        this.phone = new SimpleStringProperty(drugstoreEntity.getPhone().toString());
+        this.phone = new SimpleStringProperty(drugstoreEntity.getPhone());
         this.workingHours = new SimpleStringProperty(drugstoreEntity.getWorkingHours());
         this.isRoundTheClock = new SimpleBooleanProperty(drugstoreEntity.getIsRoundTheClock()!=0);
     }

@@ -21,13 +21,12 @@ public class Price {
         this.priceEntity = priceEntity;
         this.drug = new SimpleStringProperty(
                 String.format("%s, %s, %s", priceEntity.getDrug().getName(), priceEntity.getDrug().getReleaseForm(),
-                        priceEntity.getDrug().getManufacturer()));
+                        priceEntity.getDrug().getProducer().getName()));
         this.drugstore = new SimpleStringProperty(
                 String.format("%s, %s, %s %s", priceEntity.getDrugstore().getName(), priceEntity.getDrugstore().getDistrict(),
                         priceEntity.getDrugstore().getStreet(), priceEntity.getDrugstore().getBuilding()));
         this.cost = new SimpleLongProperty(priceEntity.getCost());
     }
-
     public String getDrug() {
         return drug.get();
     }

@@ -16,14 +16,14 @@ public class DrugstoreEntity implements Serializable{
     private String district;
     private String street;
     private String building;
-    private Long phone;
+    private String phone;
     private String workingHours;
     private Short isRoundTheClock;
 
     public DrugstoreEntity() {
     }
 
-    public DrugstoreEntity(String name, String district, String street, String building, Long phone, String workingHours, Short isRoundTheClock) {
+    public DrugstoreEntity(String name, String district, String street, String building, String phone, String workingHours, Short isRoundTheClock) {
         this.name = name;
         this.district = district;
         this.street = street;
@@ -89,11 +89,11 @@ public class DrugstoreEntity implements Serializable{
 
     @Basic
     @Column(name = "PHONE")
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

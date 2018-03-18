@@ -20,15 +20,15 @@ public interface RMIController extends Remote{
     boolean deleteDrugstore(DrugstoreEntity drugstore) throws RemoteException;
     boolean updateDrugstore(DrugstoreEntity drugstore) throws RemoteException;
 
-    Iterable<PharmachologicEffectEntity> getAllPharmachologicEffect() throws RemoteException;
-    boolean addPharmachologicEffect(PharmachologicEffectEntity pEffect) throws RemoteException;
-    boolean deletePharmachologicEffect(PharmachologicEffectEntity pEffect) throws RemoteException;
-    boolean updatePharmachologicEffect(PharmachologicEffectEntity pEffect) throws RemoteException;
+    Iterable<ProducerEntity> getAllProducers() throws RemoteException;
+    boolean addProducer(ProducerEntity pEffect) throws RemoteException;
+    boolean deleteProducer(ProducerEntity pEffect) throws RemoteException;
+    boolean updateProducer(ProducerEntity pEffect) throws RemoteException;
 
-    Iterable<TherapeuticEffectEntity> getAllTherapeuticEffect()throws RemoteException;
-    boolean addTherapeuticEffect(TherapeuticEffectEntity tEffect)throws RemoteException;
-    boolean deleteTherapeuticEffect(TherapeuticEffectEntity tEffect)throws RemoteException;
-    boolean updateTherapeuticEffect(TherapeuticEffectEntity tEffect)throws RemoteException;
+    Iterable<PharmTerGroupEntity> getAllPharmTerGroups()throws RemoteException;
+    boolean addPharmTerGroup(PharmTerGroupEntity tEffect)throws RemoteException;
+    boolean deletePharmTerGroup(PharmTerGroupEntity tEffect)throws RemoteException;
+    boolean updatePharmTerGroup(PharmTerGroupEntity tEffect)throws RemoteException;
 
     Iterable<PriceEntity> getAllPrice()throws RemoteException;
     boolean addPrice(PriceEntity price)throws RemoteException;

@@ -1,6 +1,6 @@
 package com.nc.netcracker_project.server.model.repositories;
 
-import com.nc.netcracker_project.server.model.entities.TherapeuticEffectEntity;
+import com.nc.netcracker_project.server.model.entities.PharmTerGroupEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,54 +16,54 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class TherapeuticEffectRepositoryTest {
+public class PharmTerGroupRepositoryTest {
 
     @Autowired
-    private TherapeuticEffectRepository tEffectRepository;
+    private PharmTerGroupRepository tEffectRepository;
 
     @Test
     public void saveTest(){
-        TherapeuticEffectEntity pEffect = createTherapeuticEffectEntity();
+        PharmTerGroupEntity pEffect = createTherapeuticEffectEntity();
 
-        TherapeuticEffectEntity res = tEffectRepository.save(pEffect);
+        PharmTerGroupEntity res = tEffectRepository.save(pEffect);
 
         assertThat(res).isEqualTo(pEffect);
     }
 
     @Test
     public void findAllTest(){
-        TherapeuticEffectEntity TherapeuticEffectEntity = createTherapeuticEffectEntity();
+        PharmTerGroupEntity PharmTerGroupEntity = createTherapeuticEffectEntity();
 
-        TherapeuticEffectEntity res = tEffectRepository.save(TherapeuticEffectEntity);
+        PharmTerGroupEntity res = tEffectRepository.save(PharmTerGroupEntity);
 
-        int found = ((List<TherapeuticEffectEntity>) tEffectRepository.findAll()).size();
+        int found = ((List<PharmTerGroupEntity>) tEffectRepository.findAll()).size();
         assertThat(found).isEqualTo(1);
     }
 
     @Test
     public void deleteByObjectTest(){
-        TherapeuticEffectEntity pEffect = createTherapeuticEffectEntity();
+        PharmTerGroupEntity pEffect = createTherapeuticEffectEntity();
 
-        TherapeuticEffectEntity res = tEffectRepository.save(pEffect);
+        PharmTerGroupEntity res = tEffectRepository.save(pEffect);
 
         tEffectRepository.delete(pEffect);
     }
 
     @Test
     public void deleteByUUIDTest(){
-        TherapeuticEffectEntity pEffect = createTherapeuticEffectEntity();
+        PharmTerGroupEntity pEffect = createTherapeuticEffectEntity();
 
-        TherapeuticEffectEntity res = tEffectRepository.save(pEffect);
+        PharmTerGroupEntity res = tEffectRepository.save(pEffect);
 
         tEffectRepository.delete(pEffect.getId());
     }
 
     @Test
     public void findOneTest(){
-        TherapeuticEffectEntity pEffect = createTherapeuticEffectEntity();
+        PharmTerGroupEntity pEffect = createTherapeuticEffectEntity();
         tEffectRepository.save(pEffect);
 
-        TherapeuticEffectEntity res = tEffectRepository.findOne(pEffect.getId());
+        PharmTerGroupEntity res = tEffectRepository.findOne(pEffect.getId());
 
         assertThat(res).isEqualTo(pEffect);
     }

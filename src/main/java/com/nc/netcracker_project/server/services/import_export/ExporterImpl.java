@@ -17,16 +17,16 @@ public class ExporterImpl implements Exporter {
 
     private DrugRepository drugRepository;
     private DrugstoreRepository drugstoreRepository;
-    private TherapeuticEffectRepository tEffectRepository;
-    private PharmachologicEffectRepository pEffectRepository;
+    private PharmTerGroupRepository pharmTerGroupRepository;
+    private ProducerRepository producerRepository;
     private PriceRepository priceRepository;
 
     @Autowired
-    public ExporterImpl(DrugRepository drugRepository, DrugstoreRepository drugstoreRepository, TherapeuticEffectRepository tEffectRepository, PharmachologicEffectRepository pEffectRepository, PriceRepository priceRepository) {
+    public ExporterImpl(DrugRepository drugRepository, DrugstoreRepository drugstoreRepository, PharmTerGroupRepository pharmTerGroupRepository, ProducerRepository producerRepository, PriceRepository priceRepository) {
         this.drugRepository = drugRepository;
         this.drugstoreRepository = drugstoreRepository;
-        this.tEffectRepository = tEffectRepository;
-        this.pEffectRepository = pEffectRepository;
+        this.pharmTerGroupRepository = pharmTerGroupRepository;
+        this.producerRepository = producerRepository;
         this.priceRepository = priceRepository;
     }
 
@@ -37,7 +37,7 @@ public class ExporterImpl implements Exporter {
         EntityWrapper wrapper;
 
         try{
-            wrapper = new EntityWrapper((List<PharmachologicEffectEntity>) pEffectRepository.findAll(),(List<TherapeuticEffectEntity>)tEffectRepository.findAll(),
+            wrapper = new EntityWrapper((List<ProducerEntity>) producerRepository.findAll(),(List<PharmTerGroupEntity>) pharmTerGroupRepository.findAll(),
                     (List<DrugstoreEntity>) drugstoreRepository.findAll(),(List<DrugEntity>)drugRepository.findAll(),(List<PriceEntity>)priceRepository.findAll());
         } catch (Exception e) {
             throw new ExportException(e);

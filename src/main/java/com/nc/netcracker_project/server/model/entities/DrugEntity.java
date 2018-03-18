@@ -15,21 +15,21 @@ public class DrugEntity implements Serializable{
     private UUID id;
     private String name;
     private String releaseForm;
-    private String manufacturer;
+    private PharmTerGroupEntity pharmTerGroup;
+    private String indicationsForUse;
+    private ProducerEntity producer;
     private String activeIngredient;
-    private PharmachologicEffectEntity pharmachologicEffect;
-    private TherapeuticEffectEntity therapeuticEffect;
     private String description;
     public DrugEntity() {
     }
 
-    public DrugEntity(String name, String releaseForm, String manufacturer, String activeIngredient, PharmachologicEffectEntity pharmachologicEffect, TherapeuticEffectEntity therapeuticEffect, String description) {
+    public DrugEntity(String name, String releaseForm, String indicationsForUse, String activeIngredient, ProducerEntity producer, PharmTerGroupEntity pharmTerGroup, String description) {
         this.name = name;
         this.releaseForm = releaseForm;
-        this.manufacturer = manufacturer;
+        this.indicationsForUse = indicationsForUse;
         this.activeIngredient = activeIngredient;
-        this.pharmachologicEffect = pharmachologicEffect;
-        this.therapeuticEffect = therapeuticEffect;
+        this.producer = producer;
+        this.pharmTerGroup = pharmTerGroup;
         this.description = description;
     }
 
@@ -46,7 +46,7 @@ public class DrugEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "DNAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     public String getName() {
         return name;
     }
@@ -56,7 +56,7 @@ public class DrugEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "RELEASEFORM")
+    @Column(name = "RELEASE_FORM", nullable = false)
     public String getReleaseForm() {
         return releaseForm;
     }
@@ -65,19 +65,38 @@ public class DrugEntity implements Serializable{
         this.releaseForm = releaseForm;
     }
 
-    @Basic
-    @Column(name = "MANUFACTURER")
-    public String getManufacturer() {
-        return manufacturer;
+    @ManyToOne()
+    @JoinColumn(name = "FARM_TER_GROUP", nullable = false)
+    public PharmTerGroupEntity getPharmTerGroup() {
+        return pharmTerGroup;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setPharmTerGroup(PharmTerGroupEntity pharmTerGroup) {
+        this.pharmTerGroup = pharmTerGroup;
     }
 
+    @Basic
+    @Column(name = "IND_FOR_USE", nullable = false)
+    public String getIndicationsForUse() {
+        return indicationsForUse;
+    }
+
+    public void setIndicationsForUse(String indicationsForUse) {
+        this.indicationsForUse = indicationsForUse;
+    }
+
+    @ManyToOne()
+    @JoinColumn(name = "PRODUCER", nullable = false)
+    public ProducerEntity getProducer() {
+        return producer;
+    }
+
+    public void setProducer(ProducerEntity producer) {
+        this.producer = producer;
+    }
 
     @Basic
-    @Column(name = "ACTIVEINGRIDIENT", nullable = false)
+    @Column(name = "ACTIVE_INGREDIENT", nullable = false)
     public String getActiveIngredient() {
         return activeIngredient;
     }
@@ -86,26 +105,6 @@ public class DrugEntity implements Serializable{
         this.activeIngredient = activeIngredient;
     }
 
-    @ManyToOne()
-    @JoinColumn(name = "P_EFFECT_ID")
-
-    public PharmachologicEffectEntity getPharmachologicEffect() {
-        return pharmachologicEffect;
-    }
-
-    public void setPharmachologicEffect(PharmachologicEffectEntity pharmachologicEffect) {
-        this.pharmachologicEffect = pharmachologicEffect;
-    }
-
-    @ManyToOne()
-    @JoinColumn(name = "T_EFFECT_ID")
-    public TherapeuticEffectEntity getTherapeuticEffect() {
-        return therapeuticEffect;
-    }
-
-    public void setTherapeuticEffect(TherapeuticEffectEntity therapeuticEffect) {
-        this.therapeuticEffect = therapeuticEffect;
-    }
 
     @Basic
     @Column(name = "DESCRIPTION")
@@ -118,34 +117,32 @@ public class DrugEntity implements Serializable{
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
 
-        DrugEntity that = (DrugEntity) o;
+        DrugEntity that = (DrugEntity) object;
 
-        if (!id.equals(that.id)) return false;
-        if (!name.equals(that.name)) return false;
-        if (!releaseForm.equals(that.releaseForm)) return false;
-        if (!manufacturer.equals(that.manufacturer)) return false;
-        if (!activeIngredient.equals(that.activeIngredient)) return false;
-        if (pharmachologicEffect != null ? !pharmachologicEffect.equals(that.pharmachologicEffect) : that.pharmachologicEffect != null)
-            return false;
-        if (therapeuticEffect != null ? !therapeuticEffect.equals(that.therapeuticEffect) : that.therapeuticEffect != null)
-            return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        if (!getId().equals(that.getId())) return false;
+        if (!getName().equals(that.getName())) return false;
+        if (!getReleaseForm().equals(that.getReleaseForm())) return false;
+        if (!getPharmTerGroup().equals(that.getPharmTerGroup())) return false;
+        if (!getIndicationsForUse().equals(that.getIndicationsForUse())) return false;
+        if (!getProducer().equals(that.getProducer())) return false;
+        if (!getActiveIngredient().equals(that.getActiveIngredient())) return false;
+        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + releaseForm.hashCode();
-        result = 31 * result + manufacturer.hashCode();
-        result = 31 * result + activeIngredient.hashCode();
-        result = 31 * result + (pharmachologicEffect != null ? pharmachologicEffect.hashCode() : 0);
-        result = 31 * result + (therapeuticEffect != null ? therapeuticEffect.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getReleaseForm().hashCode();
+        result = 31 * result + getPharmTerGroup().hashCode();
+        result = 31 * result + getIndicationsForUse().hashCode();
+        result = 31 * result + getProducer().hashCode();
+        result = 31 * result + getActiveIngredient().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
 
@@ -155,10 +152,10 @@ public class DrugEntity implements Serializable{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", releaseForm='" + releaseForm + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
+                ", pharmTerGroup=" + pharmTerGroup +
+                ", indicationsForUse='" + indicationsForUse + '\'' +
+                ", producer=" + producer +
                 ", activeIngredient='" + activeIngredient + '\'' +
-                ", pharmachologicEffect=" + pharmachologicEffect +
-                ", therapeuticEffect=" + therapeuticEffect +
                 ", description='" + description + '\'' +
                 '}';
     }

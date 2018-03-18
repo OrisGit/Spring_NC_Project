@@ -8,17 +8,17 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "THERAPEUTIC_EFFECT")
+@Table(name = "PRODUCERS")
 @XmlRootElement
-public class TherapeuticEffectEntity implements Serializable{
+public class ProducerEntity implements Serializable{
     private UUID id;
     private String name;
     private String description;
 
-    public TherapeuticEffectEntity() {
+    public ProducerEntity() {
     }
 
-    public TherapeuticEffectEntity(String name, String description) {
+    public ProducerEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -26,7 +26,7 @@ public class TherapeuticEffectEntity implements Serializable{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "T_EFFECT_ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false, unique = true)
     public UUID getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class TherapeuticEffectEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "TNAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     public String getName() {
         return name;
     }
@@ -46,7 +46,7 @@ public class TherapeuticEffectEntity implements Serializable{
     }
 
     @Basic
-    @Column(name = "TDESCRIPTION")
+    @Column(name = "DESCRIPTION")
     public String getDescription() {
         return description;
     }
@@ -60,7 +60,7 @@ public class TherapeuticEffectEntity implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TherapeuticEffectEntity that = (TherapeuticEffectEntity) o;
+        ProducerEntity that = (ProducerEntity) o;
 
         if (!id.equals(that.id)) return false;
         if (!name.equals(that.name)) return false;
@@ -77,8 +77,8 @@ public class TherapeuticEffectEntity implements Serializable{
 
     @Override
     public String toString() {
-        return "TherapeuticEffectEntity{" +
-                "id=" + id +
+        return "ProducerEntity{" +
+                "id=" + id.toString() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

@@ -17,7 +17,7 @@ public interface EventService {
 
     void updatePrices();
 
-    void updateTherapheuticEffects();
+    void updatePharmTerGroups();
 
-    void updatePharmachologicEffects();
+    void updateProducers();
 }
