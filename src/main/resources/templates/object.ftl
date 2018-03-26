@@ -23,15 +23,15 @@
             <#if objectType=="drugstore">
                 <h3>Аптека ${object.name}</h3>
                 <strong>Адрес:</strong> ${object.district} р-н, ул. ${object.street}, ${object.building}<br>
-                <strong>Телефон:</strong> ${object.phone?c}<br>
+                <strong>Телефон:</strong> ${object.phone}<br>
                 <strong>Часы работы:</strong> ${object.workingHours}<br>
             <#elseif objectType=="drug">
                 <h3>Препарат ${object.name}</h3>
-                <strong>Активный ингредиент:</strong> ${object.activeIngredient}<br>
                 <strong>Форма выпуска:</strong> ${object.releaseForm}<br>
-                <strong>Производитель:</strong> ${object.manufacturer}<br>
-                <strong>Фармакологический эффект:</strong> ${object.pharmachologicEffect.name}<br>
-                <strong>Терапевтический эффект:</strong> ${object.therapeuticEffect.name}<br>
+                <strong>Активный ингредиент:</strong> ${object.activeIngredient}<br>
+                <strong>Показания к применению:</strong> ${object.indicationsForUse}<br>
+                <strong>Производитель:</strong> ${object.producer.name}<br>
+                <strong>Фармакотерапевтическая группа:</strong> ${object.pharmTerGroup.name}<br>
                 <strong>Описание:</strong> ${object.description!''}<br>
             <#elseif objectType=="manufacturer">
                 <h3>Производитель ${object.name}</h3>

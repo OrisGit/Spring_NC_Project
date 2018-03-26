@@ -18,22 +18,27 @@
 
     <div class="rounded container bg-light p-1 my-3 mx-auto">
         <form class="form-inline m-1">
+            <input type="text" class="form-control m-1" id="name" placeholder="Название" autocomplete="off">
         <#if objectType=="drugstore">
-            <input type="text" class="form-control m-1" id="formInputDrugstoreName" placeholder="Название" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputDistrict" placeholder="Район" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputStreet" placeholder="Улица" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputHours" placeholder="Часы работы" autocomplete="off">
+            <input type="text" class="form-control m-1" id="district" placeholder="Район" autocomplete="off">
+            <input type="text" class="form-control m-1" id="street" placeholder="Улица" autocomplete="off">
+            <input type="text" class="form-control m-1" id="workingHours" placeholder="Часы работы" autocomplete="off">
             <div class="custom-control custom-checkbox m-1">
-                <input class="custom-control-input" type="checkbox" id="roundTheClock">
+                <input class="custom-control-input" type="checkbox" id="isRoundTheClock">
                 <label class="custom-control-label" for="roundTheClock">Круглосуточная</label>
             </div>
         <#elseif objectType=="drug">
-            <input type="text" class="form-control m-1 " id="formInputDrugName" placeholder="Название" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputReleaseForm" placeholder="Форма выпуска" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputManufacturer" placeholder="Производитель" autocomplete="off">
-            <input type="text" class="form-control m-1" id="formInputActiveIngredient" placeholder="Активный ингредиент" autocomplete="off">
-            <select class="form-control custom-select m-1 col-2" id="formInputPEffect">
+            <input type="text" class="form-control m-1" id="releaseForm" placeholder="Форма выпуска" autocomplete="off">
+            <input type="text" class="form-control m-1" id="activeIngredient" placeholder="Активный ингредиент" autocomplete="off">
+            <input type="text" class="form-control m-1" id="indicationsForUse" placeholder="Показания к применению" autocomplete="off">
+            <select class="form-control custom-select m-1 col-2" id="producer">
                 <option selected>Производитель</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <select class="form-control custom-select m-1 col-2" id="pharmTerGroup">
+                <option selected>Фармакотерапевтическая группа</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>

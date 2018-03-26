@@ -20,7 +20,7 @@ public class TableInitializer {
 
         TableColumn<Drug, String> indicationsForUseCol = new TableColumn<>("Показания к применению");
         indicationsForUseCol.setCellValueFactory(
-                cellData -> cellData.getValue().activeIngredientProperty());
+                cellData -> cellData.getValue().indicationsForUseProperty());
 
         TableColumn<Drug, String> ingredientCol = new TableColumn<>("Действующее вещество");
         ingredientCol.setCellValueFactory(

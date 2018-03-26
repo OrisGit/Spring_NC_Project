@@ -53,10 +53,8 @@ public class WebController {
         return drugDataControl.getAll();
     }
 
-    @GetMapping("/drug/{id}")
-    public ResponseEntity<DrugEntity> getDrug(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        DrugEntity drug = drugDataControl.get(uuid);
+    @GetMapping("/drug/{drug}")
+    public ResponseEntity<DrugEntity> getDrug(@PathVariable DrugEntity drug) {
         if (drug == null) {
             return ResponseEntity.notFound().build();
         }
@@ -74,11 +72,9 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/drug/{id}")
-    public ResponseEntity<DrugEntity> updateDrug(@PathVariable String id,
+    @PutMapping("/drug/{drug}")
+    public ResponseEntity<DrugEntity> updateDrug(@PathVariable DrugEntity drug,
                                                  @Valid @RequestBody DrugEntity drugEntity) {
-        UUID uuid = UUID.fromString(id);
-        DrugEntity drug = drugDataControl.get(uuid);
         if (drug == null) {
             return ResponseEntity.notFound().build();
         }
@@ -92,10 +88,8 @@ public class WebController {
         return ResponseEntity.ok(drugEntity);
     }
 
-    @DeleteMapping("/drug/{id}")
-    public ResponseEntity<DrugEntity> deleteDrug(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        DrugEntity drug = drugDataControl.get(uuid);
+    @DeleteMapping("/drug/{drug}")
+    public ResponseEntity<DrugEntity> deleteDrug(@PathVariable DrugEntity drug) {
         if (drug == null) {
             return ResponseEntity.notFound().build();
         }
@@ -115,10 +109,8 @@ public class WebController {
         return drugstoreDataControl.getAll();
     }
 
-    @GetMapping("/drugstore/{id}")
-    public ResponseEntity<DrugstoreEntity> getDrugstore(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        DrugstoreEntity drugstore = drugstoreDataControl.get(uuid);
+    @GetMapping("/drugstore/{drugstore}")
+    public ResponseEntity<DrugstoreEntity> getDrugstore(@PathVariable DrugstoreEntity drugstore) {
         if (drugstore == null) {
             return ResponseEntity.notFound().build();
         }
@@ -136,11 +128,9 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/drugstore/{id}")
-    public ResponseEntity<DrugstoreEntity> updateDrugstore(@PathVariable String id,
+    @PutMapping("/drugstore/{drugstore}")
+    public ResponseEntity<DrugstoreEntity> updateDrugstore(@PathVariable DrugstoreEntity drugstore,
                                                            @Valid @RequestBody DrugstoreEntity drugstoreEntity) {
-        UUID uuid = UUID.fromString(id);
-        DrugstoreEntity drugstore = drugstoreDataControl.get(uuid);
         if (drugstore == null) {
             return ResponseEntity.notFound().build();
         }
@@ -154,10 +144,8 @@ public class WebController {
         return ResponseEntity.ok(drugstoreEntity);
     }
 
-    @DeleteMapping("/drugstore/{id}")
-    public ResponseEntity<DrugstoreEntity> deleteDrugstore(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        DrugstoreEntity drugstore = drugstoreDataControl.get(uuid);
+    @DeleteMapping("/drugstore/{drugstore}")
+    public ResponseEntity<DrugstoreEntity> deleteDrugstore(@PathVariable DrugstoreEntity drugstore) {
         if (drugstore == null) {
             return ResponseEntity.notFound().build();
         }
@@ -171,16 +159,14 @@ public class WebController {
     }
     //endregion
 
-    //region TherapeuticEffect
+    //region PharmTerGroup
     @GetMapping("/pharmTerGroup")
     public Iterable<PharmTerGroupEntity> getAllPharmTerGroup() {
         return pharmTerGroupDataControl.getAll();
     }
 
-    @GetMapping("/pharmTerGroup/{id}")
-    public ResponseEntity<PharmTerGroupEntity> getpharmTerGroup(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
+    @GetMapping("/pharmTerGroup/{pharmTerGroup}")
+    public ResponseEntity<PharmTerGroupEntity> getpharmTerGroup(@PathVariable PharmTerGroupEntity pharmTerGroup) {
         if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
@@ -198,11 +184,9 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/pharmTerGroup/{id}")
-    public ResponseEntity<PharmTerGroupEntity> updatepharmTerGroup(@PathVariable String id,
+    @PutMapping("/pharmTerGroup/{pharmTerGroup}")
+    public ResponseEntity<PharmTerGroupEntity> updatepharmTerGroup(@PathVariable PharmTerGroupEntity pharmTerGroup,
                                                                    @Valid @RequestBody PharmTerGroupEntity pharmTerGroupEntity) {
-        UUID uuid = UUID.fromString(id);
-        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
         if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
@@ -216,10 +200,8 @@ public class WebController {
         return ResponseEntity.ok(pharmTerGroupEntity);
     }
 
-    @DeleteMapping("/pharmTerGroup/{id}")
-    public ResponseEntity<PharmTerGroupEntity> deleteTherapeuticEffect(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        PharmTerGroupEntity pharmTerGroup = pharmTerGroupDataControl.get(uuid);
+    @DeleteMapping("/pharmTerGroup/{pharmTerGroup}")
+    public ResponseEntity<PharmTerGroupEntity> deleteTherapeuticEffect(@PathVariable PharmTerGroupEntity pharmTerGroup) {
         if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
@@ -233,16 +215,14 @@ public class WebController {
     }
     //endregion
 
-    //region PharmacologicEffect
+    //region Producer
     @GetMapping("/producer")
     public Iterable<ProducerEntity> getAllProducers() {
         return producerDataControl.getAll();
     }
 
-    @GetMapping("/producer/{id}")
-    public ResponseEntity<ProducerEntity> getProducer(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        ProducerEntity producer = producerDataControl.get(uuid);
+    @GetMapping("/producer/{producer}")
+    public ResponseEntity<ProducerEntity> getProducer(@PathVariable ProducerEntity producer) {
         if (producer == null) {
             return ResponseEntity.notFound().build();
         }
@@ -260,11 +240,9 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/producer/{id}")
-    public ResponseEntity<ProducerEntity> updateProducer(@PathVariable String id,
-                                                                     @Valid @RequestBody ProducerEntity producerEntity) {
-        UUID uuid = UUID.fromString(id);
-        ProducerEntity producer = producerDataControl.get(uuid);
+    @PutMapping("/producer/{producer}")
+    public ResponseEntity<ProducerEntity> updateProducer(@PathVariable ProducerEntity producer,
+                                                         @Valid @RequestBody ProducerEntity producerEntity) {
         if (producer == null) {
             return ResponseEntity.notFound().build();
         }
@@ -278,10 +256,8 @@ public class WebController {
         return ResponseEntity.ok(producerEntity);
     }
 
-    @DeleteMapping("/producer/{id}")
-    public ResponseEntity<ProducerEntity> deleteProducer(@PathVariable String id) {
-        UUID uuid = UUID.fromString(id);
-        ProducerEntity producer = producerDataControl.get(uuid);
+    @DeleteMapping("/producer/{producer}")
+    public ResponseEntity<ProducerEntity> deleteProducer(@PathVariable ProducerEntity producer) {
         if (producer == null) {
             return ResponseEntity.notFound().build();
         }

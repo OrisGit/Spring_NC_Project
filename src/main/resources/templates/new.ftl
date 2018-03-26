@@ -36,7 +36,7 @@
                 <input type="text" class="form-control m-1" id="building" placeholder="Дом"
                        value="${(object.building)!''}" autocomplete="off" required>
                 <input type="text" class="form-control m-1" id="phone" placeholder="Телефон"
-                       value="${(object.phone?c)!''}" autocomplete="off" required>
+                       value="${(object.phone)!''}" autocomplete="off" required>
                 <input type="text" class="form-control m-1" id="workingHours" placeholder="Часы работы"
                        value="${(object.workingHours)!''}" autocomplete="off" required>
                 <div class="custom-control custom-checkbox m-1">
@@ -51,7 +51,7 @@
                        value="${(object.activeIngredient)!''}" autocomplete="off" required>
                 <input type="text" class="form-control m-1" id="indicationsForUse" placeholder="Показания к применению"
                        value="${(object.indicationsForUse)!''}" autocomplete="off" required>
-                <select class="form-control custom-select col-md m-1" size="1" id="manufacturer">
+                <select class="form-control custom-select col-md m-1" size="1" id="producer">
                     <option selected disabled>Производитель</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>

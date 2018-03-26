@@ -111,7 +111,6 @@ $(document).ready(() => {
     });
 
     $('#searchBtn').click(() => {
-        alert('');
         searchDrug();
     });
 
@@ -126,9 +125,8 @@ $(document).ready(() => {
         dataSource: 'api/drugstore',
         locator: 'items',
         pageSize: pageSize,
-        pageRange: 1,
         totalNumberLocator: function (response) {
-            return Math.floor(response.length / pageSize);
+            return Math.ceil(response.length / pageSize);
         },
         callback: function (data, pagination) {
             let table = $('.table');
@@ -142,6 +140,9 @@ $(document).ready(() => {
                     .append($('<td>').text(drugstore.workingHours))
                     .append($('<td>').append(createCustomCheckbox(!!+drugstore.isRoundTheClock)));
             });
+        },
+        ajax: {
+            cache: false
         },
         alias: {
             pageNumber: 'page',
@@ -163,10 +164,10 @@ function searchDrug() {
             $('<tr>').data('id', drug.id).appendTo(table)
                 .append($('<td>').text(drug.name))
                 .append($('<td>').text(drug.releaseForm))
-                .append($('<td>').text(drug.manufacturer))
                 .append($('<td>').text(drug.activeIngredient))
-                .append($('<td>').text(drug.pharmachologicEffect.name))
-                .append($('<td>').text(drug.therapeuticEffect.name));
+                .append($('<td>').text(drug.indicationsForUse))
+                .append($('<td>').text(drug.producer.name))
+                .append($('<td>').text(drug.pharmTerGroup.name));
         });
     });
 }

@@ -2,6 +2,7 @@ package com.nc.netcracker_project.server.controllers.web;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
 import com.nc.netcracker_project.server.model.entities.DrugstoreEntity;
+import com.nc.netcracker_project.server.model.entities.ProducerEntity;
 import com.nc.netcracker_project.server.services.data.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,18 @@ public class PageController {
     private DrugDataControl drugDataControl;
     private DrugstoreDataControl drugstoreDataControl;
     private PriceDataControl priceDataControl;
-    private PharmachologicEffectDataControl pEffectDataControl;
-    private TherapeuticEffectDataControl tEffectDataControl;
+    private ProducerDataControl producerDataControl;
+    private PharmTerGroupDataControl pharmTerGroupDataControl;
 
     @Autowired
     public PageController(DrugDataControl drugDataControl, DrugstoreDataControl drugstoreDataControl,
-                          PriceDataControl priceDataControl, PharmachologicEffectDataControl pEffectDataControl,
-                          TherapeuticEffectDataControl tEffectDataControl) {
+                          PriceDataControl priceDataControl, ProducerDataControl producerDataControl,
+                          PharmTerGroupDataControl pharmTerGroupDataControl) {
         this.drugDataControl = drugDataControl;
         this.drugstoreDataControl = drugstoreDataControl;
         this.priceDataControl = priceDataControl;
-        this.pEffectDataControl = pEffectDataControl;
-        this.tEffectDataControl = tEffectDataControl;
+        this.producerDataControl = producerDataControl;
+        this.pharmTerGroupDataControl = pharmTerGroupDataControl;
     }
 
     @GetMapping("/")
@@ -72,13 +73,13 @@ public class PageController {
     }
 
     @GetMapping("/manufacturer/{manufacturer}")
-    public ModelAndView manufacturerPage(@PathVariable String manufacturer) {
+    public ModelAndView manufacturerPage(@PathVariable ProducerEntity manufacturer) {
 
         Iterable<DrugEntity> drugs = drugDataControl.getAll();
 
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "manufacturer");
-        //model.put("object", manufacturer);
+        model.put("object", manufacturer);
         model.put("tableType", "drug");
         model.put("tableContent", drugs);
 
@@ -106,11 +107,11 @@ public class PageController {
     }
 
     @GetMapping("/manufacturer/{manufacturer}/edit")
-    public ModelAndView editManufacturerPage(@PathVariable String manufacturer) {
+    public ModelAndView editManufacturerPage(@PathVariable ProducerEntity manufacturer) {
 
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "manufacturer");
-        //model.put("object", manufacturer);
+        model.put("object", manufacturer);
 
         return new ModelAndView("new", model);
     }

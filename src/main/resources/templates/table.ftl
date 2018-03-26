@@ -4,11 +4,11 @@
         <tr>
         <#if tableType=="drug">
             <th>Название</th>
-            <th>Форма</th>
-            <th>Производитель</th>
+            <th>Форма выпуска</th>
             <th>Активный ингредиент</th>
-            <th>Фармакологический</th>
-            <th>Терапевтический</th>
+            <th>Показания к применению</th>
+            <th>Производитель</th>
+            <th>Фармаколотерапевтическая группа</th>
         <#elseif tableType=="drugstore">
             <th>Название</th>
             <th>Адрес</th>
@@ -28,14 +28,14 @@
                 <#if tableType=="drug">
                     <td>${object.name}</td>
                     <td>${object.releaseForm}</td>
-                    <td>${object.manufacturer}</td>
                     <td>${object.activeIngredient}</td>
-                    <td>${object.pharmachologicEffect.name}</td>
-                    <td>${object.therapeuticEffect.name}</td>
+                    <td>${object.indicationsForUse}</td>
+                    <td>${object.producer.name}</td>
+                    <td>${object.pharmTerGroup.name}</td>
                 <#elseif tableType=="drugstore">
                     <td>${object.name}</td>
                     <td>${object.district} р-н, ул. ${object.street}, ${object.building}</td>
-                    <td>${object.phone?c}</td>
+                    <td>${object.phone}</td>
                     <td>${object.workingHours}</td>
                     <td>
                         <div class="custom-control custom-checkbox">
