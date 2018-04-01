@@ -7,6 +7,7 @@ import com.nc.netcracker_project.server.services.event_service.EventService;
 import com.nc.netcracker_project.server.services.import_export.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,8 +50,8 @@ public class WebController {
 
     //region Drugs
     @GetMapping("/drug")
-    public Iterable<DrugEntity> getAllDrugs() {
-        return drugDataControl.getAll();
+    public Iterable<DrugEntity> getAllDrugs(Pageable pageable) {
+        return drugDataControl.findAll(pageable);
     }
 
     @GetMapping("/drug/{drug}")
@@ -61,7 +62,7 @@ public class WebController {
         return ResponseEntity.ok(drug);
     }
 
-    @PostMapping("/drug/new")
+    @PostMapping("/drug")
     public ResponseEntity<DrugEntity> createDrug(@Valid @RequestBody DrugEntity drugEntity) {
         try {
             drugDataControl.saveOrUpdate(drugEntity);
@@ -105,8 +106,8 @@ public class WebController {
 
     //region Drugstore
     @GetMapping("/drugstore")
-    public Iterable<DrugstoreEntity> getAllDrugstore() {
-        return drugstoreDataControl.getAll();
+    public Iterable<DrugstoreEntity> getAllDrugstore(Pageable pageable) {
+        return drugstoreDataControl.findAll(pageable);
     }
 
     @GetMapping("/drugstore/{drugstore}")
@@ -117,7 +118,7 @@ public class WebController {
         return ResponseEntity.ok(drugstore);
     }
 
-    @PostMapping("/drugstore/new")
+    @PostMapping("/drugstore")
     public ResponseEntity<DrugstoreEntity> createDrugstore(@Valid @RequestBody DrugstoreEntity drugstoreEntity) {
         try {
             drugstoreDataControl.saveOrUpdate(drugstoreEntity);
@@ -173,7 +174,7 @@ public class WebController {
         return ResponseEntity.ok(pharmTerGroup);
     }
 
-    @PostMapping("/pharmTerGroup/new")
+    @PostMapping("/pharmTerGroup")
     public ResponseEntity<PharmTerGroupEntity> createPharmTerGroup(@Valid @RequestBody PharmTerGroupEntity pharmTerGroup) {
         try {
             pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
@@ -216,12 +217,12 @@ public class WebController {
     //endregion
 
     //region Producer
-    @GetMapping("/producer")
+    @GetMapping("/manufacturer")
     public Iterable<ProducerEntity> getAllProducers() {
         return producerDataControl.getAll();
     }
 
-    @GetMapping("/producer/{producer}")
+    @GetMapping("/manufacturer/{producer}")
     public ResponseEntity<ProducerEntity> getProducer(@PathVariable ProducerEntity producer) {
         if (producer == null) {
             return ResponseEntity.notFound().build();
@@ -229,7 +230,7 @@ public class WebController {
         return ResponseEntity.ok(producer);
     }
 
-    @PostMapping("/producer/new")
+    @PostMapping("/manufacturer")
     public ResponseEntity<ProducerEntity> createProducer(@Valid @RequestBody ProducerEntity producerEntity) {
         try {
             producerDataControl.saveOrUpdate(producerEntity);
@@ -240,7 +241,7 @@ public class WebController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/producer/{producer}")
+    @PutMapping("/manufacturer/{producer}")
     public ResponseEntity<ProducerEntity> updateProducer(@PathVariable ProducerEntity producer,
                                                          @Valid @RequestBody ProducerEntity producerEntity) {
         if (producer == null) {
@@ -256,7 +257,7 @@ public class WebController {
         return ResponseEntity.ok(producerEntity);
     }
 
-    @DeleteMapping("/producer/{producer}")
+    @DeleteMapping("/manufacturer/{producer}")
     public ResponseEntity<ProducerEntity> deleteProducer(@PathVariable ProducerEntity producer) {
         if (producer == null) {
             return ResponseEntity.notFound().build();
@@ -292,7 +293,7 @@ public class WebController {
         return ResponseEntity.ok(price);
     }
 
-    @PostMapping("/price/new")
+    @PostMapping("/price")
     public ResponseEntity<PriceEntity> createPrice(@Valid @RequestBody PriceEntity priceEntity) {
         try {
             priceDataControl.saveOrUpdate(priceEntity);

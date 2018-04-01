@@ -1,8 +1,7 @@
 package com.nc.netcracker_project.server.controllers.web;
 
-import com.nc.netcracker_project.server.model.entities.DrugEntity;
-import com.nc.netcracker_project.server.model.entities.DrugstoreEntity;
-import com.nc.netcracker_project.server.model.entities.ProducerEntity;
+import com.nc.netcracker_project.desktop_rmi_client.entity.Drugstore;
+import com.nc.netcracker_project.server.model.entities.*;
 import com.nc.netcracker_project.server.services.data.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Controller
 public class PageController {
@@ -47,13 +45,21 @@ public class PageController {
     @GetMapping("/drugstore/{drugstore}")
     public ModelAndView drugstorePage(@PathVariable DrugstoreEntity drugstore) {
 
-        Iterable<DrugEntity> drugs = drugDataControl.getAll();
+        List<DrugEntity> drugs = new LinkedList<>();
+        List<Long> costs = new LinkedList<>();
+
+        Iterable<PriceEntity> prices = priceDataControl.findByDrugstore(drugstore);
+        prices.forEach(priceEntity -> {
+            drugs.add(priceEntity.getDrug());
+            costs.add(priceEntity.getCost());
+        });
 
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "drugstore");
         model.put("object", drugstore);
         model.put("tableType", "drug");
         model.put("tableContent", drugs);
+        model.put("prices", costs);
 
         return new ModelAndView("object", model);
     }
@@ -61,13 +67,21 @@ public class PageController {
     @GetMapping("/drug/{drug}")
     public ModelAndView drugPage(@PathVariable DrugEntity drug) {
 
-        Iterable<DrugstoreEntity> drugstores = drugstoreDataControl.getAll();
+        List<DrugstoreEntity> drugstores = new LinkedList<>();
+        List<Long> costs = new LinkedList<>();
+
+        Iterable<PriceEntity> prices = priceDataControl.findByDrug(drug);
+        prices.forEach(priceEntity -> {
+            drugstores.add(priceEntity.getDrugstore());
+            costs.add(priceEntity.getCost());
+        });
 
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "drug");
         model.put("object", drug);
         model.put("tableType", "drugstore");
         model.put("tableContent", drugstores);
+        model.put("prices", costs);
 
         return new ModelAndView("object", model);
     }
@@ -75,11 +89,25 @@ public class PageController {
     @GetMapping("/manufacturer/{manufacturer}")
     public ModelAndView manufacturerPage(@PathVariable ProducerEntity manufacturer) {
 
-        Iterable<DrugEntity> drugs = drugDataControl.getAll();
+        Iterable<DrugEntity> drugs = drugDataControl.findByProducer(manufacturer);
 
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "manufacturer");
         model.put("object", manufacturer);
+        model.put("tableType", "drug");
+        model.put("tableContent", drugs);
+
+        return new ModelAndView("object", model);
+    }
+
+    @GetMapping("/pharmTerGroup/{pharmTerGroup}")
+    public ModelAndView pharmTerGroupPage(@PathVariable PharmTerGroupEntity pharmTerGroup) {
+
+        Iterable<DrugEntity> drugs = drugDataControl.findByPharmTerGroup(pharmTerGroup);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("objectType", "pharmTerGroup");
+        model.put("object", pharmTerGroup);
         model.put("tableType", "drug");
         model.put("tableContent", drugs);
 
@@ -99,9 +127,14 @@ public class PageController {
     @GetMapping("/drug/{drug}/edit")
     public ModelAndView editDrugPage(@PathVariable DrugEntity drug) {
 
+        Iterable<ProducerEntity> manufacturers = producerDataControl.getAll();
+        Iterable<PharmTerGroupEntity> pharmTerGroups = pharmTerGroupDataControl.getAll();
+
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "drug");
         model.put("object", drug);
+        model.put("manufacturerList", manufacturers);
+        model.put("pharmTerGroupList", pharmTerGroups);
 
         return new ModelAndView("new", model);
     }
@@ -116,14 +149,55 @@ public class PageController {
         return new ModelAndView("new", model);
     }
 
-    @GetMapping("/create/{type}")
-    public ModelAndView create(@PathVariable String type) {
-        if (!type.equalsIgnoreCase("drug") && !type.equalsIgnoreCase("drugstore")
-                && !type.equalsIgnoreCase("price") && !type.equalsIgnoreCase("manufacturer")) {
-            return null;
+    @GetMapping("/pharmTerGroup/{pharmTerGroup}/edit")
+    public ModelAndView editPharmTerGroupPage(@PathVariable PharmTerGroupEntity pharmTerGroup) {
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("objectType", "pharmTerGroup");
+        model.put("object", pharmTerGroup);
+
+        return new ModelAndView("new", model);
+    }
+
+    @GetMapping("/{type}")
+    public ModelAndView create(@PathVariable String type) throws Exception {
+
+        if (!type.equalsIgnoreCase("drugstore") && !type.equalsIgnoreCase("manufacturer")
+                && !type.equalsIgnoreCase("pharmTerGroup")) {
+            throw new Exception();
         }
+
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", type);
+
+        return new ModelAndView("new", model);
+    }
+
+    @GetMapping("/drug")
+    public ModelAndView createDrug() {
+
+        Iterable<ProducerEntity> manufacturers = producerDataControl.getAll();
+        Iterable<PharmTerGroupEntity> pharmTerGroups = pharmTerGroupDataControl.getAll();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("objectType", "drug");
+        model.put("manufacturerList", manufacturers);
+        model.put("pharmTerGroupList", pharmTerGroups);
+
+        return new ModelAndView("new", model);
+    }
+
+    @GetMapping("/price")
+    public ModelAndView createPrice() {
+
+        Iterable<DrugEntity> drugs = drugDataControl.getAll();
+        Iterable<DrugstoreEntity> drugstores = drugstoreDataControl.getAll();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("objectType", "price");
+        model.put("drugList", drugs);
+        model.put("drugstoreList", drugstores);
+
         return new ModelAndView("new", model);
     }
 
@@ -137,9 +211,15 @@ public class PageController {
 
     @GetMapping("/drugs")
     public ModelAndView drugsPage() {
+        Iterable<ProducerEntity> manufacturers = producerDataControl.getAll();
+        Iterable<PharmTerGroupEntity> pharmTerGroups = pharmTerGroupDataControl.getAll();
+
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "drug");
         model.put("tableType", "drug");
+        model.put("manufacturerList", manufacturers);
+        model.put("pharmTerGroupList", pharmTerGroups);
+
         return new ModelAndView("search", model);
     }
 }

@@ -1,10 +1,14 @@
 package com.nc.netcracker_project.server.services.data;
 
+import com.nc.netcracker_project.server.model.entities.DrugEntity;
+import com.nc.netcracker_project.server.model.entities.DrugstoreEntity;
 import com.nc.netcracker_project.server.model.entities.PriceEntity;
 import com.nc.netcracker_project.server.model.entities.PriceEntityPK;
 import com.nc.netcracker_project.server.model.repositories.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +37,26 @@ public class PriceDataControlImpl extends AbstractDataControl<PriceEntity, Price
     }
 
     @Override
-    public List<PriceEntity> findAll(int pageNumber) {
-        PageRequest pageable = new PageRequest(pageNumber,20);
-        return (List<PriceEntity>) this.repository.findAll(pageable);
+    public List<PriceEntity> findByDrug(DrugEntity drugEntity) {
+        PriceRepository priceRepository = (PriceRepository) repository;
+        return priceRepository.findByDrug(drugEntity);
+    }
+
+    @Override
+    public Page<PriceEntity> findByDrug(DrugEntity drugEntity, Pageable pageable) {
+        PriceRepository priceRepository = (PriceRepository) repository;
+        return priceRepository.findByDrug(drugEntity, pageable);
+    }
+
+    @Override
+    public List<PriceEntity> findByDrugstore(DrugstoreEntity drugstoreEntity) {
+        PriceRepository priceRepository = (PriceRepository) repository;
+        return priceRepository.findByDrugstore(drugstoreEntity);
+    }
+
+    @Override
+    public Page<PriceEntity> findByDrugstore(DrugstoreEntity drugstoreEntity, Pageable pageable) {
+        PriceRepository priceRepository = (PriceRepository) repository;
+        return priceRepository.findByDrugstore(drugstoreEntity, pageable);
     }
 }

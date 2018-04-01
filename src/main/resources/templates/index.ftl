@@ -34,7 +34,7 @@
         </div>
         <form id="formatTypeForm">
             <div class="custom-control custom-radio m-1">
-                <input type="radio" id="XMLformat" name="format" class="custom-control-input" value="XML">
+                <input type="radio" id="XMLformat" name="format" class="custom-control-input" value="XML" checked>
                 <label class="custom-control-label" for="XMLformat">XML</label>
             </div>
             <div class="custom-control custom-radio m-1">

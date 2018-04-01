@@ -1,6 +1,8 @@
 package com.nc.netcracker_project.server.services.data;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,5 +13,5 @@ public interface DataControl<T,R> {
     void delete(T entity) throws Exception;
     void deleteById(R id) throws Exception;
     boolean exists(R id);
-    List<T> findAll(int pageNumber);
+    Page<T> findAll(Pageable pageable);
 }

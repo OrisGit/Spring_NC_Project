@@ -25,23 +25,23 @@
             <input type="text" class="form-control m-1" id="workingHours" placeholder="Часы работы" autocomplete="off">
             <div class="custom-control custom-checkbox m-1">
                 <input class="custom-control-input" type="checkbox" id="isRoundTheClock">
-                <label class="custom-control-label" for="roundTheClock">Круглосуточная</label>
+                <label class="custom-control-label" for="isRoundTheClock">Круглосуточная</label>
             </div>
         <#elseif objectType=="drug">
             <input type="text" class="form-control m-1" id="releaseForm" placeholder="Форма выпуска" autocomplete="off">
             <input type="text" class="form-control m-1" id="activeIngredient" placeholder="Активный ингредиент" autocomplete="off">
             <input type="text" class="form-control m-1" id="indicationsForUse" placeholder="Показания к применению" autocomplete="off">
             <select class="form-control custom-select m-1 col-2" id="producer">
-                <option selected>Производитель</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected disabled>Производитель</option>
+                <#list manufacturerList as manufacturer>
+                    <option value="${manufacturer.id}">${manufacturer.name}</option>
+                </#list>
             </select>
             <select class="form-control custom-select m-1 col-2" id="pharmTerGroup">
-                <option selected>Фармакотерапевтическая группа</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected disabled>Фармакотерапевтическая группа</option>
+                <#list pharmTerGroupList as pharmTerGroup>
+                    <option value="${pharmTerGroup.id}">${pharmTerGroup.name}</option>
+                </#list>
             </select>
         </#if>
             <button type="button" class="btn btn-primary m-1 ml-auto" id="searchBtn">

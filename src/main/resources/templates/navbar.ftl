@@ -19,10 +19,11 @@
                 Добавить
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/create/drugstore">Аптеку</a>
-                <a class="dropdown-item" href="/create/drug">Лекарство</a>
-                <a class="dropdown-item" href="/create/price">Цену</a>
-                <a class="dropdown-item" href="/create/manufacturer">Производителя</a>
+                <a class="dropdown-item" href="/drugstore">Аптеку</a>
+                <a class="dropdown-item" href="/drug">Лекарство</a>
+                <a class="dropdown-item" href="/price">Цену</a>
+                <a class="dropdown-item" href="/manufacturer">Производителя</a>
+                <a class="dropdown-item" href="/pharmTerGroup">Фарм. группу</a>
             </div>
         </div>
         <button class="btn btn-outline-light my-2 my-lg-0" type="button">

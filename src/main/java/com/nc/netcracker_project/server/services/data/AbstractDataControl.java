@@ -1,7 +1,9 @@
 package com.nc.netcracker_project.server.services.data;
 
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -25,7 +27,7 @@ public abstract class AbstractDataControl<T, R extends Serializable> implements 
         try{
             repository.save(entity);
         }catch (Exception e){
-            throw new Exception();
+            throw new Exception(e);
         }
         return entity;
     }
@@ -45,7 +47,7 @@ public abstract class AbstractDataControl<T, R extends Serializable> implements 
         try{
             repository.delete(entity);
         }catch (Exception e){
-            throw new Exception();
+            throw new Exception(e);
         }
     }
 
@@ -59,13 +61,12 @@ public abstract class AbstractDataControl<T, R extends Serializable> implements 
         try {
             repository.delete(id);
         }catch (Exception e){
-            throw new Exception();
+            throw new Exception(e);
         }
     }
 
     @Override
-    public List<T> findAll(int pageNumber) {
-        PageRequest pageable = new PageRequest(pageNumber,20, Sort.Direction.ASC, "name");
-        return (List<T>) this.repository.findAll(pageable);
+    public Page<T> findAll(Pageable pageable) {
+        return this.repository.findAll(pageable);
     }
 }

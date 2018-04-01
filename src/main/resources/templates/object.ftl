@@ -36,11 +36,15 @@
             <#elseif objectType=="manufacturer">
                 <h3>Производитель ${object.name}</h3>
                 <strong>Описание:</strong> ${object.description!''}<br>
+            <#elseif objectType=="pharmTerGroup">
+                <h3>Фармакотерапевтическая группа ${object.name}</h3>
+                <strong>Описание:</strong> ${object.description!''}<br>
             </#if>
         <#else>
             <h3>Объект не найден</h3>
         </#if>
         </div>
+        <#if object??>
         <span class="ml-4 float-left">
             <button class="btn btn-info mybtn my-1 my-lg-0" id="editBtn">
                 <i class="fas fa-edit"></i>
@@ -49,6 +53,7 @@
                 <i class="fas fa-trash-alt"></i>
             </button>
         </span>
+        </#if>
     </div>
 
     <#if object??>
