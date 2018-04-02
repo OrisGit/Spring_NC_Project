@@ -32,17 +32,17 @@
         <form id="editForm">
             <#if objectType=="price">
                 <select class="form-control custom-select col-md m-1" size="5" id="drug">
-                    <option selected disabled>Препарат</option>
+                    <option disabled>Препарат</option>
                     <#list drugList as drug>
-                        <option value="${drug.id}">
+                        <option value="${drug.id}" <#if (object.drug.id == drug.id)!false>selected</#if>>
                             Препарат ${drug.name} (${drug.releaseForm}, ${drug.activeIngredient}, ${drug.producer.name})
                         </option>
                     </#list>
                 </select>
                 <select class="form-control custom-select col-md m-1" size="5" id="drugstore">
-                    <option selected disabled>Аптека</option>
+                    <option disabled>Аптека</option>
                     <#list drugstoreList as drugstore>
-                        <option value="${drugstore.id}">
+                        <option value="${drugstore.id}" <#if (object.drugstore.id == drugstore.id)!false>selected</#if>>
                             Аптека ${drugstore.name} (${drugstore.district} р-н, ул. ${drugstore.street}, ${drugstore.building})
                         </option>
                     </#list>

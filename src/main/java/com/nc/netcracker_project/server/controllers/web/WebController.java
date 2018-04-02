@@ -294,7 +294,8 @@ public class WebController {
     }
 
     @PostMapping("/price")
-    public ResponseEntity<PriceEntity> createPrice(@Valid @RequestBody PriceEntity priceEntity) {
+    public ResponseEntity<PriceEntity> createPrice(@Valid @RequestBody PriceEntity price) {
+        PriceEntity priceEntity = new PriceEntity(price.getDrug(), price.getDrugstore(), price.getCost());
         try {
             priceDataControl.saveOrUpdate(priceEntity);
             eventService.updatePrices();
