@@ -46,6 +46,11 @@
         </div>
         <#if object??>
         <span class="ml-4 float-left">
+            <#if objectType=="drugstore" || objectType=="drug">
+            <button class="btn btn-success mybtn my-1 my-lg-0" id="addBtn">
+                <i class="fas fa-plus"></i>
+            </button>
+            </#if>
             <button class="btn btn-info mybtn my-1 my-lg-0" id="editBtn">
                 <i class="fas fa-edit"></i>
             </button>

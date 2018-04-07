@@ -3,6 +3,7 @@ package com.nc.netcracker_project.server.services.data;
 import com.nc.netcracker_project.server.model.entities.DrugEntity;
 import com.nc.netcracker_project.server.model.entities.PharmTerGroupEntity;
 import com.nc.netcracker_project.server.model.entities.ProducerEntity;
+import com.nc.netcracker_project.server.services.parameters.Parameters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +19,6 @@ public interface DrugDataControl extends DataControl<DrugEntity, UUID> {
 	List<DrugEntity> findByPharmTerGroup(PharmTerGroupEntity pharmTerGroup);
 
 	Page<DrugEntity> findByPharmTerGroup(PharmTerGroupEntity pharmTerGroup, Pageable pageable);
+
+    Page<DrugEntity> findByParameters(Parameters parameters, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.nc.netcracker_project.server.controllers.web;
 
 import com.nc.netcracker_project.server.model.entities.*;
+import com.nc.netcracker_project.server.services.parameters.Parameters;
 import com.nc.netcracker_project.server.services.data.*;
 import com.nc.netcracker_project.server.services.event_service.EventListener;
 import com.nc.netcracker_project.server.services.event_service.EventService;
@@ -47,11 +48,17 @@ public class WebController {
         this.exporter = exporter;
         this.eventService = eventService;
     }
-
+    //todo возвращение сохраненного объекта при успешном сохранении или изменении
+    //todo обработчик ошибок
     //region Drugs
     @GetMapping("/drug")
     public Iterable<DrugEntity> getAllDrugs(Pageable pageable) {
         return drugDataControl.findAll(pageable);
+    }
+
+    @GetMapping("/drug/search")
+    public Iterable<DrugEntity> getDrugsWithParameters(Parameters parameters, Pageable pageable) {
+        return drugDataControl.findByParameters(parameters, pageable);
     }
 
     @GetMapping("/drug/{drug}")
@@ -108,6 +115,11 @@ public class WebController {
     @GetMapping("/drugstore")
     public Iterable<DrugstoreEntity> getAllDrugstore(Pageable pageable) {
         return drugstoreDataControl.findAll(pageable);
+    }
+
+    @GetMapping("/drugstore/search")
+    public Iterable<DrugstoreEntity> getDrugstoreWithParameters(Parameters parameters, Pageable pageable) {
+        return drugstoreDataControl.findByParameters(parameters, pageable);
     }
 
     @GetMapping("/drugstore/{drugstore}")

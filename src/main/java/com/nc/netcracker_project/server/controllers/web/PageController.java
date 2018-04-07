@@ -46,12 +46,10 @@ public class PageController {
     public ModelAndView drugstorePage(@PathVariable DrugstoreEntity drugstore) {
 
         List<DrugEntity> drugs = new LinkedList<>();
-        List<Long> costs = new LinkedList<>();
 
         Iterable<PriceEntity> prices = priceDataControl.findByDrugstore(drugstore);
         prices.forEach(priceEntity -> {
             drugs.add(priceEntity.getDrug());
-            costs.add(priceEntity.getCost());
         });
 
         Map<String, Object> model = new HashMap<>();
@@ -59,7 +57,7 @@ public class PageController {
         model.put("object", drugstore);
         model.put("tableType", "drug");
         model.put("tableContent", drugs);
-        model.put("prices", costs);
+        model.put("prices", prices);
 
         return new ModelAndView("object", model);
     }
@@ -68,12 +66,10 @@ public class PageController {
     public ModelAndView drugPage(@PathVariable DrugEntity drug) {
 
         List<DrugstoreEntity> drugstores = new LinkedList<>();
-        List<Long> costs = new LinkedList<>();
 
         Iterable<PriceEntity> prices = priceDataControl.findByDrug(drug);
         prices.forEach(priceEntity -> {
             drugstores.add(priceEntity.getDrugstore());
-            costs.add(priceEntity.getCost());
         });
 
         Map<String, Object> model = new HashMap<>();
@@ -81,7 +77,7 @@ public class PageController {
         model.put("object", drug);
         model.put("tableType", "drugstore");
         model.put("tableContent", drugstores);
-        model.put("prices", costs);
+        model.put("prices", prices);
 
         return new ModelAndView("object", model);
     }
@@ -155,6 +151,26 @@ public class PageController {
         Map<String, Object> model = new HashMap<>();
         model.put("objectType", "pharmTerGroup");
         model.put("object", pharmTerGroup);
+
+        return new ModelAndView("new", model);
+    }
+
+    @GetMapping("/price/{id}/edit")
+    public ModelAndView editPricePage(@PathVariable String id) {
+
+        String[] uuids = id.split("[&]");
+        //todo обработка неполного id для добавления по аптеке или лекарству
+        UUID drugId = UUID.fromString(uuids[0]);
+        UUID drugstoreId = UUID.fromString(uuids[1]);
+
+        Iterable<DrugEntity> drugs = drugDataControl.getAll();
+        Iterable<DrugstoreEntity> drugstores = drugstoreDataControl.getAll();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("objectType", "price");
+        model.put("object", priceDataControl.get(new PriceEntityPK(drugId, drugstoreId)));
+        model.put("drugList", drugs);
+        model.put("drugstoreList", drugstores);
 
         return new ModelAndView("new", model);
     }

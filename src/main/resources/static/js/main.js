@@ -34,9 +34,15 @@ function info(row) {
     window.open(`/${type}/${row.data().id}`);
 }
 
+function del(type, id) {
+    if (confirm('Вы уверены?')) {
+        sendXHR(`/api/${type}/${id}`, 'DELETE', null, console.log);
+    }
+}
+
 function importIn() {
-    let format = $('input[name="format"]:checked').val();
     let file = $('#importFile')[0].files[0];
+    let format = file.name.split('.').pop();
     sendXHR('/api/import?format=' + format, 'POST', file, console.log);
 }
 
@@ -75,28 +81,24 @@ function formObject() {
     return object;
 }
 
-function sendXHR(url, method, payload, callback) {//todo jquery replace
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-        let response = xhr.response;
-
-        if (this.readyState === 4) {
-            if (this.status === 200) {
-                callback(response);
-            } else {
-                alert(`${response.status}: ${response.error}\n${response.message}`);
-            }
+function sendXHR(url, method, payload, callback) {
+    $.ajax({
+        url: url,
+        method: method,
+        data: payload,
+        contentType: 'application/json',
+        //beforeSend: alert('Sending...'),
+        //complete: alert('Done'),
+        error: function (xhr) {
+            if (xhr.status === 500) alert('Server error');
+            let response = xhr.responseJSON;
+            alert(`${response.status}: ${response.error}\n${response.message}`);
+        },
+        success: function (xhr) {
+            alert('Success');
+            callback(xhr);
         }
-    };
-
-    xhr.open(method, url);
-
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.responseType = 'json';
-
-    xhr.send(payload);
+    });
 }
 
 function templateDrugs(table, drug) {
@@ -120,9 +122,9 @@ function templateDrugstores(table, drugstore) {
         .append($('<td>').append(createCustomCheckbox(!!+drugstore.isRoundTheClock)));
 }
 
-function showPagination(type, pageSize) {
+function showPagination(url, pageSize) {
     $('#paginationNav').pagination({
-        dataSource: `api/${type}`,
+        dataSource: url,
         locator: 'content',
         pageSize: pageSize,
         totalNumberLocator: (response) => {
@@ -136,10 +138,11 @@ function showPagination(type, pageSize) {
         },
         callback: function (data, pagination) {
             let table = $('.table');
+            let template = (table.data().type === 'drug') ? templateDrugs : templateDrugstores;
 
             table.find('tbody').empty();
-            $.each(data, function(i, object){
-                (type === 'drug') ? templateDrugs(table, object) : templateDrugstores(table, object);
+            $.each(data, function (i, object) {
+                template(table, object);
             });
         },
         ajax: {
@@ -158,11 +161,27 @@ $(document).ready(() => {
     let location = findLocation();
     let type = location.type;
     let id = location.id;
+    let paginationUrl = `/api/${type.slice(0, -1)}`;
+    let pageSize = 5;
 
-    $('.table').on('click', 'tr', function(event) {
-        if(!$(event.target).is($('th')) && !$(event.target)[0].hasAttribute('href')) {
+    $('.table').on('click', 'tr', function (event) {
+        if (!$(event.target).is($('th, a, .dropdown-toggle'))) {
             info($(this));
         }
+    });
+
+    $('.table a.delete').click(function () {
+        let drugId;
+        let drugstoreId;
+
+        if (type === 'drug') {
+            drugId = id;
+            drugstoreId = $(this).parents('tr').data().id;
+        } else {
+            drugId = $(this).parents('tr').data().id;
+            drugstoreId = id;
+        }
+        del('price', drugId + '&' + drugstoreId);
     });
 
     $('#importBtn').click(importIn);
@@ -174,9 +193,7 @@ $(document).ready(() => {
     });
 
     $('#deleteBtn').click(() => {
-        if (confirm('Вы уверены?')) {
-            sendXHR(`/api/${type}/${id}`, 'DELETE', null, console.log);
-        }
+        del(type, id);
         window.location.reload();
     });
 
@@ -199,13 +216,14 @@ $(document).ready(() => {
     });
 
     $('#searchBtn').click(() => {
-        let params = {
-            //all parameters
-        };
-        Object.assign(params, formObject());
-        //if (params.isRoundTheClock === 0) params.isRoundTheClock = '';
-        console.log(params);
-        alert(type.slice(0, -1))
+        let object = formObject();
+        if (object.producer) object.producer = object.producer.id;
+        if (object.pharmTerGroup) object.pharmTerGroup = object.pharmTerGroup.id;
+        let params = $.param(object);
+
+        paginationUrl = `/api/${type.slice(0, -1)}/search?${params}`;
+
+        showPagination(paginationUrl, pageSize);
     });
 
     $('#importFile').change(function () {
@@ -213,12 +231,16 @@ $(document).ready(() => {
         $(this).next('label').text(file);
     });
 
+    $('#clearBtn').click(function() {
+        $('form').trigger('reset');
+    });
+
     $('#entriesPerPage').find('a').click(function () {
-        let pageSize = $(this)[0].innerHTML;
-        showPagination(type.slice(0, -1), pageSize)
+        pageSize = parseInt($(this)[0].innerHTML);
+        showPagination(paginationUrl, pageSize);
     });
 
     if ($('#paginationNav').length) {
-        showPagination(type.slice(0, -1), 5)
+        showPagination(paginationUrl, pageSize);
     }
 });

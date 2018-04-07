@@ -1,5 +1,6 @@
 <div class="container mx-auto">
-    <table class="table table-sm table-responsive-md table-hover border-bottom" id="${tableType}Table" data-type="${tableType}">
+    <table class="table table-sm table-responsive-md table-hover border-bottom" id="${tableType}Table"
+           data-type="${tableType}">
         <thead>
         <tr>
         <#if tableType=="drug">
@@ -8,7 +9,7 @@
             <th>Активный ингредиент</th>
             <th>Показания к применению</th>
             <th>Производитель</th>
-            <th>Фармаколотерапевтическая группа</th>
+            <th>Фарм. группа</th>
         <#elseif tableType=="drugstore">
             <th>Название</th>
             <th>Адрес</th>
@@ -46,7 +47,19 @@
                     </td>
                 </#if>
                 <#if objectType=="drug" || objectType=="drugstore">
-                    <td>${prices[object?index]}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" id="priceDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${prices[object?index].cost}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="priceDropdown">
+                                <a class="dropdown-item" href="/price/${prices[object?index].drug.id}&${prices[object?index].drugstore.id}/edit">
+                                    Изменить
+                                </a>
+                                <a class="dropdown-item delete" href="#">Удалить</a>
+                            </div>
+                        </div>
+                    </td>
                 </#if>
             </tr>
             </#list>
