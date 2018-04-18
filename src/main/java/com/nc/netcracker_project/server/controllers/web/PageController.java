@@ -159,7 +159,6 @@ public class PageController {
     public ModelAndView editPricePage(@PathVariable String id) {
 
         String[] uuids = id.split("[&]");
-        //todo обработка неполного id для добавления по аптеке или лекарству
         UUID drugId = UUID.fromString(uuids[0]);
         UUID drugstoreId = UUID.fromString(uuids[1]);
 
@@ -177,6 +176,10 @@ public class PageController {
 
     @GetMapping("/{type}")
     public ModelAndView create(@PathVariable String type) throws Exception {
+
+        if (type.equalsIgnoreCase("price")) {
+            return createPrice("");
+        }
 
         if (!type.equalsIgnoreCase("drugstore") && !type.equalsIgnoreCase("manufacturer")
                 && !type.equalsIgnoreCase("pharmTerGroup")) {
@@ -203,8 +206,8 @@ public class PageController {
         return new ModelAndView("new", model);
     }
 
-    @GetMapping("/price")
-    public ModelAndView createPrice() {
+    @GetMapping("/price/{id}")
+    public ModelAndView createPrice(@PathVariable String id) {
 
         Iterable<DrugEntity> drugs = drugDataControl.getAll();
         Iterable<DrugstoreEntity> drugstores = drugstoreDataControl.getAll();
@@ -213,6 +216,21 @@ public class PageController {
         model.put("objectType", "price");
         model.put("drugList", drugs);
         model.put("drugstoreList", drugstores);
+
+        if (id.matches("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}")) {
+            UUID uuid = UUID.fromString(id);
+            PriceEntity price = new PriceEntity();
+
+            if (drugDataControl.exists(uuid)) {
+                DrugEntity drug = drugDataControl.get(uuid);
+                price.setDrug(drug);
+            } else if (drugstoreDataControl.exists(uuid)) {
+                DrugstoreEntity drugstore = drugstoreDataControl.get(uuid);
+                price.setDrugstore(drugstore);
+            }
+
+            model.put("object", price);
+        }
 
         return new ModelAndView("new", model);
     }

@@ -182,11 +182,16 @@ $(document).ready(() => {
             drugstoreId = id;
         }
         del('price', drugId + '&' + drugstoreId);
+        window.location.reload(true);
     });
 
     $('#importBtn').click(importIn);
 
     $('#exportBtn').click(exportFrom);
+
+    $('#addBtn').click(() => {
+        window.open(window.location.href.replace(type, 'price'));
+    });
 
     $('#editBtn').click(() => {
         window.open(window.location.href + '/edit');
@@ -194,7 +199,7 @@ $(document).ready(() => {
 
     $('#deleteBtn').click(() => {
         del(type, id);
-        window.location.reload();
+        window.location.reload(true);
     });
 
     $('#submitBtn').click(() => {
@@ -202,7 +207,7 @@ $(document).ready(() => {
         let method;
         let url;
 
-        if (id && ~id.search(/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/)) {
+        if (id && ~id.search(/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/) && type !== 'price') {
             url = `/api/${type}/${id}`;
             method = 'PUT';
         } else {
@@ -210,8 +215,9 @@ $(document).ready(() => {
             method = 'POST';
         }
 
-        sendXHR(url, method, payload, function () {
-            alert('OK');
+        sendXHR(url, method, payload, function (response) {
+            if (type === 'price') window.close();
+            window.open(`/${type}/${response.id}`, '_self');
         })
     });
 

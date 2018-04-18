@@ -48,7 +48,6 @@ public class WebController {
         this.exporter = exporter;
         this.eventService = eventService;
     }
-    //todo возвращение сохраненного объекта при успешном сохранении или изменении
     //todo обработчик ошибок
     //region Drugs
     @GetMapping("/drug")
@@ -71,29 +70,31 @@ public class WebController {
 
     @PostMapping("/drug")
     public ResponseEntity<DrugEntity> createDrug(@Valid @RequestBody DrugEntity drugEntity) {
+        DrugEntity savedEntity;
         try {
-            drugDataControl.saveOrUpdate(drugEntity);
+            savedEntity = drugDataControl.saveOrUpdate(drugEntity);
             eventService.updateDrugs();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedEntity);
     }
 
     @PutMapping("/drug/{drug}")
     public ResponseEntity<DrugEntity> updateDrug(@PathVariable DrugEntity drug,
                                                  @Valid @RequestBody DrugEntity drugEntity) {
+        DrugEntity savedEntity;
         if (drug == null) {
             return ResponseEntity.notFound().build();
         }
         drugEntity.setId(drug.getId());
         try {
-            drugDataControl.saveOrUpdate(drugEntity);
+            savedEntity = drugDataControl.saveOrUpdate(drugEntity);
             eventService.updateDrugs();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(drugEntity);
+        return ResponseEntity.ok(savedEntity);
     }
 
     @DeleteMapping("/drug/{drug}")
@@ -132,29 +133,31 @@ public class WebController {
 
     @PostMapping("/drugstore")
     public ResponseEntity<DrugstoreEntity> createDrugstore(@Valid @RequestBody DrugstoreEntity drugstoreEntity) {
+        DrugstoreEntity savedEntity;
         try {
-            drugstoreDataControl.saveOrUpdate(drugstoreEntity);
+            savedEntity = drugstoreDataControl.saveOrUpdate(drugstoreEntity);
             eventService.updateDrugstores();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedEntity);
     }
 
     @PutMapping("/drugstore/{drugstore}")
     public ResponseEntity<DrugstoreEntity> updateDrugstore(@PathVariable DrugstoreEntity drugstore,
                                                            @Valid @RequestBody DrugstoreEntity drugstoreEntity) {
+        DrugstoreEntity savedEntity;
         if (drugstore == null) {
             return ResponseEntity.notFound().build();
         }
         drugstoreEntity.setId(drugstore.getId());
         try {
-            drugstoreDataControl.saveOrUpdate(drugstoreEntity);
+            savedEntity = drugstoreDataControl.saveOrUpdate(drugstoreEntity);
             eventService.updateDrugstores();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(drugstoreEntity);
+        return ResponseEntity.ok(savedEntity);
     }
 
     @DeleteMapping("/drugstore/{drugstore}")
@@ -188,29 +191,31 @@ public class WebController {
 
     @PostMapping("/pharmTerGroup")
     public ResponseEntity<PharmTerGroupEntity> createPharmTerGroup(@Valid @RequestBody PharmTerGroupEntity pharmTerGroup) {
+        PharmTerGroupEntity savedEntity;
         try {
-            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
+            savedEntity = pharmTerGroupDataControl.saveOrUpdate(pharmTerGroup);
             eventService.updatePharmTerGroups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedEntity);
     }
 
     @PutMapping("/pharmTerGroup/{pharmTerGroup}")
     public ResponseEntity<PharmTerGroupEntity> updatepharmTerGroup(@PathVariable PharmTerGroupEntity pharmTerGroup,
                                                                    @Valid @RequestBody PharmTerGroupEntity pharmTerGroupEntity) {
+        PharmTerGroupEntity savedEntity;
         if (pharmTerGroup == null) {
             return ResponseEntity.notFound().build();
         }
         pharmTerGroupEntity.setId(pharmTerGroup.getId());
         try {
-            pharmTerGroupDataControl.saveOrUpdate(pharmTerGroupEntity);
+            savedEntity = pharmTerGroupDataControl.saveOrUpdate(pharmTerGroupEntity);
             eventService.updatePharmTerGroups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(pharmTerGroupEntity);
+        return ResponseEntity.ok(savedEntity);
     }
 
     @DeleteMapping("/pharmTerGroup/{pharmTerGroup}")
@@ -244,29 +249,31 @@ public class WebController {
 
     @PostMapping("/manufacturer")
     public ResponseEntity<ProducerEntity> createProducer(@Valid @RequestBody ProducerEntity producerEntity) {
+        ProducerEntity savedEntity;
         try {
-            producerDataControl.saveOrUpdate(producerEntity);
+            savedEntity = producerDataControl.saveOrUpdate(producerEntity);
             eventService.updateProducers();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedEntity);
     }
 
     @PutMapping("/manufacturer/{producer}")
     public ResponseEntity<ProducerEntity> updateProducer(@PathVariable ProducerEntity producer,
                                                          @Valid @RequestBody ProducerEntity producerEntity) {
+        ProducerEntity savedEntity;
         if (producer == null) {
             return ResponseEntity.notFound().build();
         }
         producerEntity.setId(producer.getId());
         try {
-            producerDataControl.saveOrUpdate(producerEntity);
+            savedEntity = producerDataControl.saveOrUpdate(producerEntity);
             eventService.updateProducers();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(producerEntity);
+        return ResponseEntity.ok(savedEntity);
     }
 
     @DeleteMapping("/manufacturer/{producer}")
@@ -308,13 +315,14 @@ public class WebController {
     @PostMapping("/price")
     public ResponseEntity<PriceEntity> createPrice(@Valid @RequestBody PriceEntity price) {
         PriceEntity priceEntity = new PriceEntity(price.getDrug(), price.getDrugstore(), price.getCost());
+        PriceEntity savedEntity;
         try {
-            priceDataControl.saveOrUpdate(priceEntity);
+            savedEntity = priceDataControl.saveOrUpdate(priceEntity);
             eventService.updatePrices();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedEntity);
     }
 
     @PutMapping("/price/{id}")
@@ -327,17 +335,18 @@ public class WebController {
         PriceEntityPK pk = new PriceEntityPK(drugId, drugstoreId);
 
         PriceEntity price = priceDataControl.get(pk);
+        PriceEntity savedEntity;
         if (price == null) {
             return ResponseEntity.notFound().build();
         }
         priceEntity.setId(price.getId());
         try {
-            priceDataControl.saveOrUpdate(priceEntity);
+            savedEntity = priceDataControl.saveOrUpdate(priceEntity);
             eventService.updatePrices();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(priceEntity);
+        return ResponseEntity.ok(savedEntity);
     }
 
     @DeleteMapping("/price/{id}")
